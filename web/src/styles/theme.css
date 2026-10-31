@@ -1,0 +1,20 @@
+/* TDesign 主题覆盖：把品牌色阶换成项目紫（主色 #6C5CE7，对应 TDesign -7 主色位）。
+   TDesign 的 --td-brand-color / active / light 等语义变量均引用下面色阶，无需单独覆盖。
+   仅改品牌色；success/warning/error 语义色保持 TDesign 默认。 */
+:root {
+  --td-brand-color-1: #f4f2fe;
+  --td-brand-color-2: #e8e4fc;
+  --td-brand-color-3: #d5cff8;
+  --td-brand-color-4: #beb3f3;
+  --td-brand-color-5: #a596ee;
+  --td-brand-color-6: #8f80eb;
+  --td-brand-color-7: #6c5ce7;
+  --td-brand-color-8: #5a4bd1;
+  --td-brand-color-9: #4a3db8;
+  --td-brand-color-10: #3d3396;
+
+  /* 圆角与项目 token 衔接（TDesign 默认圆角偏小，统一到中等圆角） */
+  --td-radius-default: 6px;
+  --td-radius-medium: 8px;
+  --td-radius-large: 10px;
+}
