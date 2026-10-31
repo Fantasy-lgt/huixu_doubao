@@ -1,0 +1,130 @@
+// 汇序 Pro 数据表草案（W1 定稿依据，字段对齐排期第 4 节与 IA 数据归属矩阵）
+// 所有业务表 user_id 非空；服务端查询强制作用域，越权统一 404。
+// 生成：npx prisma migrate dev；客户端：npx prisma generate
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  passwordHash  String
+  plan          String     @default("free") // free；会员字段预留，本期不接支付
+  status        String     @default("active")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  materials     Material[]
+  drafts        Draft[]
+  templateCards TemplateCard[]
+  entities      Entity[]
+  modelKeys     ModelKey[]
+  exportRecords ExportRecord[]
+}
+
+model Material {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title        String
+  materialType String    // 工作汇报/项目进展/会议纪要/人事行政/客户往来/合同商务/制度通知/其他
+  tags         String[]  @default([])
+  period       String?   // YYYY-MM 或年度；未标记月份允许空但前端提醒
+  occasion     String?   // 月度管理会/例会/述职/项目复盘/其他（替代初代“部门”字段）
+  body         String
+  sourceName   String?
+  fileRef      String?   // txt/md 上传存储引用
+  version      Int       @default(1)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([userId, period])
+  @@index([userId, materialType])
+}
+
+model Draft {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind            String   // monthly / annual / free
+  rangeFilter     Json?    // 期间、类型、场合筛选条件
+  title           String
+  sections        Json     // 章节 + 条目 + sourceIds + evidence（沿用初代结构）
+  sourceRefs      Json     // String[] 引用材料 id
+  generationMode  String   @default("local") // local | ai
+  confirmedVersion Int?    // 已确认版本号；人工修改后失效待重核
+  version         Int      @default(1)
+  templateCardId  String?
+  templateCard    TemplateCard? @relation(fields: [templateCardId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  exportRecords   ExportRecord[]
+
+  @@index([userId, kind])
+}
+
+model TemplateCard {
+  id          String    @id @default(cuid())
+  userId      String?   // null = 系统内置只读共享；个人卡私有
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  name        String
+  scene       String?
+  pageType    String?   // 封面/要点列表3点/多点/数据占位/两栏对比/时间轴/结尾
+  itemCount   Int?
+  dataKind    String?   // text / bar / table
+  palette     Json?
+  layoutRef   String?
+  builtIn     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  drafts      Draft[]
+
+  @@index([userId])
+}
+
+model Entity {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind                String   // person / customer / contract
+  name                String
+  attributes          Json?    // 岗位/阶段/金额等扩展属性
+  period              String?
+  sourceMaterialIds   Json     // String[]，AI 建议候选必须挂来源
+  confirmed           Boolean  @default(false) // false = 候选草稿，人确认后才入库
+  createdAt           DateTime @default(now())
+
+  @@index([userId, kind])
+}
+
+model ModelKey {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider     String
+  encryptedKey String    // 服务端加密存储；不回显前端、不进备份与日志
+  label        String?
+  enabledAt    DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model ExportRecord {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  draftId       String
+  draft         Draft    @relation(fields: [draftId], references: [id], onDelete: Cascade)
+  fileRef       String?
+  hasWatermark  Boolean  @default(true) // 试用版浅色水印；会员字段预留
+  createdAt     DateTime @default(now())
+
+  @@index([userId, draftId])
+}
