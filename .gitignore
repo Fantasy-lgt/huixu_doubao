@@ -27,6 +27,9 @@ Thumbs.db
 *.sqlite
 server/prisma/migrations/dev.db*
 
+# TS 增量构建缓存
+*.tsbuildinfo
+
 # Spike 生成物
 spikes/out/
 
