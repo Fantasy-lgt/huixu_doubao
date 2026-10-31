@@ -1,9 +1,12 @@
 // Spike-S2：服务端 pptxgenjs 生成 1 页带紫主色 pptx（不依赖数据库与模型）
 // 运行：在 server/ 目录 npm install 后执行  npm run spike:s2
 // 产物：spikes/out/s2-demo.pptx（已被 .gitignore 忽略）
-const pptxgen = require('pptxgenjs');
 const fs = require('fs');
 const path = require('path');
+// 依赖装在 server/node_modules，脚本位于 spikes/，从 server 包边界解析
+const { createRequire } = require('module');
+const serverRequire = createRequire(path.join(__dirname, '..', 'server', 'package.json'));
+const pptxgen = serverRequire('pptxgenjs');
 
 (async () => {
   const pptx = new pptxgen();
