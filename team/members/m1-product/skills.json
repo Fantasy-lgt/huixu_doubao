@@ -1,0 +1,7 @@
+[
+  { "dir": "doubao-product-manager", "name": "doubao-product-manager", "label": "产品经理", "type": "upload", "enabled": true },
+  { "dir": "doubao-product-analysis", "name": "doubao-product-analysis", "label": "产品分析", "type": "upload", "enabled": true },
+  { "dir": "doubao-product-qa", "name": "doubao-product-qa", "label": "产品QA", "type": "upload", "enabled": true },
+  { "dir": "doubao-questionnaire-designer", "name": "doubao-questionnaire-designer", "label": "问卷设计", "type": "upload", "enabled": true, "note": "本期备查，非主用" },
+  { "dir": "metrics-tracking", "name": "metrics-tracking", "label": "指标追踪", "type": "upload", "enabled": true }
+]

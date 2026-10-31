@@ -1,0 +1,23 @@
+[
+  { "dir": "writing-plans", "name": "writing-plans", "label": "开发计划", "type": "upload", "enabled": true },
+  { "dir": "software-architecture-design", "name": "software-architecture-design", "label": "架构设计", "type": "upload", "enabled": true },
+  { "dir": "doubao-coding-analyze-codebase", "name": "doubao-coding-analyze-codebase", "label": "代码库理解", "type": "upload", "enabled": true },
+  { "dir": "doubao-coding-develop-frontend-features", "name": "doubao-coding-develop-frontend-features", "label": "前端开发", "type": "upload", "enabled": true },
+  { "dir": "doubao-coding-develop-backend-features", "name": "doubao-coding-develop-backend-features", "label": "后端开发", "type": "upload", "enabled": true },
+  { "dir": "diagnose", "name": "diagnose", "label": "故障诊断", "type": "upload", "enabled": true },
+  { "dir": "systematic-debugging", "name": "systematic-debugging", "label": "系统化调试", "type": "upload", "enabled": true },
+  { "dir": "tdd", "name": "tdd", "label": "TDD", "type": "upload", "enabled": true },
+  { "dir": "test-driven-development", "name": "test-driven-development", "label": "测试先行", "type": "upload", "enabled": true },
+  { "dir": "verification-before-completion", "name": "verification-before-completion", "label": "交付验证", "type": "upload", "enabled": true },
+  { "dir": "review", "name": "review", "label": "代码自查", "type": "upload", "enabled": true },
+  { "dir": "prototype", "name": "prototype", "label": "快速原型", "type": "upload", "enabled": true },
+  { "dir": "doubao-ui-design", "name": "doubao-ui-design", "label": "UI设计方法", "type": "upload", "enabled": true, "note": "仅方法论与gold参考，不执行发布脚本" },
+  { "dir": "ui-design-methodology", "name": "ui-design-methodology", "label": "界面方法论", "type": "expert", "enabled": true },
+  { "dir": "ui-delivery-standard", "name": "ui-delivery-standard", "label": "UI交付标准", "type": "expert", "enabled": true },
+  { "dir": "chart-generator", "name": "chart-generator", "label": "图表生成", "type": "expert", "enabled": true },
+  { "dir": "landing-page-generator", "name": "landing-page-generator", "label": "落地页", "type": "upload", "enabled": true, "note": "备查" },
+  { "dir": "doubao-visual-creative", "name": "doubao-visual-creative", "label": "视觉创意", "type": "official", "enabled": true, "note": "不执行deck脚本" },
+  { "dir": "delivery-routing", "name": "delivery-routing", "label": "交付路由", "type": "expert", "enabled": true, "note": "飞书分支已替换为本地交付分支" },
+  { "dir": "doubao-coding-optimize-performance", "name": "doubao-coding-optimize-performance", "label": "性能优化", "type": "upload", "enabled": true, "note": "与m4共享，需测量基线" },
+  { "dir": "beautiful-feishu-whiteboard", "name": "beautiful-feishu-whiteboard", "label": "飞书画板", "type": "open_source", "enabled": false, "note": "无飞书画板写入权限，替代为本地HTML/SVG图示" }
+]

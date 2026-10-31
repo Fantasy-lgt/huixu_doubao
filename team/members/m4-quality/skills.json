@@ -1,0 +1,11 @@
+[
+  { "dir": "doubao-coding-review-code", "name": "doubao-coding-review-code", "label": "代码审查", "type": "upload", "enabled": true },
+  { "dir": "doubao-coding-analyze-codebase", "name": "doubao-coding-analyze-codebase", "label": "代码库理解", "type": "upload", "enabled": true },
+  { "dir": "doubao-coding-develop-unit-tests", "name": "doubao-coding-develop-unit-tests", "label": "单元测试", "type": "upload", "enabled": true },
+  { "dir": "doubao-coding-optimize-performance", "name": "doubao-coding-optimize-performance", "label": "性能基线", "type": "upload", "enabled": true },
+  { "dir": "ec-security-review", "name": "ec-security-review", "label": "安全审查", "type": "upload", "enabled": true },
+  { "dir": "terminal-security-audit", "name": "terminal-security-audit", "label": "终端安全审计", "type": "upload", "enabled": true },
+  { "dir": "depguard", "name": "depguard", "label": "依赖治理", "type": "upload", "enabled": true, "note": "无扫描结果时仅列检查项" },
+  { "dir": "receiving-code-review", "name": "receiving-code-review", "label": "接收评审意见", "type": "upload", "enabled": true },
+  { "dir": "sqlx-code-review", "name": "sqlx-code-review", "label": "Rust sqlx审查", "type": "upload", "enabled": false, "note": "本栈TS/Node不适用，禁用" }
+]

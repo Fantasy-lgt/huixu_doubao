@@ -33,4 +33,10 @@ server/prisma/migrations/dev.db*
 # Spike 生成物
 spikes/out/
 
-# 设计稿截图等非代码产物不入库（设计文档在上层目录单独维护）
+# 团队技能二进制参考资产不入库（SKILL.md/references/method/craft/脚本文本入库；完整资产保留本地）
+team/skills/**/*.png
+team/skills/**/*.jpg
+team/skills/**/*.jpeg
+team/skills/**/*.gif
+team/skills/**/*.webp
+team/skills/**/*.lock.json

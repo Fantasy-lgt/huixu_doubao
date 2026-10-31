@@ -1,0 +1,10 @@
+[
+  { "dir": "architecture-designer", "name": "architecture-designer", "label": "架构设计", "type": "upload", "enabled": true },
+  { "dir": "api-designer", "name": "api-designer", "label": "接口设计", "type": "upload", "enabled": true },
+  { "dir": "backend-patterns", "name": "backend-patterns", "label": "后端模式", "type": "upload", "enabled": true },
+  { "dir": "database-optimizer", "name": "database-optimizer", "label": "数据库优化", "type": "upload", "enabled": true },
+  { "dir": "thinking-systems", "name": "thinking-systems", "label": "系统思维", "type": "upload", "enabled": true },
+  { "dir": "mermaid-tools", "name": "mermaid-tools", "label": "Mermaid图示", "type": "upload", "enabled": true },
+  { "dir": "excalidraw-diagram", "name": "excalidraw-diagram", "label": "手绘图示", "type": "upload", "enabled": true },
+  { "dir": "microservices-architect", "name": "microservices-architect", "label": "微服务架构", "type": "upload", "enabled": false, "note": "本期单体应用，禁用；仅未来拆分参考" }
+]
