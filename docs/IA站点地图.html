@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汇序Pro · IA 站点地图（路由与数据归属）</title>
+<style>
+  :root{
+    --page:#F4F3FB; --bg:#FFFFFF; --panel-2:#F0EEF9;
+    --border:rgba(54,44,104,.08); --border-strong:rgba(54,44,104,.16);
+    --ink-1:#1F1B3D; --ink-2:#403C5E; --ink-3:#6E6B8C;
+    --accent:#6C5CE7; --accent-2:#8B7CF6; --accent-soft:rgba(108,92,231,.10);
+    --up:#2E9E77; --up-bg:rgba(46,158,119,.12); --up-ink:#1F7A59;
+    --warn:#B7791F; --warn-bg:rgba(183,121,31,.14); --warn-ink:#85590F;
+    --down:#D04848;
+    --r-card:12px; --r-ctrl:8px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Microsoft YaHei",system-ui,-apple-system,sans-serif;background:var(--page);color:var(--ink-1);padding:26px 22px 40px;line-height:1.5;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  .doc-head{margin-bottom:18px;}
+  .doc-head h1{font-size:22px;font-weight:700;}
+  .doc-head p{font-size:13px;color:var(--ink-3);margin-top:6px;max-width:860px;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:14px 0 20px;font-size:12px;color:var(--ink-2);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block;}
+  .legend .route{font-family:ui-monospace,Consolas,monospace;font-size:11px;background:var(--panel-2);color:var(--accent);padding:1px 7px;border-radius:var(--r-pill);}
+  .zone-title{font-size:14px;font-weight:700;color:var(--ink-1);margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
+  .zone-title .badge{font-size:11px;font-weight:400;color:var(--ink-3);}
+  .zone{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:14px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .mod{border:1px solid var(--border);border-radius:var(--r-card);background:var(--bg);overflow:hidden;}
+  .mod-head{padding:12px 14px;border-bottom:1px solid var(--border);background:var(--panel-2);}
+  .mod-head .name{font-size:13.5px;font-weight:700;color:var(--ink-1);display:flex;align-items:center;gap:8px;}
+  .mod-head .route{margin-top:5px;}
+  .route{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:var(--r-pill);display:inline-block;}
+  .mod-body{padding:10px 14px 12px;}
+  .node{padding:8px 10px;border:1px solid var(--border);border-radius:var(--r-ctrl);margin-bottom:8px;background:#fff;}
+  .node:last-child{margin-bottom:0;}
+  .node .n-name{font-size:12.5px;font-weight:600;color:var(--ink-1);}
+  .node .n-meta{font-size:11.5px;color:var(--ink-3);margin-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+  .tbl{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--up-ink);background:var(--up-bg);padding:1px 7px;border-radius:var(--r-pill);}
+  .api{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--ink-2);}
+  .tag-warn{font-size:10.5px;color:var(--warn-ink);background:var(--warn-bg);padding:1px 7px;border-radius:var(--r-pill);}
+  .tag-p1{font-size:10.5px;color:var(--warn-ink);background:var(--warn-bg);padding:1px 7px;border-radius:var(--r-pill);}
+  .tag-res{font-size:10.5px;color:var(--ink-3);background:var(--panel-2);padding:1px 7px;border-radius:var(--r-pill);}
+  .flow-steps{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;}
+  .flow-steps .s{font-size:11px;border:1px solid var(--border-strong);border-radius:var(--r-pill);padding:2px 9px;color:var(--ink-2);background:var(--panel-2);}
+  .flow-steps .arr{color:var(--ink-3);font-size:11px;}
+  .note-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+  .note-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:14px 16px;}
+  .note-card h3{font-size:13px;margin-bottom:8px;}
+  .note-card ul{padding-left:18px;font-size:12px;color:var(--ink-2);line-height:1.9;}
+  .gate{background:var(--accent-soft);border:1px solid rgba(108,92,231,.18);border-radius:var(--r-card);padding:12px 16px;font-size:12.5px;color:var(--ink-2);margin-top:16px;}
+  .gate b{color:var(--accent);}
+  .muted{color:var(--ink-3);}
+  @media(max-width:960px){.grid3,.grid2,.note-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="doc-head">
+    <h1>汇序 Pro · IA 站点地图（信息架构 / 路由 / 数据归属）</h1>
+    <p>公开区 + 主壳六模块 + 全局浮层；每个节点标注前端路由与主数据表，作为 Vue Router 骨架与页面组件拆分的直接输入。数据口径来自 PRD-01 / PRD-02 与方案 6.3，服务端为数据权威。</p>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--accent)"></span>一级导航模块</span>
+    <span><span class="route">/path</span>前端路由</span>
+    <span><span class="dot" style="background:var(--up)"></span>主数据表</span>
+    <span><span class="tag-warn">P1 / 预留</span>本期子集或仅预留</span>
+    <span><span class="tag-res">浮层</span>非路由组件</span>
+  </div>
+
+  <!-- 公开区 -->
+  <div class="zone-title">公开区 <span class="badge">requiresAuth = false · 无主壳导航</span></div>
+  <div class="zone">
+    <div class="grid3">
+      <div class="mod">
+        <div class="mod-head"><div class="name">① 登录 / 注册</div><span class="route">/login</span></div>
+        <div class="mod-body">
+          <div class="node"><div class="n-name">AuthView（登录 / 注册 Tab 切换）</div><div class="n-meta"><span class="api">POST /auth/login · POST /auth/register</span></div><div class="n-meta"><span class="tbl">users</span><span class="tbl">sessions</span></div></div>
+          <div class="node"><div class="n-name">退出动作</div><div class="n-meta"><span class="route">/logout</span><span class="api">POST /auth/logout</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主壳 -->
+  <div class="zone-title">主壳 <span class="badge">MainLayout · requiresAuth = true · 守卫先 GET /me · 左侧导航 + 右侧主区</span></div>
+  <div class="zone">
+    <div class="grid3">
+      <!-- 工作台 -->
+      <div class="mod">
+        <div class="mod-head"><div class="name">工作台</div><span class="route">/</span></div>
+        <div class="mod-body">
+          <div class="node"><div class="n-name">概览 KPI + 快捷任务卡</div><div class="n-meta"><span class="api">GET /me · GET /materials/summary</span></div><div class="n-meta"><span class="tbl">drafts</span><span class="tbl">materials</span></div></div>
+          <div class="node"><div class="n-name">草稿列表（续编入口）</div><div class="n-meta"><span class="api">GET /drafts?kind=drafting</span></div><div class="n-meta"><span class="tbl">drafts</span></div></div>
+          <div class="node"><div class="n-name">新建草稿弹窗入口</div><div class="n-meta"><span class="tag-res">浮层 NewDraftModal</span></div></div>
+        </div>
+      </div>
+      <!-- 材料库 -->
+      <div class="mod">
+        <div class="mod-head"><div class="name">材料库</div><span class="route">/materials</span></div>
+        <div class="mod-body">
+          <div class="node"><div class="n-name">列表 + 组合筛选（类型/标签/月份/关键词）</div><div class="n-meta"><span class="api">GET /materials</span></div><div class="n-meta"><span class="tbl">materials</span></div></div>
+          <div class="node"><div class="n-name">新建 / 编辑材料（粘贴、上传 txt/md）</div><div class="n-meta"><span class="tag-res">MaterialModal</span><span class="api">POST/PUT /materials</span></div></div>
+          <div class="node"><div class="n-name">详情查看 · 删除二次确认</div><div class="n-meta"><span class="tag-res">Detail / ConfirmModal</span><span class="api">GET/DELETE /materials/:id</span></div></div>
+        </div>
+      </div>
+      <!-- 编辑器 -->
+      <div class="mod">
+        <div class="mod-head"><div class="name">草稿编辑（五步状态机）</div><span class="route">/editor/:draftId?</span></div>
+        <div class="mod-body">
+          <div class="flow-steps">
+            <span class="s">①准备材料</span><span class="arr">→</span>
+            <span class="s">②大纲确认</span><span class="arr">→</span>
+            <span class="s">③逐页核对</span><span class="arr">→</span>
+            <span class="s">④模板匹配</span><span class="arr">→</span>
+            <span class="s">⑤导出 PPTX</span>
+          </div>
+          <div class="n-meta" style="margin-top:8px"><span class="api">GET/POST/PUT /drafts</span><span class="api">POST /templates/match</span><span class="api">POST /exports/pptx（W3 占位）</span></div>
+          <div class="n-meta" style="margin-top:5px"><span class="tbl">drafts</span><span class="tbl">materials</span><span class="tbl">template_cards</span></div>
+          <div class="node" style="margin-top:8px"><div class="n-name">五步不拆 URL，刷新按 draftId 整体续编</div><div class="n-meta"><span class="muted">版本号 confirmedVersion；材料更新/删除联动失效</span></div></div>
+        </div>
+      </div>
+      <!-- 模板库 -->
+      <div class="mod">
+        <div class="mod-head"><div class="name">模板库（A 层卡片规则匹配）</div><span class="route">/templates</span></div>
+        <div class="mod-body">
+          <div class="node"><div class="n-name">卡片列表 + 场景筛选</div><div class="n-meta"><span class="api">GET /templates</span></div><div class="n-meta"><span class="tbl">template_cards</span></div></div>
+          <div class="node"><div class="n-name">Top1 推荐 + 备选替换</div><div class="n-meta"><span class="api">POST /templates/match</span></div></div>
+          <div class="node"><div class="n-name">新建元数据卡（仅标题/标签/大纲）</div><div class="n-meta"><span class="tag-p1">元数据级</span><span class="muted">不存真实母版文件</span></div></div>
+        </div>
+      </div>
+      <!-- 年度 -->
+      <div class="mod">
+        <div class="mod-head"><div class="name">年度回顾</div><span class="route">/year</span><span class="tag-p1" style="margin-left:6px">P1 子集</span></div>
+        <div class="mod-body">
+          <div class="node"><div class="n-name">月份覆盖热力（确定性聚合）</div><div class="n-meta"><span class="api">GET /year/overview?year=</span></div><div class="n-meta"><span class="tbl">materials</span></div></div>
+          <div class="node"><div class="n-name">年度统计 + 缺月提示</div><div class="n-meta"><span class="muted">不按内容主观推断，按 period 记录聚合</span></div></div>
+          <div class="node"><div class="n-name">实体候选确认入库（人确认后才落数）</div><div class="n-meta"><span class="api">GET/POST /entities</span></div><div class="n-meta"><span class="tbl">entities</span></div></div>
+        </div>
+      </div>
+      <!-- 设置 -->
+      <div class="mod">
+        <div class="mod-head"><div class="name">设置 / 模型 Key</div><span class="route">/settings</span></div>
+        <div class="mod-body">
+          <div class="node"><div class="n-name">账号信息（邮箱前缀展示）</div><div class="n-meta"><span class="api">GET /me</span></div><div class="n-meta"><span class="tbl">users</span></div></div>
+          <div class="node"><div class="n-name">模型 Key 管理 + 连通测试（加密存储、前端掩码）</div><div class="n-meta"><span class="api">GET/POST/DELETE /model-keys</span><span class="api">POST /model-keys/test</span></div><div class="n-meta"><span class="tbl">model_keys</span></div></div>
+          <div class="node"><div class="n-name">数据备份 JSON 导出 / 导入（不含密钥）</div><div class="n-meta"><span class="api">GET /backup/export · POST /backup/import</span></div></div>
+          <div class="node"><div class="n-name">会员位（仅 plan 字段预留）</div><div class="n-meta"><span class="tag-res">不建独立路由</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 全局浮层 -->
+  <div class="zone-title">全局层 <span class="badge">不占路由 · 主壳任意页可唤起 · 关闭不离开当前页</span></div>
+  <div class="zone">
+    <div class="grid3">
+      <div class="mod"><div class="mod-head"><div class="name">AI 助手抽屉</div><span class="tag-res">AssistantDrawer</span></div>
+        <div class="mod-body"><div class="node"><div class="n-name">意图识别 + 槽位追问（≥3 选项）+ 白名单动作</div><div class="n-meta"><span class="api">POST /assistant/chat</span></div><div class="n-meta"><span class="muted">只读查询 / 生成草稿；不删除、不直接外发导出</span></div></div></div></div></div>
+      <div class="mod"><div class="mod-head"><div class="name">新建草稿弹窗</div><span class="tag-res">NewDraftModal</span></div>
+        <div class="mod-body"><div class="node"><div class="n-name">选类型（月度/年度/自由）、期间、场合 → 进入编辑器</div><div class="n-meta"><span class="api">POST /drafts</span></div><div class="n-meta"><span class="tbl">drafts</span></div></div></div></div></div>
+      <div class="mod"><div class="mod-head"><div class="name">二次确认 / 导出确认</div><span class="tag-res">Confirm · ExportModal</span></div>
+        <div class="mod-body"><div class="node"><div class="n-name">删除影响提示；AI 外发材料份数与清单明示后再确认</div><div class="n-meta"><span class="muted">取消不写库；不重复发起收费调用</span></div></div></div></div></div>
+    </div>
+  </div>
+
+  <div class="gate"><b>路由守卫与兜底：</b>未登录访问业务路由 → `/login?redirect=`；会话过期（401）统一提示并跳登录；每个列表/详情页预留 data / empty / loading / error 四态；编辑器主按钮随前置条件禁用；生成或导出异常保留草稿版本，可切回本地规则模式。</div>
+
+  <div class="note-row">
+    <div class="note-card">
+      <h3>本期 IA 不收录（防骨架膨胀）</h3>
+      <ul>
+        <li>找回密码、邮箱验证、第三方登录、账号注销（仅数据层预留）</li>
+        <li>团队协作、分享链接、角色权限、文件夹层级、版本对比</li>
+        <li>真实母版无损填充编辑台、自由画布、演讲稿生成</li>
+        <li>会员支付页、付费水印配置（users.plan 仅预留字段）</li>
+        <li>小程序 / 桌面端路由；Word/PDF/PPTX 解析上传入口</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h3>数据表 → 页面归属速查</h3>
+      <ul>
+        <li><b>users / sessions</b>：登录页、设置页账号区、全局守卫</li>
+        <li><b>materials</b>：材料库（全操作）、编辑器依据、年度聚合、助手检索</li>
+        <li><b>drafts</b>：工作台草稿列表、编辑器五步核心</li>
+        <li><b>template_cards</b>：模板库、编辑器步骤④；内置卡 user_id=NULL 只读</li>
+        <li><b>entities（P1）</b>：年度回顾候选确认</li>
+        <li><b>model_keys</b>：设置页；服务端加密，不落前端、不进备份日志</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

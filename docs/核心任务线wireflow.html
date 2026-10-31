@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汇序Pro · 三条核心任务流 Wireflow</title>
+<style>
+  :root{
+    --page:#F4F3FB; --bg:#FFFFFF; --panel-2:#F0EEF9;
+    --border:rgba(54,44,104,.08); --border-strong:rgba(54,44,104,.16);
+    --ink-1:#1F1B3D; --ink-2:#403C5E; --ink-3:#6E6B8C;
+    --accent:#6C5CE7; --accent-soft:rgba(108,92,231,.10);
+    --up:#2E9E77; --up-bg:rgba(46,158,119,.12); --up-ink:#1F7A59;
+    --warn:#B7791F; --warn-bg:rgba(183,121,31,.14); --warn-ink:#85590F;
+    --down:#D04848; --down-bg:rgba(208,72,72,.11); --down-ink:#A83232;
+    --r-card:12px; --r-ctrl:8px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Microsoft YaHei",system-ui,sans-serif;background:var(--page);color:var(--ink-1);padding:26px 22px 44px;line-height:1.5;}
+  .wrap{max-width:1240px;margin:0 auto;}
+  .doc-head h1{font-size:22px;}
+  .doc-head p{font-size:13px;color:var(--ink-3);margin-top:6px;max-width:900px;}
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 22px;font-size:12px;color:var(--ink-2);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:12px;height:12px;border-radius:4px;display:inline-block;}
+  .flow{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:16px 18px;margin-bottom:18px;}
+  .flow-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+  .flow-head h2{font-size:16px;}
+  .flow-head .meta{font-size:12px;color:var(--ink-3);}
+  .flow-goal{font-size:12.5px;color:var(--ink-2);margin-bottom:14px;}
+  .chain{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;}
+  .node{flex:1 1 148px;min-width:148px;border:1.5px solid var(--accent);background:var(--accent-soft);border-radius:var(--r-ctrl);padding:10px 11px;}
+  .node .nid{font-size:10.5px;color:var(--accent);font-weight:700;font-family:ui-monospace,Consolas,monospace;}
+  .node .nt{font-size:12.5px;font-weight:600;color:var(--ink-1);margin:3px 0 5px;}
+  .node .np{font-size:10.5px;color:var(--ink-3);line-height:1.5;}
+  .node .api{font-size:10px;color:var(--up-ink);font-family:ui-monospace,Consolas,monospace;margin-top:5px;display:block;word-break:break-all;}
+  .arrow{align-self:center;color:var(--ink-3);font-size:15px;flex:none;}
+  .branch-title{font-size:12.5px;font-weight:700;color:var(--ink-1);margin:16px 0 8px;}
+  .branches{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .bcard{border:1px dashed var(--warn);background:var(--warn-bg);border-radius:var(--r-ctrl);padding:10px 12px;font-size:12px;color:var(--ink-2);}
+  .bcard.fail{border-color:var(--down);background:var(--down-bg);}
+  .bcard .bt{font-weight:600;font-size:12px;margin-bottom:3px;}
+  .bcard.fail .bt{color:var(--down-ink);}
+  .bcard .bt{color:var(--warn-ink);}
+  .bcard .bd{color:var(--ink-2);font-size:11.5px;line-height:1.55;}
+  .endline{margin-top:12px;font-size:12px;color:var(--up-ink);background:var(--up-bg);border-radius:var(--r-ctrl);padding:8px 12px;}
+  table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:var(--panel-2);color:var(--ink-1);font-weight:600;}
+  td{color:var(--ink-2);}
+  .sec-title{font-size:15px;font-weight:700;margin:22px 0 10px;}
+  .mini{font-size:11px;color:var(--ink-3);}
+  @media(max-width:900px){.branches{grid-template-columns:1fr;}.node{flex-basis:100%;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="doc-head">
+    <h1>汇序 Pro · 三条核心任务流 Wireflow</h1>
+    <p>月度汇报生成（P0 主闭环）/ 年度汇总导出（P1 子集）/ 模型 Key 配置（AI 前置开关）。主链为必达节点，黄框为条件分支，红框为失败回退；节点标注页面路由与主要接口，详细字段见《核心任务流说明.md》。</p>
+  </div>
+  <div class="legend">
+    <span><span class="sw" style="background:var(--accent-soft);border:1.5px solid var(--accent)"></span>主路径节点</span>
+    <span><span class="sw" style="background:var(--warn-bg);border:1px dashed var(--warn)"></span>条件分支</span>
+    <span><span class="sw" style="background:var(--down-bg);border:1px dashed var(--down)"></span>失败回退 / 保护</span>
+    <span><span class="sw" style="background:var(--up-bg)"></span>成功终点 / 数据</span>
+  </div>
+
+  <!-- 流一 -->
+  <div class="flow">
+    <div class="flow-head"><h2>流一 · 月度汇报生成</h2><span class="meta">P0 · 编辑器五步 · 无 Key 也可走完全程</span></div>
+    <div class="flow-goal">目标：从建稿到下载带出处标注、可编辑的月度 PPTX，草稿沉淀回个人库。</div>
+    <div class="chain">
+      <div class="node"><div class="nid">F1-0</div><div class="nt">进入任务</div><div class="np">工作台 / 材料库 / 助手抽屉</div><span class="api">POST /drafts</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-1</div><div class="nt">意图识别·槽位补齐</div><div class="np">助手抽屉，缺失给 ≥3 选项</div><span class="api">POST /assistant/chat</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-2 ①</div><div class="nt">准备材料</div><div class="np">选范围 chips + 勾选材料子集</div><span class="api">GET /materials · PUT /drafts/:id</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-3 ②</div><div class="nt">大纲确认</div><div class="np">三章节大纲增删排序后确认</div><span class="api">POST /drafts/generate</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-4 ③</div><div class="nt">逐页核对</div><div class="np">条目编辑/排序/来源跳转/待补高亮</div><span class="api">PUT /drafts/:id · GET /materials/:id</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-5 ④</div><div class="nt">模板匹配</div><div class="np">规则打分 Top3，选用/替换</div><span class="api">POST /templates/match</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-6 ⑤</div><div class="nt">导出 PPTX</div><div class="np">过检查清单后生成下载</div><span class="api">POST /exports/pptx（W3 占位）</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F1-7</div><div class="nt">沉淀回库</div><div class="np">草稿列表续编 · 文件下载</div><span class="api">GET /drafts?kind=drafting</span></div>
+    </div>
+    <div class="branch-title">分支与失败回退</div>
+    <div class="branches">
+      <div class="bcard"><div class="bt">材料不足 / 未勾选（F1-2）</div><div class="bd">主按钮禁用；列出缺口月份与类型建议，可跳转材料库新建或切手动表单。</div></div>
+      <div class="bcard fail"><div class="bt">AI 大纲失败（F1-3）</div><div class="bd">401/429/超时/坏 JSON → 自动回退本地规则稿，保留已圈选材料，不污染原稿、不自动重试收费调用。</div></div>
+      <div class="bcard"><div class="bt">无适配模板（F1-5）</div><div class="bd">返回最接近近似卡说明差异；可把当前大纲存为元数据卡（仅标题/标签/结构）。</div></div>
+      <div class="bcard fail"><div class="bt">导出失败 / 引用失效（F1-4/F1-6）</div><div class="bd">材料被改删 → confirmedVersion 清空待重核；导出异常 → 保留版本可重试，不重复请求模型。</div></div>
+    </div>
+    <div class="endline">终点：下载可编辑 PPTX（带出处角标）+ 草稿回到工作台草稿列表；两个账号数据互不可见。</div>
+  </div>
+
+  <!-- 流二 -->
+  <div class="flow">
+    <div class="flow-head"><h2>流二 · 年度汇总导出</h2><span class="meta">P1 子集 · 确定性聚合 · AI 仅措辞连贯化</span></div>
+    <div class="flow-goal">目标：按年份聚合材料覆盖与实体名单，人确认候选后产出带来源引用的年度清单。</div>
+    <div class="chain">
+      <div class="node"><div class="nid">F2-0</div><div class="nt">进入年度视图</div><div class="np">/year 选年份，默认当前年</div><span class="api">GET /year/overview?year=</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F2-1</div><div class="nt">覆盖统计</div><div class="np">12 月热力 + 类型/场合分布</div><span class="api">materials 按 period 聚合</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F2-2</div><div class="nt">实体候选确认</div><div class="np">人员/客户/合同，逐条确认入库</div><span class="api">GET/POST /entities</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F2-3</div><div class="nt">生成年度清单</div><div class="np">名单 + 时间线 + 来源引用</div><span class="api">POST /year/compose</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F2-4</div><div class="nt">导出清单</div><div class="np">导出文件（占位落地）</div><span class="api">GET /year/export?year=</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F2-5</div><div class="nt">回链复用</div><div class="np">跳回来源材料 / 月度草稿</div><span class="api">GET /materials/:id</span></div>
+    </div>
+    <div class="branch-title">分支与失败回退</div>
+    <div class="branches">
+      <div class="bcard"><div class="bt">缺月 / 无材料（F2-1）</div><div class="bd">缺月斜纹格显式标注待补；无材料进入空态，引导先入库，不主观推断补全。</div></div>
+      <div class="bcard"><div class="bt">候选未确认（F2-2）</div><div class="bd">AI 建议条目默认不入库；来源材料缺失的候选标待补，确认后才计入正式清单。</div></div>
+      <div class="bcard fail"><div class="bt">LLM 连贯化失败（F2-3）</div><div class="bd">退化为确定性名单 + 时间线纯文本，不阻塞清单产出，不编造实体信息。</div></div>
+      <div class="bcard fail"><div class="bt">清单导出失败（F2-4）</div><div class="bd">保留页面聚合结果，可重试；不重复发起 LLM 请求。</div></div>
+    </div>
+    <div class="endline">终点：年度清单含每条来源引用；跨月同一事项不重复计为新增成果；不输出绩效结论类主观判断。</div>
+  </div>
+
+  <!-- 流三 -->
+  <div class="flow">
+    <div class="flow-head"><h2>流三 · 模型 Key 配置</h2><span class="meta">AI 能力前置开关 · 服务端加密 · 无 Key 不阻塞主流程</span></div>
+    <div class="flow-goal">目标：安全验证并保存 1 家兼容协议模型；移除后立即回到本地规则模式。</div>
+    <div class="chain">
+      <div class="node"><div class="nid">F3-0</div><div class="nt">进入设置页</div><div class="np">/settings 模型 Key 区块</div><span class="api">GET /model-keys</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F3-1</div><div class="nt">选择 Provider</div><div class="np">首期 DeepSeek 兼容协议，余灰显</div><span class="api">—</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F3-2</div><div class="nt">粘贴 Key</div><div class="np">前端掩码显示，不回显明文</div><span class="api">—</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F3-3</div><div class="nt">连通测试</div><div class="np">最小非流式请求，服务端代发</div><span class="api">POST /model-keys/test</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F3-4</div><div class="nt">保存加密生效</div><div class="np">编辑器/助手标识 AI 可用</div><span class="api">POST /model-keys</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F3-5</div><div class="nt">外发确认</div><div class="np">本次材料份数清单确认后调用</div><span class="api">POST /drafts/generate {mode:ai}</span></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="nid">F3-6</div><div class="nt">移除 / 回退</div><div class="np">二次确认删除，切回本地规则</div><span class="api">DELETE /model-keys/:id</span></div>
+    </div>
+    <div class="branch-title">连通测试结果分类（F3-3）与保护规则</div>
+    <div class="branches">
+      <div class="bcard fail"><div class="bt">401 / 403 鉴权失败</div><div class="bd">红提示 Key 无效或无权限，不保存入库，引导重新粘贴。</div></div>
+      <div class="bcard"><div class="bt">429 限流 / 超时不可达</div><div class="bd">黄提示稍后重试或检查服务器出网策略；保持本地规则模式，不反复自动请求。</div></div>
+      <div class="bcard fail"><div class="bt">坏 JSON / 协议不符 / 5xx</div><div class="bd">提示格式不符或服务暂不可用；错误记录不含 Key 明文。</div></div>
+      <div class="bcard"><div class="bt">移除 Key / 全程无 Key</div><div class="bd">立即切本地规则模式，历史草稿与材料保留；备份导出剔除密钥字段，不进日志。</div></div>
+    </div>
+    <div class="endline">终点：AI 可用（外发前单独确认）或保持本地规则模式；主闭环 F1 在两种模式下都能完成。</div>
+  </div>
+
+  <div class="sec-title">跨流共用保护规则（前端骨架务必落地）</div>
+  <table>
+    <tr><th style="width:170px">场景</th><th>前端表现</th><th>系统保护 / 回退</th></tr>
+    <tr><td>未登录 / 会话过期 401</td><td>提示后跳 /login?redirect=</td><td>清前端态，不写半成品</td></tr>
+    <tr><td>越权访问他人资源</td><td>404 不存在或无权访问</td><td>服务端记安全日志，不暴露存在性</td></tr>
+    <tr><td>AI 鉴权 / 限流 / 超时 / 坏结果</td><td>对应色提示 + 本地结果兜底</td><td>保留原稿，整份拒绝坏输出，不自动重试收费调用</td></tr>
+    <tr><td>导出 / 生成异常</td><td>提示原因，草稿版本保留</td><td>可重试；外发范围始终为本次材料子集</td></tr>
+    <tr><td>无 API Key</td><td>界面标识「本地规则模式」</td><td>规则整理链路完整可用，不阻塞月度闭环</td></tr>
+  </table>
+  <p class="mini" style="margin-top:12px">对接说明：节点路由与《IA站点地图-路由与数据对照表.md》一致；编辑器 step 状态机对应 F1-2→F1-6；每条流预留 empty / loading / error 三态；助手动作白名单=查询、生成草稿、推荐模板，不含删除与直接导出。</p>
+</div>
+</body>
+</html>

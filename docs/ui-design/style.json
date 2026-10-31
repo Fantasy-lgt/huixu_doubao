@@ -1,0 +1,25 @@
+{
+  "query": "根据产品原型，输出页面。页面风格、主题等等UI细节，应该怎么设定？",
+  "signature": {
+    "ground": "light",
+    "typeVoice": "sans-cool",
+    "imageWorld": "abstract-graphic",
+    "layoutLogic": "grid",
+    "colorStrategy": "tri-role",
+    "motionVoice": "static"
+  },
+  "why": {
+    "ground": "长时间盯屏的办公写稿工作台，亮场低刺眼；后台工具不用暗场氛围感",
+    "typeVoice": "效率工具/SaaS 后台，无衬线冷静体，表格与表单以可读为先",
+    "imageWorld": "无摄影主视觉，数据/表格/任务状态本身是主角；图标与图表走内联 SVG",
+    "layoutLogic": "侧栏+栅格的档案式布局，列表/卡片/表格按信息关系分格",
+    "colorStrategy": "主色紫蓝 #6C5CE7（对齐参考应用 Upsello）+ 语义完成/异常/预警分工，功能色与主紫错开",
+    "motionVoice": "静态工具稿只做 hover/focus/切换反馈，不做视差与入场奇观"
+  },
+  "open": [],
+  "divergence": {
+    "vsRecent": [],
+    "min": null,
+    "require": 3
+  }
+}

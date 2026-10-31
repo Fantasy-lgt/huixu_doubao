@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汇序Pro · 核心8页低保真线框 v1</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Microsoft YaHei",system-ui,sans-serif;background:#f0f2f3;color:#2b2f33;padding:18px;}
+  .doc-head{max-width:1080px;margin:0 auto 16px;}
+  .doc-head h1{font-size:20px;color:#222;}
+  .doc-head p{font-size:13px;color:#66707a;margin-top:6px;line-height:1.7;}
+  .layout{max-width:1080px;margin:0 auto;display:flex;gap:16px;align-items:flex-start;}
+  /* 左侧页面导航 */
+  .nav{flex:0 0 170px;position:sticky;top:12px;background:#fff;border:1px solid #e0e3e6;border-radius:8px;padding:10px;}
+  .nav .nav-title{font-size:12px;color:#8a9099;font-weight:700;margin-bottom:8px;}
+  .nav a{display:block;font-size:13px;color:#3a4148;text-decoration:none;padding:8px 10px;border-radius:6px;margin-bottom:3px;border:1px solid transparent;}
+  .nav a:hover{background:#f2f4f5;}
+  .nav a.active{background:#e8f0ef;border-color:#b9d2cf;color:#0f6f66;font-weight:700;}
+  .nav .tag{display:inline-block;font-size:10px;color:#fff;background:#8a9099;border-radius:8px;padding:1px 6px;margin-left:4px;}
+  /* 页面区 */
+  .pages{flex:1;min-width:0;}
+  .page{background:#fff;border:1px solid #e0e3e6;border-radius:10px;padding:16px;margin-bottom:18px;}
+  .js-on .page{display:none;}
+  .js-on .page.active{display:block;}
+  .page h2{font-size:16px;margin-bottom:4px;}
+  .page .purpose{font-size:12.5px;color:#66707a;margin-bottom:12px;}
+  /* 线框外框 */
+  .frame{border:1.5px solid #b9bfc6;border-radius:8px;background:#fafbfb;overflow:hidden;}
+  .shell{display:grid;grid-template-columns:150px 1fr 200px;min-height:430px;}
+  .shell.noright{grid-template-columns:150px 1fr;}
+  .appnav{background:#eceff1;border-right:1px solid #d8dcdf;padding:12px 10px;}
+  .appnav .brand{height:22px;background:#cfd5d9;border-radius:4px;margin-bottom:14px;}
+  .appnav .ni{height:26px;background:#e2e6e9;border-radius:4px;margin-bottom:8px;font-size:11px;color:#7a828a;line-height:26px;padding-left:8px;}
+  .appnav .ni.on{background:#d3e2df;color:#0f6f66;font-weight:700;}
+  .main{padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0;}
+  .side{background:#f3f5f6;border-left:1px solid #dfe3e6;padding:12px;display:flex;flex-direction:column;gap:10px;}
+  /* 通用占位块 */
+  .block{border:1.5px dashed #aab2ba;border-radius:6px;background:#fff;padding:10px;font-size:12px;color:#5b646c;line-height:1.6;}
+  .block.solid{border-style:solid;background:#eef1f3;}
+  .block.tight{padding:8px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+  .grow{flex:1;min-width:120px;}
+  .btn{display:inline-block;border:1px solid #9aa2aa;background:#e6eaed;border-radius:5px;font-size:12px;padding:6px 12px;color:#3a4148;}
+  .btn.primary{background:#4f8f88;color:#fff;border-color:#4f8f88;}
+  .btn.disabled{background:#eceff1;color:#9aa2aa;border-color:#d3d8dc;}
+  .chip{display:inline-block;border:1px solid #c3c9cf;border-radius:12px;font-size:11px;padding:3px 10px;color:#555;margin:2px 4px 2px 0;background:#fff;}
+  .chip.on{background:#e8f0ef;border-color:#9fc4bf;color:#0f6f66;}
+  .stepbar{display:flex;gap:6px;flex-wrap:wrap;}
+  .step{flex:1;min-width:90px;border:1px solid #c9cfd5;border-radius:6px;padding:7px 9px;font-size:11px;background:#fff;}
+  .step.cur{border-color:#4f8f88;background:#e8f0ef;font-weight:700;}
+  .step.done{background:#eef3f2;color:#5b8a84;}
+  /* 编辑器五步分屏线框 */
+  .step-title{font-size:13px;font-weight:700;color:#222;margin:18px 0 8px;}
+  .steppanels{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .mini-frame{border:1.5px solid #b9bfc6;border-radius:8px;background:#fafbfb;padding:10px;}
+  .mini-frame h5{font-size:12.5px;color:#0f6f66;margin-bottom:8px;}
+  .mf-bar{display:flex;gap:5px;margin-bottom:8px;}
+  .mf-bar .st{flex:1;text-align:center;font-size:10px;border:1px solid #c9cfd5;border-radius:5px;padding:4px 2px;background:#fff;color:#8a9099;}
+  .mf-bar .st.cur{border-color:#4f8f88;background:#e8f0ef;color:#0f6f66;font-weight:700;}
+  .mf-bar .st.done{background:#eef3f2;color:#5b8a84;}
+  .mf-body{display:grid;gap:8px;}
+  .mf-row{display:flex;gap:8px;}
+  .mf-row .grow{min-width:0;}
+  .mf-foot{margin-top:8px;display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;}
+  .mf-note{font-size:10.5px;color:#8a9099;line-height:1.5;}
+  @media(max-width:860px){.steppanels{grid-template-columns:1fr;}}
+  .col3{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:10px;flex:1;}
+  .entry{border:1px solid #d3d8dc;border-radius:6px;background:#fff;padding:8px;margin-bottom:8px;font-size:11.5px;}
+  .entry .meta{color:#8a9099;font-size:10.5px;margin-top:3px;}
+  .entry.warn{border-color:#d9b26a;background:#fdf6e8;}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .thumb{height:74px;border:1.5px dashed #aab2ba;border-radius:6px;background:#fff;position:relative;font-size:10.5px;color:#7a828a;padding:6px;}
+  .thumb .line{height:6px;background:#dfe3e6;border-radius:3px;margin-bottom:5px;}
+  .thumb .line.short{width:55%;}
+  .thumb .line.mid{width:80%;}
+  /* 说明卡 */
+  .notes{margin-top:14px;border-top:1px dashed #d3d8dc;padding-top:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px 18px;}
+  .notes h4{font-size:12.5px;color:#0f6f66;margin-bottom:5px;}
+  .notes ul{padding-left:16px;font-size:12px;color:#444;line-height:1.8;}
+  .badge{display:inline-block;font-size:10.5px;border-radius:4px;padding:1px 7px;margin-right:5px;}
+  .b-p0{background:#e8f0ef;color:#0f6f66;}
+  .b-p1{background:#fdf1e3;color:#a0641a;}
+  .mask{position:relative;}
+  .drawer{position:absolute;right:0;top:0;bottom:0;width:58%;background:#fff;border-left:1px solid #c9cfd5;display:flex;flex-direction:column;}
+  .bubble{max-width:82%;border-radius:8px;padding:8px 10px;font-size:12px;margin-bottom:8px;}
+  .bubble.user{background:#e8f0ef;margin-left:auto;}
+  .bubble.bot{background:#f1f3f5;}
+  .cal{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
+  .cal .cell{height:34px;border:1px solid #c9cfd5;border-radius:4px;font-size:10.5px;text-align:center;line-height:32px;background:#fff;}
+  .cal .cell.filled{background:#dcebe8;}
+  .cal .cell.miss{background:repeating-linear-gradient(45deg,#fff,#fff 4px,#f0e2e2 4px,#f0e2e2 8px);color:#b06060;}
+  @media(max-width:860px){
+    .layout{flex-direction:column;}
+    .nav{position:static;flex:1;display:flex;flex-wrap:wrap;gap:4px;}
+    .nav .nav-title{width:100%;}
+    .nav a{margin:0;}
+    .shell{grid-template-columns:1fr;}
+    .shell.noright{grid-template-columns:1fr;}
+    .appnav{display:flex;gap:6px;flex-wrap:wrap;border-right:none;border-bottom:1px solid #d8dcdf;}
+    .appnav .brand{width:80px;}
+    .side{border-left:none;border-top:1px solid #dfe3e6;}
+    .col3{grid-template-columns:1fr;}
+    .notes{grid-template-columns:1fr;}
+    .grid3{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="doc-head">
+  <h1>汇序 Pro · 核心 8 页低保真线框 v1</h1>
+  <p>用途：W1 设计产出，定信息层级与操作位置，不做视觉美化。灰块=占位，虚线=内容区，标注文字=页面要素。左侧切换页面；每页下方附布局说明、关键交互与状态备注。对应方案 v1 第 5 节与排期 W1–W6。</p>
+</div>
+<div class="layout">
+  <nav class="nav" id="nav">
+    <div class="nav-title">页面清单（点击切换）</div>
+    <a href="#p1" data-t="p1" class="active">1 登录注册 <span class="tag">P0</span></a>
+    <a href="#p2" data-t="p2">2 工作台 <span class="tag">P0</span></a>
+    <a href="#p3" data-t="p3">3 材料库 <span class="tag">P0</span></a>
+    <a href="#p4" data-t="p4">4 三栏编辑器 <span class="tag">P0</span></a>
+    <a href="#p5" data-t="p5">5 助手抽屉 <span class="tag">P1</span></a>
+    <a href="#p6" data-t="p6">6 模板库 <span class="tag">P0</span></a>
+    <a href="#p7" data-t="p7">7 年度回顾+实体表 <span class="tag">P1</span></a>
+    <a href="#p8" data-t="p8">8 设置/模型Key <span class="tag">P0</span></a>
+  </nav>
+
+  <div class="pages">
+
+    <!-- P1 登录注册 -->
+    <section class="page active" id="p1">
+      <h2>页面 1 · 登录 / 注册 <span class="badge b-p0">P0</span></h2>
+      <div class="purpose">无左侧导航的独立落地页；账号体系是所有数据隔离的入口。</div>
+      <div class="frame" style="padding:40px 20px;min-height:430px;display:flex;align-items:center;justify-content:center;">
+        <div style="width:340px;max-width:100%;">
+          <div class="block solid" style="text-align:center;font-weight:700;font-size:15px;height:44px;line-height:44px;margin-bottom:6px;">汇序 Pro · 汇报材料工作台</div>
+          <div class="block tight" style="text-align:center;color:#8a9099;margin-bottom:16px;">沉淀你的材料，生成可核对的汇报初稿</div>
+          <div class="block" style="margin-bottom:10px;">邮箱输入框（占位条 ×1）</div>
+          <div class="block" style="margin-bottom:10px;">密码输入框（占位条 ×1，注册态多一行确认密码）</div>
+          <div class="row" style="margin-bottom:12px;">
+            <span class="btn primary grow" style="text-align:center;">登录 / 注册（主按钮）</span>
+          </div>
+          <div class="row" style="justify-content:space-between;font-size:11px;color:#8a9099;">
+            <span>切换：没有账号？注册</span><span>忘记密码？</span>
+          </div>
+          <div class="block tight" style="margin-top:14px;font-size:11px;color:#8a9099;">隐私提示：使用外部模型前会单独确认发送范围；密钥不会明文显示。</div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>居中单列卡片，无导航；标题区 + 表单 + 辅助链接 + 隐私说明。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>邮箱、密码（注册含确认密码）；主按钮；登录/注册切换态。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>前端先做格式校验；提交失败统一错误提示；登录成功跳工作台。</li><li>注册成功自动建空数据空间（用户/材料/草稿表初始化）。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>加载中按钮禁用；错误态提示条；未登录访问其他页一律回跳本页。</li><li>本期不做找回邮件流程（先本地重置说明），不做第三方登录。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P2 工作台 -->
+    <section class="page" id="p2">
+      <h2>页面 2 · 工作台（任务入口） <span class="badge b-p0">P0</span></h2>
+      <div class="purpose">登录后的首页：快捷发起任务、最近草稿、最近材料；助手入口常驻右上角。</div>
+      <div class="frame">
+        <div class="shell">
+          <div class="appnav"><div class="brand"></div><div class="ni on">工作台</div><div class="ni">材料库</div><div class="ni">年度回顾</div><div class="ni">模板库</div><div class="ni">我的设置</div></div>
+          <div class="main">
+            <div class="row"><div class="grow block solid" style="height:34px;line-height:18px;">问候语 + 当前月份提示（如：10 月管理会材料已入库 8 份）</div><div class="block tight" style="width:120px;text-align:center;">问助手 ✦</div></div>
+            <div class="row">
+              <div class="grow block" style="min-height:88px;"><b>快捷任务卡 A · 月度汇报</b><br>选期间 → 选材料范围 → 进入生成<br><span class="btn primary">新建月度汇报</span></div>
+              <div class="grow block" style="min-height:88px;"><b>快捷任务卡 B · 年度汇总</b><br>选年份 → 聚合实体与材料 → 出清单<br><span class="btn">年度汇总</span></div>
+            </div>
+            <div class="block" style="min-height:64px;">一句话指令输入框（占位）<br><span class="chip">整理10月管理会</span><span class="chip">汇总今年客户进展</span><span class="chip">找上月项目进展材料</span></div>
+            <div class="block" style="flex:1;"><b>最近草稿</b>（3 条占位：标题 + 期间 + 更新时间 + 状态点：草稿/已确认）</div>
+          </div>
+          <div class="side">
+            <div class="block tight"><b>待办提示</b><br>3 份材料缺月份标签</div>
+            <div class="block tight"><b>本月统计</b><br>材料 N 份 / 草稿 N 份</div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>飞书式外壳：左导航 + 中主区 + 右侧上下文栏。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>两张任务卡、指令输入框与建议 chips、最近草稿列表、待办提示。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>任务卡进入对应流程；草稿点击续编；chips 填入输入框。</li><li>「问助手」打开 P5 抽屉，不离开本页。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>无草稿时空状态插画 + 引导去材料库；无材料时任务卡按钮置灰提示先入库。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P3 材料库 -->
+    <section class="page" id="p3">
+      <h2>页面 3 · 材料库 <span class="badge b-p0">P0</span></h2>
+      <div class="purpose">替代初代"部门"逻辑：类型枚举 + 标签 + 期间组合筛选，支持粘贴与 TXT/MD 导入。</div>
+      <div class="frame">
+        <div class="shell">
+          <div class="appnav"><div class="brand"></div><div class="ni">工作台</div><div class="ni on">材料库</div><div class="ni">年度回顾</div><div class="ni">模板库</div><div class="ni">我的设置</div></div>
+          <div class="main">
+            <div class="row"><div class="grow block tight" style="height:30px;">搜索框：标题 / 正文关键词</div><span class="btn primary">+ 新建材料</span><span class="btn">导入 TXT/MD</span></div>
+            <div class="block tight">类型筛选：<span class="chip on">全部</span><span class="chip">工作汇报</span><span class="chip">项目进展</span><span class="chip">会议纪要</span><span class="chip">客户往来</span><span class="chip">合同商务</span><span class="chip">人事行政</span></div>
+            <div class="row"><div class="grow block tight">月份筛选下拉（含"未标记月份"）</div><div class="grow block tight">标签云（多选 chips）</div></div>
+            <div class="grid2" style="flex:1;">
+              <div class="entry"><b>材料标题占位</b><div class="meta">类型色点 · 标签 ×2 · 2026-10 · 1200字 · 更新于 10-28</div></div>
+              <div class="entry"><b>材料标题占位</b><div class="meta">类型色点 · 标签 ×1 · 未标记月份 · 980字</div></div>
+              <div class="entry"><b>材料标题占位</b><div class="meta">类型色点 · 标签 ×3 · 2026-09 · 2100字</div></div>
+              <div class="entry"><b>材料标题占位</b><div class="meta">类型色点 · 标签 ×2 · 2026-10 · 860字</div></div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="block tight"><b>材料统计</b><br>总数 / 本月新增 / 待补标签数</div>
+            <div class="block tight"><b>导入说明</b><br>本期支持粘贴与 TXT/MD；Word/PDF 后置</div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>顶部操作行 → 筛选条 → 材料卡片网格；右侧统计栏。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>类型枚举 8 项、标签多选、期间筛选、关键词搜索；材料卡显示类型色标/标签/字数。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>筛选条件可叠加；新建弹表单（标题/类型/标签/期间/场合/正文）；正文只读保留不改写。</li><li>删除前提示该材料关联的草稿数量。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>无结果空状态给出"清空筛选"；正文超长按上限拦截并提示；重复导入做指纹提示。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P4 三栏编辑器 -->
+    <section class="page" id="p4">
+      <h2>页面 4 · 三栏编辑器（核心页） <span class="badge b-p0">P0</span></h2>
+      <div class="purpose">左材料依据 / 中章节条目 / 右大纲与属性；顶部五步工作流；确认前导出按钮禁用。</div>
+      <div class="frame">
+        <div class="shell">
+          <div class="appnav"><div class="brand"></div><div class="ni">工作台</div><div class="ni">材料库</div><div class="ni">年度回顾</div><div class="ni">模板库</div><div class="ni">我的设置</div></div>
+          <div class="main">
+            <div class="stepbar">
+              <div class="step done">①准备材料</div><div class="step done">②大纲确认</div><div class="step cur">③逐页核对</div><div class="step">④模板匹配</div><div class="step">⑤导出</div>
+            </div>
+            <div class="col3" style="flex:1;">
+              <div class="block" style="padding:8px;"><b>左 · 材料依据</b>
+                <div class="entry">来源：10月例会纪要<div class="meta">原文片段预览…「冷却工艺改进…」</div><span class="btn" style="font-size:10.5px;padding:2px 8px;">跳转原文</span></div>
+                <div class="entry">来源：客户走访记录<div class="meta">原文片段预览…</div><span class="btn" style="font-size:10.5px;padding:2px 8px;">跳转原文</span></div>
+              </div>
+              <div class="block" style="padding:8px;"><b>中 · 章节条目</b>
+                <div class="entry"><b>重点进展</b>（可折叠）</div>
+                <div class="entry">1. 条目文本可编辑块<div class="meta">来源 ×2 · 引用角标</div><span class="btn" style="font-size:10.5px;">上移</span><span class="btn" style="font-size:10.5px;">删除</span></div>
+                <div class="entry warn">⚠ 待补充：缺下月计划数据（黄底虚线）</div>
+                <div class="entry"><b>问题风险 / 下期计划</b>（章节折叠块）</div>
+              </div>
+              <div class="block" style="padding:8px;"><b>右 · 大纲与属性</b>
+                <div class="entry">P1 封面 · 要点 0</div>
+                <div class="entry on">P2 重点进展 · 3 点 · 匹配卡中</div>
+                <div class="entry">P3 问题风险 · 2 点</div>
+                <div class="block tight">模式：本地规则 / AI 生成<br>期间：2026-10 · 场合：月度管理会</div>
+              </div>
+            </div>
+            <div class="row" style="justify-content:flex-end;">
+              <span class="btn">保存草稿</span><span class="btn">上一步</span><span class="btn disabled">导出 pptx（确认后可用）</span><span class="btn primary">确认并进入模板匹配</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step-title">编辑器五步分屏线框（①–⑤，与高保真原型一一对应；③完整三栏见上方框架）</div>
+      <div class="steppanels">
+
+        <div class="mini-frame">
+          <h5>① 准备材料（选范围 + 圈选）</h5>
+          <div class="mf-bar"><span class="st cur">①准备材料</span><span class="st">②大纲确认</span><span class="st">③核对</span><span class="st">④模板</span><span class="st">⑤导出</span></div>
+          <div class="mf-body">
+            <div class="mf-row">
+              <div class="grow block tight"><b>范围筛选</b><br><span class="chip on">期间·10月</span><span class="chip">三季度</span><span class="chip">全年</span><br><span class="chip on">类型·全部</span><span class="chip">进展</span><span class="chip">纪要</span><br><span class="chip on">场合·月度会</span><span class="chip">专项</span></div>
+              <div class="grow block tight"><b>候选材料 · 已选 4 份</b>
+                <div class="entry">☑ 例会纪要<div class="meta">摘要片段…</div></div>
+                <div class="entry">☑ 维保月报</div>
+                <div class="entry">☐ 上月台账（未纳入）</div>
+              </div>
+            </div>
+            <div class="mf-note">未圈选材料时「下一步」禁用；筛选只影响入稿集合，不改原文。</div>
+            <div class="mf-foot"><span class="btn">保存草稿</span><span class="btn primary">生成初稿大纲</span></div>
+          </div>
+        </div>
+
+        <div class="mini-frame">
+          <h5>② 大纲确认（章节结构预览调整）</h5>
+          <div class="mf-bar"><span class="st done">①准备材料</span><span class="st cur">②大纲确认</span><span class="st">③核对</span><span class="st">④模板</span><span class="st">⑤导出</span></div>
+          <div class="mf-body">
+            <div class="mf-row">
+              <div class="grow block tight"><b>初稿大纲（可增删排序）</b>
+                <div class="entry">一、重点进展 · 3 点 ×4<div class="meta">[上移][删除]</div></div>
+                <div class="entry">二、问题风险 · 2 点 ×2</div>
+                <div class="entry">三、下期计划 · 2 点 · 待确认</div>
+                <span class="btn">+ 新增章节</span>
+              </div>
+              <div class="grow block tight" style="max-width:158px;"><b>大纲页结构</b>
+                <div class="entry">P1 封面 · 0 点</div>
+                <div class="entry">P2 重点进展 · 3 点</div>
+                <div class="entry">P3 风险 · 2 点</div>
+                <div class="entry">P4 计划 · 2 点</div>
+              </div>
+            </div>
+            <div class="mf-note">章节增删同步更新右侧大纲页要点数，不改动已圈选原文。</div>
+            <div class="mf-foot"><span class="btn">上一步</span><span class="btn primary">确认大纲 · 进入核对</span></div>
+          </div>
+        </div>
+
+        <div class="mini-frame">
+          <h5>③ 逐页核对（三栏，完整见上方主框架）</h5>
+          <div class="mf-bar"><span class="st done">①准备材料</span><span class="st done">②大纲确认</span><span class="st cur">③核对</span><span class="st">④模板</span><span class="st">⑤导出</span></div>
+          <div class="mf-body">
+            <div class="mf-row">
+              <div class="grow block tight">左 · 依据材料<div class="entry">来源片段 + 跳转原文</div></div>
+              <div class="grow block tight">中 · 章节条目<div class="entry">条目 + 角标 + 操作</div><div class="entry warn">⚠ 待补充高亮</div></div>
+              <div class="grow block tight">右 · 大纲页<div class="entry on">P2 当前页</div><div class="entry">P3 / P4 …</div></div>
+            </div>
+            <div class="mf-note">人工修改后「已确认」失效需重新确认；无来源条目标待补充，不静默生成。</div>
+            <div class="mf-foot"><span class="btn">保存草稿</span><span class="btn primary">确认并进入模板匹配</span></div>
+          </div>
+        </div>
+
+        <div class="mini-frame">
+          <h5>④ 模板匹配（规则打分 Top3）</h5>
+          <div class="mf-bar"><span class="st done">①准备材料</span><span class="st done">②大纲确认</span><span class="st done">③核对</span><span class="st cur">④模板</span><span class="st">⑤导出</span></div>
+          <div class="mf-body">
+            <div class="block tight"><b>匹配结果：</b>按大纲页需求规则打分，Top1「月度标准版 92%」，另 2 备选；本期为卡片 + 规则匹配（A 层），不做真实母版填充。</div>
+            <div class="mf-row">
+              <div class="grow entry">卡1 · Top1 推荐<div class="meta">P1–P5 大纲 · [用于本稿]</div></div>
+              <div class="grow entry">卡2 · 备选 78%<div class="meta">[替换为备选]</div></div>
+              <div class="grow entry">卡3 · 备选 64%<div class="meta">[替换为备选]</div></div>
+            </div>
+            <div class="mf-note">无适配卡时仅保存模板元数据卡（标题/标签/大纲），不存真实母版文件。</div>
+            <div class="mf-foot"><span class="btn">上一步</span><span class="btn primary">确认选用 · 进入导出</span></div>
+          </div>
+        </div>
+
+        <div class="mini-frame" style="grid-column:1 / span 2;">
+          <h5>⑤ 导出 PPTX（导出前检查门 + 失败回退）</h5>
+          <div class="mf-bar"><span class="st done">①准备材料</span><span class="st done">②大纲确认</span><span class="st done">③核对</span><span class="st done">④模板</span><span class="st cur">⑤导出</span></div>
+          <div class="mf-body">
+            <div class="mf-row">
+              <div class="grow block tight"><b>导出设置</b><br><span class="chip on">整本 5 页</span><span class="chip">仅重点进展章</span><span class="chip on">月度标准版 92%</span><div class="entry">文件名：2026-10 月度管理会汇报 · 初稿.pptx</div><div class="entry">页面清单：P1 封面 / P2 进展 / P3 风险 / P4 计划 / P5 结束（可勾选）</div></div>
+              <div class="grow block tight" style="max-width:280px;"><b>导出前检查（未满足则禁用）</b>
+                <div class="entry">✓ 来源已校验 6 / 8 · 通过</div>
+                <div class="entry warn">⚠ 待补充 2 条未补齐 · 阻塞</div>
+                <div class="entry">✓ 引用角标完整、无越界引用</div>
+                <div class="entry warn">⚠ AI 外发材料范围需单独确认 · 待确认</div>
+              </div>
+            </div>
+            <div class="mf-note">失败不丢稿：生成异常保留当前草稿与版本号，提示重试或切回本地规则整理，不重复发起收费调用；本期不做付费水印/会员限制，仅预留 plan 字段位。</div>
+            <div class="mf-foot"><span class="btn">上一步</span><span class="btn primary">导出 PPTX（演示占位）</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>顶部步骤条贯穿全流程；三栏高度撑满；底部操作栏固定。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>章节折叠、条目编辑/排序/删除、来源跳转、待补充高亮、大纲页列表、模式标识。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>人工修改后确认状态失效需重新确认；重新生成不覆盖已改条目（版本机制延续初代）。</li><li>来源点击在左栏对照原文；越出长度按规则分页或拦截提示。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>条目无来源时显式"待补充"而非静默；AI 结果校验失败整份拒绝并保留原稿；自动测试覆盖隔离与版本冲突。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P5 助手抽屉 -->
+    <section class="page" id="p5">
+      <h2>页面 5 · AI 助手抽屉（简化版） <span class="badge b-p1">P1 子集进本期</span></h2>
+      <div class="purpose">右侧滑出，不打断主流程；意图识别 + 槽位追问（≥3 选项）+ 白名单动作；不删除、不直接外发导出。</div>
+      <div class="frame mask" style="min-height:430px;background:#f0f2f3;">
+        <div class="shell noright" style="opacity:.55;">
+          <div class="appnav"><div class="brand"></div><div class="ni on">工作台</div><div class="ni">材料库</div></div>
+          <div class="main"><div class="block solid" style="height:40px;">被遮罩的工作台主区</div><div class="block" style="flex:1;"></div></div>
+        </div>
+        <div class="drawer">
+          <div class="block solid" style="height:38px;line-height:20px;font-weight:700;">问助手 ✦</div>
+          <div style="flex:1;padding:12px;overflow:auto;">
+            <div class="bubble user">整理 10 月管理会材料</div>
+            <div class="bubble bot">好的，先确认材料范围：你想包含哪些类型？</div>
+            <div style="margin-bottom:10px;"><span class="chip on">工作汇报+项目进展</span><span class="chip">全部类型</span><span class="chip">仅客户往来</span></div>
+            <div class="bubble bot">大纲共 5 页：已选 8 份材料，3 份标记待补充；推荐模板「月度汇报标准版」。</div>
+            <div class="block tight" style="margin-bottom:8px;">结果确认卡：材料数 / 待补项 / 推荐模板<br><span class="btn primary">进入编辑器核对</span></div>
+            <div class="bubble bot">没有适配模板时：展示 3 个近似卡并说明差异。</div>
+          </div>
+          <div style="padding:10px;border-top:1px solid #dfe3e6;">
+            <div class="block" style="margin-bottom:6px;">输入框（可打字，也可点上方选项）</div>
+            <div class="row" style="justify-content:space-between;align-items:center;"><span style="font-size:10.5px;color:#8a9099;">助手只生成草稿，不删除、不直接外发</span><span class="btn primary">发送</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>遮罩 + 右侧抽屉；对话流 + 选项 chips + 结果卡 + 底部输入。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>意图槽位（年月/类型/模板偏好）；建议指令；结果确认卡。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>缺槽位一次问清、每题 ≥3 选项；模型不可用走规则兜底；外发模型仍弹单独确认窗。</li><li>动作白名单：查询、生成草稿；删除/导出不由助手执行。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>超时/鉴权/限流分类提示；材料不足列出缺口月份；可随时切回手动表单。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P6 模板库 -->
+    <section class="page" id="p6">
+      <h2>页面 6 · 模板卡片库（A 层） <span class="badge b-p0">P0</span></h2>
+      <div class="purpose">内置卡只读共享、个人卡私有；标签打分匹配 Top3；无适配时提示保存新卡。不碰真实母版无损套版。</div>
+      <div class="frame">
+        <div class="shell noright">
+          <div class="appnav"><div class="brand"></div><div class="ni">工作台</div><div class="ni">材料库</div><div class="ni">年度回顾</div><div class="ni on">模板库</div><div class="ni">我的设置</div></div>
+          <div class="main">
+            <div class="row"><div class="grow block tight" style="height:30px;">Tab：内置模板 / 我的模板（私有）</div><span class="btn">+ 新建模板卡</span></div>
+            <div class="block tight">场景筛选：<span class="chip on">月度管理会</span><span class="chip">年度总结</span><span class="chip">项目复盘</span><span class="chip">述职</span></div>
+            <div class="block tight" style="background:#fdf6e8;border-color:#e4c98f;">当前大纲匹配：P2 推荐「三要点标准版」Top1，另有 2 个备选可替换。</div>
+            <div class="grid3" style="flex:1;">
+              <div><div class="thumb"><div class="line"></div><div class="line mid"></div><div class="line short"></div></div><div class="entry" style="margin-top:6px;"><b>封面卡</b><div class="meta">封面 · 主色蓝 · 内置</div></div></div>
+              <div><div class="thumb"><div class="line"></div><div class="line mid"></div><div class="line mid"></div><div class="line short"></div></div><div class="entry" style="margin-top:6px;"><b>三要点页</b><div class="meta">要点×3 · 月度场景</div></div></div>
+              <div><div class="thumb"><div class="line"></div><div class="row" style="gap:6px;"><div class="block tight" style="flex:1;height:28px;">栏A</div><div class="block tight" style="flex:1;height:28px;">栏B</div></div></div><div class="entry" style="margin-top:6px;"><b>两栏对比页</b><div class="meta">对比 · 2 列</div></div></div>
+              <div><div class="thumb"><div class="line short"></div><div class="line mid"></div><div class="line mid"></div></div><div class="entry" style="margin-top:6px;"><b>时间轴页</b><div class="meta">进展序列 · 节点</div></div></div>
+              <div><div class="thumb"><div class="line"></div><div class="block tight" style="height:34px;margin-top:4px;">图表占位框</div></div><div class="entry" style="margin-top:6px;"><b>数据占位页</b><div class="meta">表格/条形占位</div></div></div>
+              <div><div class="thumb"><div class="line mid"></div><div class="line short"></div></div><div class="entry" style="margin-top:6px;"><b>结尾页</b><div class="meta">总结 · 待补充项清单</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>Tab + 场景筛选 + 匹配横幅 + 卡片缩略网格。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>卡片维度：名称/场景/页型/要点数/主色/内置或私有；缩略为版式轮廓线稿。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>大纲页需求与卡片标签打分，返回 Top3；选中替换后编辑器右侧预览更新。</li><li>无适配卡时提示"保存为新模板卡"，仅元数据级新建。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>内置卡不可编辑只能收藏；个人卡可改名/删；真实母版填充（B 层）仅 Spike，不出现在本页正式能力。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P7 年度回顾+实体表 -->
+    <section class="page" id="p7">
+      <h2>页面 7 · 年度回顾 + 实体表 <span class="badge b-p1">P1 子集进本期</span></h2>
+      <div class="purpose">上半：12 月覆盖格 + 材料统计；下半：人员/客户/合同三类实体，AI 仅给候选、人确认入库。</div>
+      <div class="frame">
+        <div class="shell">
+          <div class="appnav"><div class="brand"></div><div class="ni">工作台</div><div class="ni">材料库</div><div class="ni on">年度回顾</div><div class="ni">模板库</div><div class="ni">我的设置</div></div>
+          <div class="main">
+            <div class="row"><div class="grow block tight" style="height:30px;">年份选择：2026 ▾（截至当前月）</div><span class="btn">导出年度清单</span></div>
+            <div class="block"><b>12 月覆盖格</b>
+              <div class="cal" style="margin-top:8px;">
+                <div class="cell filled">1月</div><div class="cell filled">2月</div><div class="cell miss">3月缺</div><div class="cell filled">4月</div><div class="cell filled">5月</div><div class="cell filled">6月</div>
+                <div class="cell filled">7月</div><div class="cell filled">8月</div><div class="cell miss">9月缺</div><div class="cell filled">10月</div><div class="cell">11月</div><div class="cell">12月</div>
+              </div>
+              <div style="font-size:11px;color:#8a9099;margin-top:6px;">斜线格 = 缺月，不冒充完整年度；统计仅确定性聚合，不出经营结论。</div>
+            </div>
+            <div class="block tight">材料统计条：类型分布条形占位（工作汇报/进展/客户…）</div>
+            <div class="block" style="flex:1;">
+              <div class="row"><b>实体表</b><span class="chip on">人员</span><span class="chip">客户</span><span class="chip">合同/项目</span><span class="btn" style="margin-left:auto;">+ 手工新增</span></div>
+              <div class="entry">张某某 · 行政岗 · 在职 · 变动 2026-03 · 来源 ×3 <span class="badge b-p0">已确认</span></div>
+              <div class="entry">某客户公司 · 阶段：合作中 · 最近接触 10 月 · 来源 ×2 <span class="badge b-p0">已确认</span></div>
+              <div class="entry warn">AI 建议候选（待确认）：某合同名称… · 来源 ×1 —— 人确认后才入库</div>
+            </div>
+          </div>
+          <div class="side">
+            <div class="block tight"><b>口径说明</b><br>跨月同一事项不重复计成果；缺数据标待补。</div>
+            <div class="block tight"><b>来源回溯</b><br>每条实体可点开来源材料。</div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>年份选择 → 覆盖格与统计 → 实体 Tab 列表；右侧口径说明。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>三类实体（人员/客户/合同项目）、确认态、来源数、候选折叠区。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>手工增删改为主；AI 候选需确认；导出清单带来源引用；查询为确定性聚合。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>缺月显式提示；不自动生成评价结论；后期才评估自定义实体类型，本期不做建模器。</li></ul></div>
+      </div>
+    </section>
+
+    <!-- P8 设置/Key -->
+    <section class="page" id="p8">
+      <h2>页面 8 · 设置 / 模型 Key 与数据 <span class="badge b-p0">P0</span></h2>
+      <div class="purpose">账号、模型配置、备份、隐私说明；会员位只灰显预留，不接支付。</div>
+      <div class="frame">
+        <div class="shell noright">
+          <div class="appnav"><div class="brand"></div><div class="ni">工作台</div><div class="ni">材料库</div><div class="ni">年度回顾</div><div class="ni">模板库</div><div class="ni on">我的设置</div></div>
+          <div class="main">
+            <div class="block"><b>账号</b><div class="entry">登录邮箱（只读显示） · 修改密码入口（占位）</div></div>
+            <div class="block"><b>模型与生成</b>
+              <div class="entry">DeepSeek · <span class="badge b-p0">已配置</span>｜状态点 +「重新配置」<div class="meta">Key 掩码显示，不明文回显；不进日志与备份</div></div>
+              <div class="entry">第二模型（可选，本期预留行）· 未配置</div>
+              <div class="row"><span class="btn">保存 Key</span><span class="btn">移除 Key（退回本地模式）</span></div>
+            </div>
+            <div class="block"><b>数据与备份</b>
+              <div class="entry">个人数据备份导出（JSON）· 导入备份恢复 · 存储用量条占位</div>
+            </div>
+            <div class="block"><b>偏好（商业化预留）</b>
+              <div class="entry">试用版水印开关位（灰显）｜plan：free（会员功能后期开放，本期无支付入口）</div>
+            </div>
+            <div class="block tight" style="font-size:11.5px;color:#66707a;"><b>隐私说明</b>：外部模型仅发送本次所选材料；调用前弹窗确认范围；本地规则模式不外发任何内容。</div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div><h4>布局结构</h4><ul><li>分组卡片纵向排列：账号 / 模型 / 备份 / 偏好 / 隐私说明。</li></ul></div>
+        <div><h4>核心元素</h4><ul><li>Provider 行状态、掩码 Key 输入、本地/AI 模式说明、备份操作。</li></ul></div>
+        <div><h4>关键交互</h4><ul><li>保存 Key 做连通性最小测试并反馈成功/失败分类；移除 Key 后界面切本地模式提示。</li><li>备份文件不含密钥字段。</li></ul></div>
+        <div><h4>状态备注</h4><ul><li>Key 错误提示不回显密钥；公网开放前补齐用户协议/隐私政策（Blocked 依赖上线形式）。</li></ul></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  try{
+    document.body.classList.add('js-on');
+    var links = document.querySelectorAll('#nav a[data-t]');
+    var pages = document.querySelectorAll('.page');
+    function show(id){
+      for(var i=0;i<pages.length;i++){ pages[i].classList.toggle('active', pages[i].id===id); }
+      for(var j=0;j<links.length;j++){ links[j].classList.toggle('active', links[j].getAttribute('data-t')===id); }
+    }
+    links.forEach(function(a){
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        show(a.getAttribute('data-t'));
+      });
+    });
+  }catch(err){ /* 脚本异常时全部页面纵向展示，不阻断阅读 */ }
+})();
+</script>
+</body>
+</html>

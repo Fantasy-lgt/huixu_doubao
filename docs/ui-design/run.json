@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "created": "2026-10-31T01:06:56",
+  "query": "根据产品原型，输出页面。页面风格、主题等等UI细节，应该怎么设定？",
+  "contract": {
+    "query": "根据产品原型，输出页面。页面风格、主题等等UI细节，应该怎么设定？",
+    "artifactClass": "web",
+    "surface": "web-console",
+    "provenance": "explicit",
+    "operation": "create",
+    "handoff": [
+      "html",
+      "doc"
+    ],
+    "count": {
+      "unit": "模块",
+      "n": null,
+      "mode": "target",
+      "source": "载体默认"
+    },
+    "canvas": {
+      "w": 1440,
+      "h": 900,
+      "source": "载体默认"
+    },
+    "ledger": [],
+    "attachments": [],
+    "skeleton": "console",
+    "title": "根据产品原型，输出页面。页面风格、主题等… · 设计方案",
+    "workdir": "C:\\Users\\电脑\\DoubaoWork\\chats\\2026-10-31\\new-chat\\ui-design",
+    "deliverables": {
+      "doc": {
+        "proposal": "doc/proposal.xml",
+        "canvases": [
+          "doc/canvas-a.html",
+          "doc/canvas-b.html"
+        ],
+        "cover": "doc/cover.html",
+        "coverImage": "shots/cover.jpg",
+        "required": true,
+        "note": "设计思路、设计想法、设计语言、为什么这么设计；窄栏排版画布，像一份印出来的专题"
+      },
+      "product": {
+        "path": "console/index.html",
+        "profile": "web-console",
+        "required": true,
+        "shape": null,
+        "h5Shape": null,
+        "note": "B 端控制台：表格 + 筛选 + 弹窗 + 空/异常状态，1440 与 1920 两档"
+      }
+    },
+    "assetPlan": [
+      {
+        "role": "hero-bg",
+        "how": "image_gen",
+        "slot": "full-bleed",
+        "why": "首屏满版氛围，文字压在上面"
+      },
+      {
+        "role": "icon-set",
+        "how": "svg",
+        "slot": "inline",
+        "why": "图标必须用 SVG——生图出不了透明底"
+      },
+      {
+        "role": "texture",
+        "how": "css",
+        "slot": "layer",
+        "why": "底纹用 CSS 画，不占素材预算"
+      },
+      {
+        "role": "product-01",
+        "how": "image_gen",
+        "slot": "full-bleed",
+        "why": "产品主图，装在满版容器里"
+      },
+      {
+        "role": "product-02",
+        "how": "image_gen",
+        "slot": "full-bleed",
+        "why": "第二视角，和主图不同机位"
+      },
+      {
+        "role": "material-detail",
+        "how": "image_gen",
+        "slot": "full-bleed",
+        "why": "材质微距，讲工艺"
+      }
+    ],
+    "minVisualAssets": 8,
+    "frozen": "2026-10-31T01:06:56",
+    "hash": "4f3896c31c6bbf6c"
+  },
+  "style": {
+    "query": "根据产品原型，输出页面。页面风格、主题等等UI细节，应该怎么设定？",
+    "signature": {
+      "ground": null,
+      "typeVoice": null,
+      "imageWorld": "render3d",
+      "layoutLogic": null,
+      "colorStrategy": "tri-role",
+      "motionVoice": "parallax"
+    },
+    "why": {
+      "ground": "query 没给这一维的信号 —— 由你按内容定",
+      "typeVoice": "query 没给这一维的信号 —— 由你按内容定",
+      "imageWorld": "语义命中 1 个线索",
+      "layoutLogic": "query 没给这一维的信号 —— 由你按内容定",
+      "colorStrategy": "你指定的",
+      "motionVoice": "语义命中 1 个线索"
+    },
+    "open": [
+      "ground",
+      "typeVoice",
+      "layoutLogic"
+    ],
+    "divergence": {
+      "vsRecent": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "min": 0,
+      "require": 3
+    }
+  },
+  "receipts": {
+    "shot": [],
+    "observe": [],
+    "check": [
+      {
+        "ts": "2026-10-31T01:13:22",
+        "profile": "web-console",
+        "target": "console/index.html",
+        "sha": {
+          "console/index.html": "c18fb97c72b0"
+        },
+        "block": [],
+        "report": [],
+        "assetCount": null,
+        "passed": true
+      },
+      {
+        "ts": "2026-10-31T01:16:16",
+        "profile": "web-console",
+        "target": "console/index.html",
+        "sha": {
+          "console/index.html": "9a010c13d9b5"
+        },
+        "block": [],
+        "report": [],
+        "assetCount": null,
+        "passed": true
+      }
+    ],
+    "publish": [],
+    "read": []
+  },
+  "delivery": null
+}

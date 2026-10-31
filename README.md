@@ -2,14 +2,14 @@
 
 个人材料库 + 模板卡片 + 可溯源汇报初稿的 Web 工作台。本期为 8 周 MVP：P0 月度汇报闭环全量 + 部分 P1（对话助手简化版、年度实体表轻量版）。
 
-> 设计与产品文档不在本仓库，位于上层目录：`../`（方案 v1、PRD-01/02、IA 对照表、任务流说明、Spike 方案、高保真原型 `ui-design/console/index.html`）。本仓库只放可运行代码。
+> 设计与产品文档统一在 `docs/`：方案 v1、PRD-01/02、IA 对照表、任务流说明、Spike 方案、高保真原型 `docs/ui-design/console/index.html`；团队协作规则见根目录 `AGENTS.md` 与 `team/`。
 
 ## 1. 技术选型（W1 拍板，无特殊偏好按此默认值，不再反复比较）
 
 | 层 | 选型 | 说明 |
 | --- | --- | --- |
 | 前端框架 | Vue 3 + TypeScript + Vite | 与简历技术栈一致；组合式 API |
-| 前端路由 | Vue Router 4 | 路由表对照 `../IA站点地图-路由与数据对照表.md` |
+| 前端路由 | Vue Router 4 | 路由表对照 `docs/IA站点地图-路由与数据对照表.md` |
 | 前端组件库 | Element Plus | 表格/表单/抽屉等 B 端基础件，视觉主题再覆盖紫 token |
 | 后端运行时 | Node 22 + TypeScript | 与前端同语言，降低切换成本 |
 | 后端框架 | Fastify | 轻量、类型友好、插件生态清晰 |
@@ -38,7 +38,9 @@ huixu_doubao/
 │     ├─ plugins/       # prisma 客户端、鉴权守卫、CORS/Cookie
 │     ├─ services/      # 本地规则整理、模板打分、错误分类
 │     └─ lib/           # 统一响应、错误码、版本/校验工具
-└─ spikes/              # W1 技术 Spike 脚本（S1 模型 / S2 PPTX / S3 母版探针）
+├─ spikes/              # W1 技术 Spike 脚本（S1 模型 / S2 PPTX / S3 母版探针）
+├─ docs/                # 产品方案、PRD、IA、任务流、线框与高保真原型、访谈附件
+└─ team/                # 研发小组角色配置、共享技能与评审记录（见 AGENTS.md）
 ```
 
 ## 3. 本地启动（先装依赖，再分别起前后端）

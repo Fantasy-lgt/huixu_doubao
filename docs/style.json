@@ -1,0 +1,34 @@
+{
+  "query": "根据产品原型，输出页面。页面风格、主题等等UI细节，应该怎么设定？",
+  "signature": {
+    "ground": null,
+    "typeVoice": null,
+    "imageWorld": "render3d",
+    "layoutLogic": null,
+    "colorStrategy": "tri-role",
+    "motionVoice": "parallax"
+  },
+  "why": {
+    "ground": "query 没给这一维的信号 —— 由你按内容定",
+    "typeVoice": "query 没给这一维的信号 —— 由你按内容定",
+    "imageWorld": "语义命中 1 个线索",
+    "layoutLogic": "query 没给这一维的信号 —— 由你按内容定",
+    "colorStrategy": "你指定的",
+    "motionVoice": "语义命中 1 个线索"
+  },
+  "open": [
+    "ground",
+    "typeVoice",
+    "layoutLogic"
+  ],
+  "divergence": {
+    "vsRecent": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "min": 0,
+    "require": 3
+  }
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI汇报助手 · 方案可视化（架构/流程/优先级/Roadmap）</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; padding:28px 20px 60px; font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif; background:#f5f8f8; color:#1f2d3d; line-height:1.55; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h1 { font-size:24px; margin:0 0 6px; color:#134e4a; }
+  .sub { color:#5b7183; font-size:14px; margin-bottom:26px; }
+  h2 { font-size:18px; margin:34px 0 14px; padding-left:10px; border-left:4px solid #137d78; color:#134e4a; }
+  .card { background:#fff; border:1px solid #e2ecec; border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+  .note { font-size:12.5px; color:#74889a; margin-top:10px; }
+  /* 架构分层 */
+  .layer { border:1.5px solid #cfe3e2; border-radius:10px; padding:10px 14px; margin:10px 0; background:#fbfefe; }
+  .layer .lt { font-size:13px; font-weight:700; color:#137d78; margin-bottom:8px; letter-spacing:1px; }
+  .mods { display:flex; flex-wrap:wrap; gap:8px; }
+  .mod { background:#e8f4f3; border:1px solid #b9dcd9; border-radius:8px; padding:7px 12px; font-size:13px; min-width:120px; flex:1 1 150px; text-align:center; }
+  .mod.alt { background:#fff4e8; border-color:#f0d3ac; }
+  .mod.ext { background:#eef0f3; border-color:#cfd6df; }
+  .arrow { text-align:center; color:#137d78; font-size:18px; margin:2px 0; }
+  /* 流程步骤 */
+  .flow { display:flex; flex-wrap:wrap; gap:8px; align-items:stretch; }
+  .step { flex:1 1 120px; background:#e8f4f3; border-radius:10px; padding:10px 12px; font-size:13px; position:relative; }
+  .step .n { display:inline-block; background:#137d78; color:#fff; border-radius:50%; width:22px; height:22px; line-height:22px; text-align:center; font-size:12px; margin-right:6px; }
+  .step .tag { display:block; margin-top:6px; font-size:11px; color:#137d78; }
+  .step.p1 { background:#fff4e8; } .step.p1 .tag{ color:#b07118; }
+  /* 矩阵 */
+  .matrix-wrap { display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start; }
+  svg { max-width:100%; height:auto; }
+  .legend { font-size:12.5px; flex:1 1 280px; }
+  .legend table { border-collapse:collapse; width:100%; }
+  .legend td, .legend th { border:1px solid #dde6ea; padding:5px 8px; font-size:12.5px; }
+  .legend th { background:#eef5f5; }
+  .p0 { color:#0f766e; font-weight:700; } .p1 { color:#b07118; font-weight:700; } .p2 { color:#64748b; } .no { color:#b91c1c; font-weight:700; }
+  /* 时间线 */
+  .tl { display:flex; flex-wrap:wrap; gap:10px; }
+  .phase { flex:1 1 160px; border:1px solid #cfe3e2; border-radius:10px; padding:12px; background:#fff; }
+  .phase .ph { font-weight:700; color:#137d78; font-size:13.5px; }
+  .phase .dur { font-size:11.5px; color:#74889a; margin:3px 0 8px; }
+  .phase ul { margin:0; padding-left:16px; font-size:12.5px; }
+  .phase li { margin-bottom:3px; }
+  table.cmp { border-collapse:collapse; width:100%; font-size:13px; }
+  table.cmp th, table.cmp td { border:1px solid #dde6ea; padding:8px 10px; text-align:left; }
+  table.cmp th { background:#eef5f5; }
+  .badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:11.5px; }
+  .b-p0 { background:#d9f0ee; color:#0f766e; } .b-p1 { background:#fdecd6; color:#b07118; } .b-p2 { background:#eceff3; color:#64748b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AI 汇报助手 · 方案可视化</h1>
+  <div class="sub">配套《AI汇报助手-产品方案与架构设计-v1.md》使用 ｜ 定性评估，非精确数据 ｜ 2026-10-31</div>
+
+  <h2>1. 总体分层架构（演进方向）</h2>
+  <div class="card">
+    <div class="layer"><div class="lt">用户端</div><div class="mods">
+      <div class="mod">Web / H5（Vue3 + Vite，首发）</div>
+      <div class="mod alt">桌面壳 Electron（P2）</div>
+      <div class="mod alt">小程序 uni-app（P2 后置）</div>
+    </div></div>
+    <div class="arrow">▼ HTTPS / JSON API</div>
+    <div class="layer"><div class="lt">接入层</div><div class="mods">
+      <div class="mod">Nginx 反向代理 + 静态托管</div>
+      <div class="mod">HTTPS 证书 / 限流 / 安全头</div>
+    </div></div>
+    <div class="arrow">▼</div>
+    <div class="layer"><div class="lt">应用层 Node.js（TypeScript）</div><div class="mods">
+      <div class="mod">认证 + 租户隔离中间件</div>
+      <div class="mod">材料服务</div>
+      <div class="mod">草稿与编辑器服务</div>
+      <div class="mod">模板服务（卡片匹配）</div>
+      <div class="mod">年度实体服务</div>
+      <div class="mod">对话助手编排（意图+槽位追问）</div>
+      <div class="mod alt">模型适配层（多 Provider / Key 加密 / 错误分类）</div>
+      <div class="mod alt">PPT 渲染服务（pptxgenjs；母版填充另立小服务）</div>
+    </div></div>
+    <div class="arrow">▼</div>
+    <div class="layer"><div class="lt">数据层</div><div class="mods">
+      <div class="mod">PostgreSQL（用户/材料/草稿/模板卡/实体表）</div>
+      <div class="mod">文件存储（按用户分目录 / 对象存储）</div>
+      <div class="mod alt">pgvector 语义召回（P1 可选，不作汇总主依据）</div>
+    </div></div>
+    <div class="arrow">▼</div>
+    <div class="layer"><div class="lt">外部服务</div><div class="mods">
+      <div class="mod ext">模型 API：DeepSeek / MiniMax / …（用户自带 Key）</div>
+      <div class="mod ext">邮件验证码（可选）</div>
+    </div></div>
+    <div class="note">绿色＝MVP 主线；橙色＝P1/P2 增强；灰色＝外部依赖。初代已验证的整理规则、引用校验、pptx 渲染逻辑移植进对应服务。</div>
+  </div>
+
+  <h2>2. MVP 主流程（确定性工作流，非自由画布）</h2>
+  <div class="card">
+    <div class="flow">
+      <div class="step"><span class="n">1</span>注册登录<span class="tag">P0 账号隔离</span></div>
+      <div class="step"><span class="n">2</span>材料入库<span class="tag">P0 类型/标签</span></div>
+      <div class="step"><span class="n">3</span>选任务/一句话指令<span class="tag">P1 对话助手</span></div>
+      <div class="step"><span class="n">4</span>助手确认参数·缺信息给3选项<span class="tag">P1 槽位追问</span></div>
+      <div class="step"><span class="n">5</span>归集材料·生成大纲初稿<span class="tag">P0 本地规则 / P1 AI</span></div>
+      <div class="step"><span class="n">6</span>三栏编辑器核对来源<span class="tag">P0 飞书式交互</span></div>
+      <div class="step"><span class="n">7</span>模板卡匹配 Top3<span class="tag">P0 卡片版 / P1 母版填充</span></div>
+      <div class="step"><span class="n">8</span>导出可编辑 PPTX<span class="tag">P0 带出处标注</span></div>
+    </div>
+    <div class="note">每步失败可回退、不丢稿；外发模型前单独确认；导出前必须人工核对确认（沿用初代安全设计）。</div>
+  </div>
+
+  <h2>3. 16 条需求优先级矩阵（定性：用户价值 × 实现成本）</h2>
+  <div class="card">
+    <div class="matrix-wrap">
+      <svg width="460" height="380" viewBox="0 0 460 380" role="img" aria-label="需求优先级矩阵">
+        <rect x="60" y="20" width="360" height="300" fill="#fbfefe" stroke="#cfe3e2"/>
+        <line x1="240" y1="20" x2="240" y2="320" stroke="#cfe3e2" stroke-dasharray="4 4"/>
+        <line x1="60" y1="170" x2="420" y2="170" stroke="#cfe3e2" stroke-dasharray="4 4"/>
+        <text x="240" y="345" text-anchor="middle" font-size="12" fill="#5b7183">实现成本 → 低</text>
+        <text x="420" y="345" text-anchor="end" font-size="12" fill="#5b7183">高</text>
+        <text x="30" y="170" text-anchor="middle" font-size="12" fill="#5b7183" transform="rotate(-90 30 170)">用户价值 → 高</text>
+        <text x="150" y="40" text-anchor="middle" font-size="12" fill="#0f766e">高价值·低成本：先做（P0）</text>
+        <text x="330" y="40" text-anchor="middle" font-size="12" fill="#b07118">高价值·高成本：排期验证（P1）</text>
+        <text x="150" y="312" text-anchor="middle" font-size="12" fill="#64748b">低价值·低成本：顺手做</text>
+        <text x="330" y="312" text-anchor="middle" font-size="12" fill="#b91c1c">低价值·高成本：暂缓（P2/不做）</text>
+        <!-- 点：x成本60-420, y价值320(低)-20(高) -->
+        <g font-size="11" text-anchor="middle">
+          <circle cx="120" cy="80" r="13" fill="#0f766e"/><text x="120" y="84" fill="#fff">10</text>
+          <circle cx="150" cy="62" r="13" fill="#0f766e"/><text x="150" y="66" fill="#fff">11</text>
+          <circle cx="180" cy="95" r="13" fill="#0f766e"/><text x="180" y="99" fill="#fff">16</text>
+          <circle cx="205" cy="70" r="13" fill="#0f766e"/><text x="205" y="74" fill="#fff">4</text>
+          <circle cx="150" cy="120" r="13" fill="#0f766e"/><text x="150" y="124" fill="#fff">12</text>
+          <circle cx="110" cy="140" r="13" fill="#0f766e"/><text x="110" y="144" fill="#fff">6</text>
+          <circle cx="300" cy="75" r="13" fill="#d97706"/><text x="300" y="79" fill="#fff">1</text>
+          <circle cx="330" cy="105" r="13" fill="#d97706"/><text x="330" y="109" fill="#fff">14</text>
+          <circle cx="285" cy="130" r="13" fill="#d97706"/><text x="285" y="134" fill="#fff">9</text>
+          <circle cx="345" cy="145" r="13" fill="#d97706"/><text x="345" y="149" fill="#fff">3</text>
+          <circle cx="360" cy="60" r="13" fill="#dc2626"/><text x="360" y="64" fill="#fff">2</text>
+          <circle cx="380" cy="230" r="13" fill="#64748b"/><text x="380" y="234" fill="#fff">8</text>
+          <circle cx="330" cy="255" r="13" fill="#64748b"/><text x="330" y="259" fill="#fff">5</text>
+          <circle cx="250" cy="250" r="13" fill="#64748b"/><text x="250" y="254" fill="#fff">13</text>
+          <circle cx="200" cy="235" r="13" fill="#64748b"/><text x="200" y="239" fill="#fff">7</text>
+          <circle cx="300" cy="285" r="13" fill="#64748b"/><text x="300" y="289" fill="#fff">15</text>
+        </g>
+      </svg>
+      <div class="legend">
+        <table>
+          <tr><th>编号</th><th>需求</th><th>级别</th></tr>
+          <tr><td>4</td><td>通用平台·账号独立访问</td><td class="p0">P0</td></tr>
+          <tr><td>16</td><td>每人资料隔离</td><td class="p0">P0</td></tr>
+          <tr><td>10</td><td>去掉部门字段</td><td class="p0">P0</td></tr>
+          <tr><td>11</td><td>标题/类型区分材料</td><td class="p0">P0</td></tr>
+          <tr><td>12</td><td>飞书式编辑器+工作流（画布暂缓）</td><td class="p0">P0主体</td></tr>
+          <tr><td>1</td><td>AI对话指令助手+3选项追问</td><td class="p1">P1</td></tr>
+          <tr><td>14</td><td>自带Key·多模型选择</td><td class="p1">P1</td></tr>
+          <tr><td>9</td><td>年度多维实体统计</td><td class="p1">P1</td></tr>
+          <tr><td>3</td><td>模板自定义+保存建议</td><td class="p1">P1</td></tr>
+          <tr><td>2</td><td>模板库深度版（母版填充）</td><td class="no">P1验证/不承诺无损</td></tr>
+          <tr><td>8</td><td>会员/水印/广告</td><td class="p2">P2</td></tr>
+          <tr><td>5</td><td>服务器/数据库/CDN</td><td class="p2">按阶段配置</td></tr>
+          <tr><td>13</td><td>企业级流程文档</td><td class="p2">随阶段补</td></tr>
+          <tr><td>7</td><td>求职作品集目标</td><td>贯穿约束</td></tr>
+          <tr><td>15</td><td>反问清单</td><td>见文档第12节</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="note">坐标为方案阶段的定性判断，随真实开发耗时与用户反馈调整；#2 深度版成本最高，先做技术 Spike 再决定是否产品化。</div>
+  </div>
+
+  <h2>4. Roadmap：8 周精做排期（已按决策重排）</h2>
+  <div class="card">
+    <div class="tl">
+      <div class="phase"><div class="ph">A 开工准备</div><div class="dur">W1 前半</div><ul><li>仓库与数据表定稿</li><li>服务器环境摸底</li><li>两项技术 Spike</li></ul></div>
+      <div class="phase"><div class="ph">B 地基+核心闭环</div><div class="dur">W1后半–W3</div><ul><li>账号登录与隔离</li><li>材料库改造</li><li>本地整理→导出pptx</li></ul></div>
+      <div class="phase"><div class="ph">C AI受控生成</div><div class="dur">W4–W5</div><ul><li>模型适配层1家起</li><li>对话助手+选项追问</li><li>SSE进度与失败保护</li></ul></div>
+      <div class="phase"><div class="ph">D 模板卡+编辑器</div><div class="dur">W6</div><ul><li>卡片匹配Top3</li><li>三栏步骤编辑器</li><li>逐页预览与导出</li></ul></div>
+      <div class="phase"><div class="ph">E 实体表+收尾</div><div class="dur">W7</div><ul><li>人/客/合同三类实体</li><li>年度清单导出</li><li>备份与窄屏打磨</li></ul></div>
+      <div class="phase"><div class="ph">F 包装发布</div><div class="dur">W8</div><ul><li>服务器部署演练</li><li>README/演示脚本</li><li>面试问答与录屏</li></ul></div>
+    </div>
+    <div class="note">决策前提：云端账号版 ｜ 模板卡片先行 ｜ 复用现有服务器 ｜ P0全量+部分P1；P2（桌面端/小程序/会员/母版填充B层/私有化）不进承诺排期。每周有可演示检查点，超期任务降级不硬扛。</div>
+  </div>
+
+  <h2>5. 多端演进对比与结论</h2>
+  <div class="card">
+    <table class="cmp">
+      <tr><th>端</th><th>优先级</th><th>技术路线</th><th>结论</th></tr>
+      <tr><td>Web PC 浏览器</td><td><span class="badge b-p0">P0 首发</span></td><td>Vue3+Vite，前后端分离 JSON API</td><td>核心编辑流程大屏效率最高，成本最低，作品集演示首选</td></tr>
+      <tr><td>H5 移动网页</td><td><span class="badge b-p1">P1</span></td><td>同套前端响应式；移动端只做查看/对话/浏览草稿</td><td>不另起炉灶，靠响应式+精简布局控制成本</td></tr>
+      <tr><td>桌面端</td><td><span class="badge b-p2">P2</span></td><td>优先 Electron（复用 Node 逻辑）；轻量需求再评估 Tauri（需少量 Rust）</td><td>待 Web 稳定、确有离线诉求再做，不先上框架</td></tr>
+      <tr><td>小程序</td><td><span class="badge b-p2">P2 后置</span></td><td>uni-app 可一套到小程序+H5</td><td>文件与模型调用受审核/备案限制，体验不适合重型编辑，后置</td></tr>
+    </table>
+    <div class="note">架构上所有能力走统一 JSON API，新增端只是换壳，业务逻辑不重写。</div>
+  </div>
+</div>
+</body>
+</html>

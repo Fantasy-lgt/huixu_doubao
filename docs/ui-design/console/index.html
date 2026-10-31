@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<!-- design-intent: system-icons, single-family, flat-depth
+     汇序 Pro · 管理会汇报工作台（web-console 高保真稿）
+     设计数值依据同目录《UI风格设定与设计规范.md》；图标统一 Phosphor regular，禁 emoji -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>汇序 Pro · 管理会汇报工作台</title>
+<style>
+:root{
+  /* 基底（淡紫白纸，对齐 Upsello 白到淡紫的亮场；纯白只作白壳） */
+  --page:#F4F3FB; --bg:#FFFFFF; --panel-2:#F0EEF9;
+  --border:rgba(54,44,104,.08); --border-strong:rgba(54,44,104,.16);
+  /* 墨三级（冷紫灰，不用纯灰） */
+  --ink-1:#1F1B3D; --ink-2:#403C5E; --ink-3:#6E6B8C;
+  /* 身份主色：Upsello 紫蓝（#6C5CE7），辅助紫 #8B7CF6 */
+  --accent:#6C5CE7; --accent-2:#8B7CF6;
+  --accent-soft:rgba(108,92,231,.10); --on-accent:#FFFFFF;
+  --glow:rgba(108,92,231,.28);
+  /* 语义功能色（浅底深字配对，与主紫错开：绿=完成 红=异常 琥珀=待办） */
+  --up:#2E9E77;   --up-ink:#1F7A59;   --up-bg:rgba(46,158,119,.12);
+  --down:#D04848; --down-ink:#A83232; --down-bg:rgba(208,72,72,.11);
+  --warn:#B7791F; --warn-ink:#85590F; --warn-bg:rgba(183,121,31,.14);
+  /* 圆角角色（对齐参考图的圆润感，仍分角色，不全站大圆） */
+  --r-shell:14px; --r-card:12px; --r-ctrl:8px; --r-pill:999px;
+  /* 尺寸 */
+  --side:220px; --row:42px;
+  --shadow-card:0 1px 2px rgba(54,44,104,.05),0 8px 20px -8px rgba(54,44,104,.12);
+  --shadow-overlay:0 2px 6px rgba(54,44,104,.06),0 24px 60px -20px rgba(54,44,104,.24);
+  --font:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--page);color:var(--ink-2);font-family:var(--font);
+  font-size:13.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+table{border-collapse:collapse;width:100%}
+.ic{width:17px;height:17px;flex:none}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:rgba(54,44,104,.16);border-radius:8px}
+
+/* ── 登录 / 注册屏（P1，左宣传 · 右表单） ────────── */
+.auth{position:fixed;inset:0;z-index:300;display:flex;background:var(--bg)}
+body.authed .auth{display:none}
+/* 左：产品宣传区 */
+.auth-promo{flex:1.15;position:relative;overflow:hidden;color:#fff;
+  background:linear-gradient(158deg,#8B7CF6 0%,#6C5CE7 48%,#5B4BD6 100%);
+  display:flex;flex-direction:column;justify-content:center;padding:52px 58px}
+.auth-promo::before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;
+  background:rgba(255,255,255,.10);top:-110px;right:-90px}
+.auth-promo::after{content:"";position:absolute;width:240px;height:240px;border-radius:50%;
+  background:rgba(255,255,255,.08);bottom:-80px;left:-60px}
+.promo-brand{display:flex;align-items:center;gap:11px;position:relative;z-index:1;margin-bottom:32px}
+.promo-brand .mark{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.18);
+  display:grid;place-items:center;font-weight:700;font-size:17px}
+.promo-brand b{font-size:15.5px;font-weight:650}
+.promo-brand small{display:block;font-size:11.5px;opacity:.82;font-weight:400}
+.promo-hero{position:relative;z-index:1;max-width:440px}
+.promo-hero h2{font-size:27px;line-height:1.38;font-weight:700;margin:0 0 12px;letter-spacing:.01em}
+.promo-hero p{font-size:13.5px;line-height:1.75;opacity:.86;margin:0 0 24px}
+.promo-list{display:flex;flex-direction:column;gap:15px;margin:0 0 26px;padding:0;position:relative;z-index:1}
+.promo-list li{list-style:none;display:flex;gap:12px;align-items:flex-start}
+.promo-list .pi{width:30px;height:30px;flex:none;border-radius:9px;background:rgba(255,255,255,.16);
+  display:grid;place-items:center}
+.promo-list .pi svg{width:16px;height:16px}
+.promo-list b{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px}
+.promo-list span{font-size:12px;opacity:.82;line-height:1.5}
+.promo-mock{position:relative;z-index:1;max-width:430px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:14px}
+.mock-bar{display:flex;gap:6px;margin-bottom:12px}
+.mock-bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5)}
+.mock-row{display:flex;gap:10px;margin-bottom:10px}
+.mock-kpi{flex:1;background:rgba(255,255,255,.14);border-radius:9px;padding:10px 11px}
+.mock-kpi b{display:block;font-size:18px;font-weight:700}
+.mock-kpi span{font-size:10.5px;opacity:.8}
+.mock-line{height:9px;border-radius:5px;background:rgba(255,255,255,.16);margin-bottom:8px}
+.mock-line.w60{width:60%}.mock-line.w80{width:82%}.mock-line.w45{width:45%}
+/* 右：表单区 */
+.auth-side{flex:1;display:flex;align-items:center;justify-content:center;background:var(--page);padding:32px}
+.auth-card{width:400px;max-width:100%}
+.auth-head{margin-bottom:20px}
+.auth-head h3{font-size:21px;font-weight:650;color:var(--ink-1);margin:0 0 6px}
+.auth-head p{font-size:13px;color:var(--ink-3);margin:0}
+.auth-tabs{display:flex;background:var(--panel-2);border-radius:var(--r-pill);padding:3px;margin-bottom:16px}
+.auth-tabs button{flex:1;padding:7px 0;font-size:13px;color:var(--ink-3);border-radius:var(--r-pill)}
+.auth-tabs button.on{background:var(--bg);color:var(--accent);font-weight:600;box-shadow:0 1px 3px rgba(54,44,104,.10)}
+.auth-field{margin-bottom:13px}
+.auth-field label{display:block;font-size:12px;color:var(--ink-2);margin-bottom:5px;font-weight:500}
+.auth-field input{width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:var(--r-ctrl);
+  padding:10px 12px;font-size:13.5px;color:var(--ink-1);background:var(--bg);outline:none;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+.auth-field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.auth-field input::placeholder{color:var(--ink-3)}
+.auth-field.err input{border-color:var(--down);background:var(--down-bg)}
+.field-tip{display:none;font-size:11.5px;color:var(--down-ink);margin-top:5px;line-height:1.45}
+.auth-field.err .field-tip{display:block}
+.auth-err{display:none;font-size:12.5px;color:var(--down-ink);background:var(--down-bg);
+  border:1px solid rgba(208,72,72,.18);border-radius:var(--r-ctrl);padding:8px 11px;margin-bottom:12px;line-height:1.5}
+.auth-err.on{display:block}
+.auth-submit{width:100%;justify-content:center;padding:11px;font-size:14px;margin-top:2px}
+.auth-submit[disabled]{opacity:.6;cursor:not-allowed}
+.auth-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:13px}
+.auth-meta a{color:var(--accent);cursor:pointer}
+.auth-meta span{color:var(--ink-3)}
+.auth-note{margin-top:20px;padding-top:13px;border-top:1px solid var(--border);
+  font-size:11.5px;color:var(--ink-3);line-height:1.65}
+@media (max-width:960px){
+  .auth{flex-direction:column}
+  .auth-promo{display:none}
+  .auth-side{padding:24px}
+}
+
+.app{display:grid;grid-template-columns:var(--side) 1fr;min-height:100vh}
+
+/* ── 左侧导航 ─────────────────────────────── */
+.side{background:var(--bg);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;padding:14px 10px;gap:2px}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 18px}
+.brand .mark{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--accent-2),var(--accent));
+  color:var(--on-accent);display:grid;place-items:center;font-weight:700;font-size:13px}
+.brand b{font-size:14.5px;color:var(--ink-1);letter-spacing:.01em}
+.brand small{display:block;font-size:11px;color:var(--ink-3);font-weight:400}
+.nav-grp{font-size:11px;color:var(--ink-3);letter-spacing:.06em;padding:14px 10px 6px}
+.side a{display:flex;align-items:center;gap:10px;padding:8.5px 10px;border-radius:var(--r-ctrl);
+  color:var(--ink-3);font-size:13.5px}
+.side a:hover{background:var(--panel-2)}
+.side a.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.side .foot{margin-top:auto;padding:10px;border-top:1px solid var(--border)}
+.foot-user{display:flex;align-items:center;gap:10px;padding:6px 10px}
+.foot-user .av{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);
+  color:var(--accent);display:grid;place-items:center;font-size:12px;font-weight:600}
+.foot-user small{display:block;color:var(--ink-3);font-size:11px}
+
+/* ── 主区 ─────────────────────────────────── */
+.main{display:flex;flex-direction:column;min-width:0}
+.top{display:flex;align-items:center;gap:12px;padding:12px 24px;
+  border-bottom:1px solid var(--border);background:var(--bg)}
+.crumb{color:var(--ink-3);font-size:12.5px}
+.top h1{font-size:17px;font-weight:650;color:var(--ink-1)}
+.top .sp{margin-left:auto}
+.seg{display:flex;gap:4px;background:var(--panel-2);border-radius:var(--r-ctrl);padding:3px}
+.seg button{padding:5px 12px;border-radius:4px;color:var(--ink-3);font-size:12.5px}
+.seg button.on{background:var(--bg);color:var(--ink-1);font-weight:600;box-shadow:0 1px 2px rgba(54,44,104,.10)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-strong);
+  border-radius:var(--r-ctrl);padding:7px 14px;background:var(--bg);color:var(--ink-2);font-size:13px;
+  white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.btn.primary:hover{background:#5B4BD6;color:var(--on-accent)}
+.btn.outline-accent{background:var(--bg);border-color:var(--accent);color:var(--accent);font-weight:500}
+.btn.outline-accent:hover{background:var(--accent-soft)}
+.btn.tiny{padding:3px 9px;font-size:12px;border-radius:var(--r-pill)}
+.body{padding:18px 24px 32px;display:flex;flex-direction:column;gap:14px;min-width:0}
+
+/* 问候横幅 */
+.banner{display:flex;align-items:center;gap:14px;background:var(--accent-soft);
+  border:1px solid rgba(108,92,231,.18);border-radius:var(--r-card);padding:13px 16px}
+.banner .greet{font-size:14.5px;color:var(--ink-1);font-weight:600}
+.banner .sub{font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.banner .right{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--warn-ink);font-size:12.5px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);
+  padding:14px 16px;box-shadow:var(--shadow-card)}
+.kpi.hero{border-left:3px solid var(--accent)}
+.kpi .k{color:var(--ink-3);font-size:12.5px;display:flex;align-items:center;gap:8px}
+.kpi .v{font-size:28px;font-weight:700;color:var(--ink-1);margin-top:4px;line-height:1.2}
+.kpi.hero .v{font-size:30px}
+.kpi .v em{font-size:12.5px;font-weight:400;color:var(--ink-3);font-style:normal;margin-left:4px}
+.kpi .foot{font-size:12px;margin-top:7px;color:var(--ink-3);display:flex;gap:6px;align-items:center}
+.up{color:var(--up-ink)} .warn{color:var(--warn-ink)} .bad{color:var(--down-ink)}
+
+/* 任务卡 + 指令框 */
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.task{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);
+  padding:15px 16px;box-shadow:var(--shadow-card)}
+.task h3{font-size:14px;color:var(--ink-1);font-weight:600;display:flex;align-items:center;gap:8px}
+.task p{font-size:12.5px;color:var(--ink-3);margin:6px 0 12px}
+.task .flow{font-size:12px;color:var(--ink-2);display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.task .flow i{font-style:normal;color:var(--ink-3)}
+.ask{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:12px 14px;box-shadow:var(--shadow-card)}
+.ask .row{display:flex;gap:10px;align-items:center}
+.ask input{flex:1;border:1px solid var(--border);border-radius:var(--r-ctrl);padding:8px 12px;
+  font:inherit;background:var(--panel-2);color:var(--ink-1)}
+.ask input:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{border:1px solid var(--border);border-radius:var(--r-pill);padding:4px 12px;
+  color:var(--ink-3);font-size:12.5px;background:var(--bg)}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* 图表行 */
+.chartsRow{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
+.panel{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;box-shadow:var(--shadow-card)}
+.panel>header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink-1);font-size:13.5px}
+.panel>header .meta{margin-left:auto;font-weight:400;font-size:12px;color:var(--ink-3)}
+.todo-list{padding:6px 16px 12px;display:flex;flex-direction:column;gap:4px}
+.todo{display:flex;align-items:center;gap:10px;padding:8px 2px;font-size:13px;border-bottom:1px dashed var(--border)}
+.todo:last-child{border-bottom:0}
+.dot{width:7px;height:7px;border-radius:50%;flex:none}
+.dot.warn{background:var(--warn)} .dot.bad{background:var(--down)} .dot.up{background:var(--up)}
+.todo small{margin-left:auto;color:var(--ink-3);font-size:11.5px}
+
+/* 筛选 + 表格 */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--border)}
+.field{border:1px solid var(--border);border-radius:var(--r-ctrl);padding:5px 11px;min-width:180px;
+  background:var(--panel-2);font:inherit;font-size:12.5px;color:var(--ink-1)}
+.tabs{display:flex;gap:2px;margin-right:auto}
+.tabs button{padding:7px 14px;border-radius:var(--r-ctrl);color:var(--ink-3);font-size:13px}
+.tabs button.on{color:var(--accent);font-weight:600;background:var(--accent-soft)}
+.state-tools{display:flex;gap:6px;margin-left:auto}
+th,td{text-align:left;padding:0 16px;height:var(--row);border-bottom:1px solid var(--border);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+th{color:var(--ink-3);font-weight:500;font-size:12.5px;background:var(--panel-2);height:38px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--panel-2)}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:var(--r-pill);font-size:12px}
+.tag.up{background:var(--up-bg);color:var(--up-ink)}
+.tag.warn{background:var(--warn-bg);color:var(--warn-ink)}
+.tag.bad{background:var(--down-bg);color:var(--down-ink)}
+.type-dot{width:7px;height:7px;border-radius:2px;display:inline-block;margin-right:7px;flex:none}
+.ops{display:flex;gap:4px;justify-content:flex-end}
+.ops .btn.tiny{border:0;background:transparent;color:var(--ink-3);padding:3px 7px}
+.ops .btn.tiny:hover{color:var(--accent);background:var(--accent-soft)}
+
+/* 四态 */
+[data-state]{display:none}
+[data-state].on{display:block}
+.empty,.loading,.error{display:grid;place-items:center;gap:10px;padding:54px 24px;text-align:center;color:var(--ink-3)}
+.empty b,.error b{color:var(--ink-1);font-size:15px}
+.empty p,.error p{font-size:12.5px;max-width:380px}
+.skel{background:linear-gradient(90deg,var(--panel-2),#FFFFFF,var(--panel-2));height:var(--row);
+  border-radius:var(--r-ctrl);margin:8px 16px}
+.svg-empty{width:72px;height:72px;color:var(--accent);opacity:.55}
+
+/* 弹窗 */
+.scrim{position:fixed;inset:0;background:rgba(31,27,61,.42);opacity:0;pointer-events:none;transition:opacity .18s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%);width:min(560px,92vw);
+  background:var(--bg);border-radius:var(--r-shell);padding:20px 22px;opacity:0;pointer-events:none;
+  transition:.18s;box-shadow:var(--shadow-overlay);z-index:41}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal h3{font-size:16px;color:var(--ink-1);margin-bottom:4px}
+.modal .hint{color:var(--ink-3);font-size:12.5px;margin-bottom:14px}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12.5px;color:var(--ink-3);margin-bottom:6px}
+.fld select,.fld textarea{width:100%;border:1px solid var(--border-strong);border-radius:var(--r-ctrl);
+  padding:8px 11px;font:inherit;background:var(--bg);color:var(--ink-1)}
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tpl{border:1px solid var(--border);border-radius:var(--r-ctrl);padding:9px 11px;font-size:12.5px;cursor:pointer}
+.tpl.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.tpl small{display:block;color:var(--ink-3);font-size:11px;margin-top:3px}
+.modal .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
+/* 抽屉 */
+.drawer-scrim{position:fixed;inset:0;background:rgba(31,27,61,.34);opacity:0;pointer-events:none;transition:.18s;z-index:40}
+.drawer-scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100vh;width:384px;background:var(--bg);
+  border-left:1px solid var(--border);box-shadow:var(--shadow-overlay);z-index:41;
+  transform:translateX(100%);transition:transform .22s ease;display:flex;flex-direction:column}
+.drawer.on{transform:translateX(0)}
+.drawer .dh{display:flex;align-items:center;gap:8px;padding:15px 16px;border-bottom:1px solid var(--border)}
+.drawer .dh b{font-size:14.5px;color:var(--ink-1)}
+.drawer .dh .sp{margin-left:auto}
+.msgs{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.msg{max-width:82%;padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5}
+.msg.bot{background:var(--panel-2);border-bottom-left-radius:3px;align-self:flex-start}
+.msg.me{background:var(--accent);color:var(--on-accent);border-bottom-right-radius:3px;align-self:flex-end}
+.msg .meta{font-size:11px;opacity:.7;margin-top:4px}
+.drawer .chips{padding:0 16px 10px}
+.drawer .input{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border)}
+.drawer .input input{flex:1;border:1px solid var(--border-strong);border-radius:var(--r-ctrl);padding:8px 11px;font:inherit}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(14px);
+  background:var(--accent);color:#fff;font-size:13px;padding:9px 18px;border-radius:var(--r-pill);
+  opacity:0;pointer-events:none;transition:.2s;z-index:60;box-shadow:var(--shadow-overlay)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── 多视图路由 ── */
+.view{display:none;flex-direction:column;gap:14px}
+.view.on{display:flex}
+.view-head{display:flex;align-items:baseline;gap:10px}
+.view-head h2{font-size:15px;color:var(--ink-1);font-weight:650}
+.view-head .meta{font-size:12.5px;color:var(--ink-3)}
+
+/* 材料库独立页 */
+.mat-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pager{display:flex;align-items:center;gap:6px;padding:11px 16px}
+.pager .info{margin-right:auto;color:var(--ink-3);font-size:12.5px}
+.pager .btn.tiny{min-width:28px;justify-content:center}
+.pager .btn.tiny.cur{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 三栏编辑器 */
+.steps{display:flex;gap:6px;align-items:center;flex-wrap:wrap;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:10px 16px;box-shadow:var(--shadow-card)}
+.step{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-3)}
+.step .no{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;background:var(--panel-2);color:var(--ink-3);flex:none}
+.step.done{color:var(--up-ink)} .step.done .no{background:var(--up-bg);color:var(--up-ink)}
+.step.cur{color:var(--accent);font-weight:600} .step.cur .no{background:var(--accent);color:#fff}
+.step i{font-style:normal;color:var(--ink-3);margin:0 4px}
+.ed-wrap{display:grid;grid-template-columns:236px minmax(0,1fr)248px;gap:14px;align-items:start}
+.ed-col{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
+.ed-col>header{padding:11px 16px;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink-1);font-size:13px;display:flex;align-items:center;gap:8px}
+.ed-col>header .meta{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.src-item{padding:10px 16px;border-bottom:1px dashed var(--border)}
+.src-item b{font-size:12.5px;color:var(--ink-1);display:block}
+.src-item p{font-size:12px;color:var(--ink-3);margin:4px 0 7px;line-height:1.5}
+.src-item .mini{font-size:11.5px;color:var(--accent)}
+.chap{padding:6px 16px 12px}
+.chap-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-1);padding:10px 0 6px}
+.chap-title .cnt{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.entry{border:1px solid var(--border);border-radius:var(--r-ctrl);padding:10px 12px;margin-bottom:8px;background:var(--bg)}
+.entry .txt{font-size:13px;color:var(--ink-2);line-height:1.55}
+.entry .meta{display:flex;align-items:center;gap:8px;margin-top:7px;font-size:11.5px;color:var(--ink-3)}
+.entry .ops{margin-left:auto;display:flex;gap:4px}
+.entry.warn{border-color:var(--warn);background:var(--warn-bg)}
+.outline{padding:6px 0}
+.outline li{list-style:none;display:flex;gap:9px;padding:9px 16px;border-bottom:1px dashed var(--border);font-size:12.5px;color:var(--ink-2)}
+.outline li.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.outline li .n{color:var(--ink-3);font-weight:400}
+.ed-bar{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:11px 16px;box-shadow:var(--shadow-card)}
+.ed-bar .tip{margin-right:auto;font-size:12px;color:var(--warn-ink)}
+.btn.disabled{opacity:.45;cursor:not-allowed}
+/* 编辑器五步面板 */
+.step{cursor:pointer}
+.ep-panel{display:none}
+.ep-panel.on{display:block}
+.ep-grid{display:grid;grid-template-columns:236px minmax(0,1fr);gap:14px;align-items:start}
+.ep-grid-3{display:grid;grid-template-columns:minmax(0,1fr)248px;gap:14px;align-items:start}
+.ep-section{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
+.ep-section>header{padding:11px 16px;border-bottom:1px solid var(--border);font-weight:600;font-size:13px;color:var(--ink-1);display:flex;align-items:center;gap:8px}
+.ep-section>header .meta{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.ep-body{padding:14px 16px}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.filter-row .lab{font-size:12px;color:var(--ink-2);font-weight:500;margin-right:2px}
+.ck-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r-ctrl);margin-bottom:8px;background:var(--bg)}
+.ck-item.on{border-color:var(--accent);background:var(--accent-soft)}
+.ck-item input{margin-top:3px;accent-color:var(--accent);flex:none}
+.ck-item b{font-size:12.5px;color:var(--ink-1);display:block}
+.ck-item p{font-size:12px;color:var(--ink-3);margin:3px 0 0;line-height:1.5}
+.ol-node{border:1px solid var(--border);border-radius:var(--r-ctrl);padding:10px 12px;margin-bottom:8px}
+.ol-node .h{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-1)}
+.ol-node .h .cnt{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.ol-node .sub{font-size:12px;color:var(--ink-3);margin-top:5px;line-height:1.5}
+.ol-node .ops{margin-left:auto;display:flex;gap:4px}
+.exp-row{display:flex;align-items:center;gap:10px;padding:9px 2px;border-bottom:1px dashed var(--border);font-size:12.5px;color:var(--ink-2)}
+.exp-row:last-child{border-bottom:0}
+.exp-row .n{color:var(--ink-3);flex:none;width:26px}
+.exp-row .pts{margin-left:auto;font-size:11.5px;color:var(--ink-3)}
+.ep-note{font-size:12px;color:var(--ink-3);line-height:1.6;background:var(--panel-2);border-radius:var(--r-ctrl);padding:10px 12px;margin-top:10px}
+.ep-check{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--ink-2);padding:8px 0;border-bottom:1px dashed var(--border)}
+.ep-check:last-child{border-bottom:0}
+.ep-check .dot{margin-top:4px}
+.ep-check .meta{margin-left:auto;font-size:11.5px;color:var(--ink-3);flex:none}
+@media (max-width:1100px){ .ep-grid,.ep-grid-3{grid-template-columns:1fr} }
+
+/* 模板库 */
+.match-banner{display:flex;gap:12px;align-items:center;background:var(--accent-soft);border:1px solid rgba(108,92,231,.18);border-radius:var(--r-card);padding:12px 16px;font-size:13px;color:var(--ink-2)}
+.match-banner b{color:var(--accent)}
+.tpl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tpl-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);padding:15px 16px;box-shadow:var(--shadow-card);display:flex;flex-direction:column}
+.tpl-card.rec{border-color:var(--accent)}
+.tpl-card .tt{font-weight:600;color:var(--ink-1);font-size:13.5px;display:flex;align-items:center;gap:8px}
+.tpl-card .desc{font-size:12.5px;color:var(--ink-3);margin:7px 0 10px}
+.tpl-card .outline-mini{font-size:12px;color:var(--ink-2);display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.tpl-card .foot{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:12px}
+.tpl-card .score{margin-left:auto;font-size:11.5px;color:var(--accent)}
+
+/* 年度回顾 */
+.year-head{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
+.heat{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;padding:14px 16px 6px}
+.hm{aspect-ratio:1/1;border-radius:6px;background:var(--panel-2);display:grid;place-items:center;font-size:11px;color:var(--ink-3)}
+.hm.l1{background:rgba(108,92,231,.16)} .hm.l2{background:rgba(108,92,231,.34);color:#fff} .hm.l3{background:var(--accent);color:#fff}
+.legend{display:flex;gap:14px;align-items:center;padding:8px 16px 12px;font-size:11.5px;color:var(--ink-3)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:4px}
+.ent-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px dashed var(--border);font-size:13px}
+.ent-row:last-child{border-bottom:0}
+.ent-row .sub{color:var(--ink-3);font-size:11.5px;display:block}
+.ent-row .ops{margin-left:auto}
+
+/* 设置 */
+.set-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.set-group{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-card);box-shadow:var(--shadow-card);overflow:hidden}
+.set-group>header{padding:12px 16px;border-bottom:1px solid var(--border);font-weight:600;color:var(--ink-1);font-size:13.5px}
+.set-row{padding:13px 16px;border-bottom:1px solid var(--border)}
+.set-row:last-child{border-bottom:0}
+.set-row .lab{font-size:13px;color:var(--ink-1);font-weight:500;display:flex;align-items:center;gap:8px}
+.set-row .desc{font-size:12px;color:var(--ink-3);margin-top:4px}
+.set-row .ctl{margin-top:9px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.key-mask{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:var(--panel-2);border:1px solid var(--border);border-radius:var(--r-ctrl);padding:7px 11px;color:var(--ink-2);flex:1;min-width:220px}
+.usage{height:8px;border-radius:999px;background:var(--panel-2);overflow:hidden;margin-top:8px}
+.usage i{display:block;height:100%;width:38%;background:var(--accent);border-radius:999px}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:var(--r-pill);font-size:12px}
+.status-pill.ok{background:var(--up-bg);color:var(--up-ink)}
+.status-pill.warn{background:var(--warn-bg);color:var(--warn-ink)}
+
+@media (max-width:1180px){
+  .app{grid-template-columns:64px 1fr}
+  .side .label,.brand small,.brand b,.nav-grp,.foot-user div{display:none}
+  .brand{justify-content:center} .foot-user{justify-content:center}
+  .kpis{grid-template-columns:repeat(2,1fr)} .chartsRow{grid-template-columns:1fr}
+  .ed-wrap{grid-template-columns:1fr} .set-grid{grid-template-columns:1fr}
+  .tpl-cards{grid-template-columns:repeat(2,1fr)} .year-head{grid-template-columns:1fr}
+  .mat-stats{grid-template-columns:repeat(2,1fr)}
+  .top{flex-wrap:wrap;gap:8px;padding:10px 16px}
+  .top h1{font-size:15px} .crumb{display:none}
+  .seg button{white-space:nowrap;padding:5px 10px}
+}
+@media (max-width:680px){
+  .tasks{grid-template-columns:1fr} .kpis{grid-template-columns:1fr 1fr}
+  .tpl-cards{grid-template-columns:1fr} .mat-stats{grid-template-columns:1fr 1fr}
+  .top{flex-wrap:wrap} .state-tools{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<!-- ══ 登录 / 注册屏（P1，未登录首屏） ══ -->
+<div class="auth" id="authScreen">
+  <aside class="auth-promo">
+    <div class="promo-brand">
+      <span class="mark">汇</span>
+      <div><b>汇序 Pro</b><small>管理会汇报工作台</small></div>
+    </div>
+    <div class="promo-hero">
+      <h2>把零散材料，变成能逐条核对的汇报初稿</h2>
+      <p>面向生产与职能管理会：沉淀历史材料、按规则匹配模板、AI 生成三章节初稿，导出前逐条校验来源出处。</p>
+    </div>
+    <ul class="promo-list">
+      <li>
+        <span class="pi"><svg viewBox="0 0 256 256" fill="currentColor"><path d="M216,64H148.69L128,42.69A15.86,15.86,0,0,0,116.69,38H40A16,16,0,0,0,24,54V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM40,54h76.69L138,75.31l-1.31,2.69H40Zm176,146H40V94H216Z"/></svg></span>
+        <div><b>材料集中沉淀</b><span>项目进展、会议纪要、客户往来统一归档，按月与类型检索</span></div>
+      </li>
+      <li>
+        <span class="pi"><svg viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40A16,16,0,0,0,24,64V224a15.84,15.84,0,0,0,9.25,14.5A16.05,16.05,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78l.09-.07L83,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM216,192H80a8,8,0,0,0-5.23,1.95L40,224V64H216Z"/></svg></span>
+        <div><b>AI 初稿三章节</b><span>重点进展 · 问题风险 · 下期计划，对话式补全上下文后出稿</span></div>
+      </li>
+      <li>
+        <span class="pi"><svg viewBox="0 0 256 256" fill="currentColor"><path d="M128,16,48,48v60c0,49.55,33.58,95.42,78,108.22C164.42,203.42,192,157.55,192,108V48Zm0,18.42,48,19.2V108c0,39.25-25.55,75.51-48,87.63C105.55,183.51,64,147.25,64,108V53.62Zm-13.66,85.82-13.66-13.66a8,8,0,0,0-11.31,11.31l19.32,19.32a8,8,0,0,0,11.31,0l37.32-37.32a8,8,0,1,0-11.31-11.31Z"/></svg></span>
+        <div><b>逐条校验再导出</b><span>每条结论回溯原文出处，缺来源先提示，不直接外发</span></div>
+      </li>
+    </ul>
+    <div class="promo-mock">
+      <div class="mock-bar"><i></i><i></i><i></i></div>
+      <div class="mock-row">
+        <div class="mock-kpi"><b>3</b><span>本月成稿</span></div>
+        <div class="mock-kpi"><b>86</b><span>入库材料</span></div>
+        <div class="mock-kpi"><b>2</b><span>在写草稿</span></div>
+      </div>
+      <div class="mock-line w80"></div>
+      <div class="mock-line w60"></div>
+      <div class="mock-line w45"></div>
+    </div>
+  </aside>
+
+  <div class="auth-side">
+    <div class="auth-card">
+      <div class="auth-head">
+        <h3 id="auWelcome">欢迎回来</h3>
+        <p id="auWelcomeSub">登录后继续整理本月管理会材料</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="on" id="tabLogin">登录</button>
+        <button id="tabReg">注册</button>
+      </div>
+      <div class="auth-err" id="authErr"></div>
+      <div class="auth-field" id="auEmailWrap">
+        <label>工作邮箱</label>
+        <input id="auEmail" type="email" placeholder="name@company.com" autocomplete="username">
+        <div class="field-tip" id="auEmailTip"></div>
+      </div>
+      <div class="auth-field" id="auPwdWrap">
+        <label>密码</label>
+        <input id="auPwd" type="password" placeholder="至少 6 位" autocomplete="current-password">
+        <div class="field-tip" id="auPwdTip"></div>
+      </div>
+      <div class="auth-field" id="auPwd2Wrap" style="display:none">
+        <label>确认密码</label>
+        <input id="auPwd2" type="password" placeholder="再次输入密码" autocomplete="new-password">
+        <div class="field-tip" id="auPwd2Tip"></div>
+      </div>
+      <button class="btn primary auth-submit" id="auSubmit">登 录</button>
+      <div class="auth-meta">
+        <span>还没有账号？<a id="goReg">注册新账号</a></span>
+        <span>忘记密码？<a id="auForget">联系管理员重置</a></span>
+      </div>
+      <div class="auth-note">使用外部模型前会单独确认本次发送范围；模型 Key 仅掩码保存、不明文回显，不写入日志与备份。本期不接入第三方登录，也不做邮件自助找回。</div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <!-- ══ 左侧导航 ══ -->
+  <aside class="side">
+    <div class="brand">
+      <span class="mark">汇</span>
+      <span><b>汇序 Pro</b><small>管理会汇报工作台</small></span>
+    </div>
+    <div class="nav-grp">工作流</div>
+    <a class="on" href="#top" data-nav="工作台">
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40A16,16,0,0,0,24,64V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM104,144V112h48v32Zm48,16v32H104V160ZM40,112H88v32H40Zm64-16V64h48V96Zm64,16h48v32H168Zm48-16H168V64h48ZM88,64V96H40V64ZM40,160H88v32H40Zm176,32H168V160h48v32Z"/></svg>
+      <span class="label">工作台</span></a>
+    <a href="#" data-nav="材料库">
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M245,110.64A16,16,0,0,0,232,104H216V88a16,16,0,0,0-16-16H130.67L102.94,51.2a16.14,16.14,0,0,0-9.6-3.2H40A16,16,0,0,0,24,64V208h0a8,8,0,0,0,8,8H211.1a8,8,0,0,0,7.59-5.47l28.49-85.47A16.05,16.05,0,0,0,245,110.64ZM93.34,64,123.2,86.4A8,8,0,0,0,128,88h72v16H69.77a16,16,0,0,0-15.18,10.94L40,158.7V64Zm112,136H43.1l26.67-80H232Z"/></svg>
+      <span class="label">材料库</span></a>
+    <a href="#" data-nav="草稿编辑">
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM92.69,208H48V163.31l88-88L180.69,120ZM192,108.68,147.31,64l24-24L216,84.68Z"/></svg>
+      <span class="label">草稿编辑</span></a>
+    <a href="#" data-nav="AI助手" data-open-drawer="1">
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40A16,16,0,0,0,24,64V224a15.84,15.84,0,0,0,9.25,14.5A16.05,16.05,0,0,0,40,240a15.89,15.89,0,0,0,10.25-3.78l.09-.07L83,208H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM216,192H80a8,8,0,0,0-5.23,1.95L40,224V64H216Z"/></svg>
+      <span class="label">AI 助手</span></a>
+    <div class="nav-grp">资料库</div>
+    <a href="#" data-nav="模板库">
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V96H40V56ZM40,112H96v88H40Zm176,88H112V112H216v88Z"/></svg>
+      <span class="label">模板库</span></a>
+    <a href="#" data-nav="年度回顾">
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"/></svg>
+      <span class="label">年度回顾</span></a>
+    <div class="foot">
+      <a href="#" data-nav="设置">
+        <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"/></svg>
+        <span class="label">设置与 Key</span></a>
+      <a href="#" id="auLogout" title="退出登录，返回登录屏">
+        <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M118.54,206.46a8,8,0,0,1,0,11.31l-11.31,11.32a8,8,0,0,1-11.32,0l-96-96a8,8,0,0,1,0-11.32l96-96a8,8,0,0,1,11.32,0l11.31,11.31a8,8,0,0,1,0,11.31L94.63,120H216v32H94.63ZM216,40H160a8,8,0,0,0,0,16h48V200h-48a8,8,0,0,0,0,16h56a8,8,0,0,0,8-8V48a8,8,0,0,0-8-8Z"/></svg>
+        <span class="label">退出登录</span></a>
+    </div>
+  </aside>
+
+  <!-- ══ 主区 ══ -->
+  <main class="main">
+    <header class="top" id="top">
+      <span class="crumb" id="crumb">工作台 / 本月概览</span>
+      <h1 id="pageTitle">月度汇报工作台</h1>
+      <span class="sp"></span>
+      <div class="seg" id="homeSeg" title="汇报期间">
+        <button class="on">2026 · 10 月</button><button>9 月</button><button>全年</button>
+      </div>
+      <button class="btn" id="openDrawer">
+        <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88Z"/></svg>
+        问助手</button>
+      <button class="btn primary" id="homePrimary" data-open-draft="1">
+        <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z"/></svg>
+        新建月度汇报</button>
+    </header>
+
+    <div class="body">
+      <div class="view on" data-view="home">
+      <div class="banner">
+        <div>
+          <div class="greet">上午好，10 月管理会材料已入库 8 份</div>
+          <div class="sub">重点进展 4 份 · 问题风险 2 份 · 下期计划 2 份；来源逐字校验已通过 6 份</div>
+        </div>
+        <div class="right">
+          <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M236.8,188.09,149.35,36.22a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"/></svg>
+          3 份材料缺月份标签，先补再生成
+        </div>
+      </div>
+
+      <section class="kpis">
+        <div class="kpi hero">
+          <div class="k">本月成稿（已确认）</div>
+          <div class="v num">3<em>份</em></div>
+          <div class="foot up">较上月 +1 · 平均成稿耗时 2.1 小时</div>
+        </div>
+        <div class="kpi">
+          <div class="k">入库材料</div>
+          <div class="v num">86</div>
+          <div class="foot">本月新增 14 份</div>
+        </div>
+        <div class="kpi">
+          <div class="k">在写草稿</div>
+          <div class="v num">2</div>
+          <div class="foot warn">1 份待补来源核对</div>
+        </div>
+        <div class="kpi">
+          <div class="k">待校验条目</div>
+          <div class="v num">5</div>
+          <div class="foot bad">2 条缺原文出处，导出前需处理</div>
+        </div>
+      </section>
+
+      <section class="tasks">
+        <div class="task">
+          <h3><svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M216,48H40A16,16,0,0,0,24,64V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V64A16,16,0,0,0,216,48ZM104,144V112h48v32Zm48,16v32H104V160ZM40,112H88v32H40Zm64-16V64h48V96Zm64,16h48v32H168Zm48-16H168V64h48ZM88,64V96H40V64ZM40,160H88v32H40Zm176,32H168V160h48v32Z"/></svg>月度汇报</h3>
+          <p>选期间 → 圈定材料范围 → 三章节整理 → 逐字校验 → 导出 PPTX</p>
+          <div class="flow"><span>选期间</span><i>→</i><span>归集材料</span><i>→</i><span>AI 初稿</span><i>→</i><span>确认导出</span></div>
+          <button class="btn primary" id="newDraft2">新建月度汇报</button>
+        </div>
+        <div class="task">
+          <h3><svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"/></svg>年度汇总</h3>
+          <p>选年份 → 聚合人员 / 客户 / 合同实体 → 出年度进展清单（P1 子集）</p>
+          <div class="flow"><span>选年份</span><i>→</i><span>实体归集</span><i>→</i><span>人工确认入库</span><i>→</i><span>清单导出</span></div>
+          <button class="btn">进入年度回顾</button>
+        </div>
+      </section>
+
+      <section class="ask">
+        <div class="row">
+          <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
+          <input placeholder="一句话交代任务，例如：整理 10 月管理会，重点进展优先用生产和质量材料">
+          <button class="btn outline-accent" id="askGo">生成初稿建议</button>
+        </div>
+        <div class="chips">
+          <button class="chip">整理 10 月管理会</button>
+          <button class="chip">汇总今年客户进展</button>
+          <button class="chip">找上月项目进展材料</button>
+          <button class="chip">把缺标签的材料列出来</button>
+        </div>
+      </section>
+
+      <section class="chartsRow">
+        <div class="panel">
+          <header>近 6 个月材料归集趋势<span class="meta">单位：份 · 示例数据</span></header>
+          <div style="padding:14px 16px 8px">
+            <svg viewBox="0 0 520 150" width="100%" height="150" aria-label="归集趋势折线">
+              <g stroke="rgba(54,44,104,.08)" stroke-width="1">
+                <line x1="40" y1="20" x2="500" y2="20"/><line x1="40" y1="55" x2="500" y2="55"/>
+                <line x1="40" y1="90" x2="500" y2="90"/><line x1="40" y1="125" x2="500" y2="125"/>
+              </g>
+              <path d="M40,110 L132,96 L224,104 L316,70 L408,80 L500,46 L500,125 L40,125 Z" fill="rgba(108,92,231,.09)"/>
+              <polyline points="40,110 132,96 224,104 316,70 408,80 500,46" fill="none" stroke="#6C5CE7" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+              <g fill="#6C5CE7">
+                <circle cx="40" cy="110" r="3.5"/><circle cx="132" cy="96" r="3.5"/><circle cx="224" cy="104" r="3.5"/>
+                <circle cx="316" cy="70" r="3.5"/><circle cx="408" cy="80" r="3.5"/><circle cx="500" cy="46" r="4"/>
+              </g>
+              <g fill="#6E6B8C" font-size="11" font-family="inherit">
+                <text x="40" y="142">5月</text><text x="124" y="142">6月</text><text x="216" y="142">7月</text>
+                <text x="308" y="142">8月</text><text x="400" y="142">9月</text><text x="482" y="142">10月</text>
+              </g>
+              <g font-size="11" fill="#403C5E">
+                <text x="486" y="38">14</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="panel">
+          <header>待办提示<span class="meta">共 4 项</span></header>
+          <div class="todo-list">
+            <div class="todo"><span class="dot warn"></span>3 份材料未标记月份，影响期间归集<small>材料库</small></div>
+            <div class="todo"><span class="dot bad"></span>2 条初稿条目缺原文出处，导出前补校验<small>草稿 · 10月稿</small></div>
+            <div class="todo"><span class="dot warn"></span>模型 Key 未做连通测试<small>设置</small></div>
+            <div class="todo"><span class="dot up"></span>9 月稿已确认，可随时再导出<small>草稿</small></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 有数据 -->
+      <section data-state="data" class="on">
+        <div class="panel">
+          <header>
+            <div class="tabs">
+              <button class="on" data-tab="mat">材料库</button>
+              <button data-tab="draft">最近草稿</button>
+            </div>
+            <span class="meta" id="rowCount">共 8 条材料 · 示例数据</span>
+            <div class="state-tools">
+              <button class="btn tiny" data-go="empty">空态</button>
+              <button class="btn tiny" data-go="loading">加载态</button>
+              <button class="btn tiny" data-go="error">异常态</button>
+              <button class="btn tiny" data-go="data">恢复数据</button>
+            </div>
+          </header>
+          <div class="filters">
+            <button class="chip on" data-type="all">全部类型</button>
+            <button class="chip" data-type="项目进展">项目进展</button>
+            <button class="chip" data-type="会议纪要">会议纪要</button>
+            <button class="chip" data-type="客户往来">客户往来</button>
+            <button class="chip" data-type="合同商务">合同商务</button>
+            <button class="chip" data-type="人事行政">人事行政</button>
+            <input class="field" placeholder="搜标题 / 正文关键词">
+            <button class="btn" id="importBtn" style="margin-left:auto">
+              <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0ZM93.66,77.66,120,51.31V144a8,8,0,0,0,16,0V51.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,77.66Z"/></svg>
+              导入 TXT/MD</button>
+          </div>
+
+          <table id="matTable">
+            <thead><tr>
+              <th>材料标题</th><th>类型</th><th>期间</th><th>标签</th><th class="n">字数</th><th>校验状态</th><th>更新时间</th><th style="text-align:right">操作</th>
+            </tr></thead>
+            <tbody>
+              <tr data-type="会议纪要"><td>三季度生产运行分析会纪要</td><td>会议纪要</td><td>2026-09</td><td>生产 · 质量</td><td class="n">1,480</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td>10-28 16:20</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="合同商务"><td>10 月销售合同执行清单（前 5 项）</td><td>合同商务</td><td>2026-10</td><td>客户 · 合同</td><td class="n">2,260</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td>10-27 11:05</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="项目进展"><td>重点设备维保月报</td><td>项目进展</td><td>2026-10</td><td>设备 · 维保</td><td class="n">980</td><td><span class="tag warn"><span class="dot warn"></span>待补充</span></td><td>10-26 09:42</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="客户往来"><td>客户 A 三季度回款沟通记录</td><td>客户往来</td><td>未标记月份</td><td>客户</td><td class="n">640</td><td><span class="tag warn"><span class="dot warn"></span>缺月份</span></td><td>10-25 15:18</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="人事行政"><td>9 月职能部门绩效完成通报</td><td>人事行政</td><td>2026-09</td><td>人事</td><td class="n">1,720</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td>10-22 17:30</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="项目进展"><td>新厂房搬迁进度周报（第 4 期）</td><td>项目进展</td><td>2026-10</td><td>基建 · 搬迁</td><td class="n">1,130</td><td><span class="tag bad"><span class="dot bad"></span>来源待核</span></td><td>10-21 10:12</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="合同商务"><td>供应商季度比价汇总</td><td>合同商务</td><td>2026-09</td><td>采购 · 供应商</td><td class="n">2,040</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td>10-18 14:55</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr data-type="人事行政"><td>安全培训签到与整改台账</td><td>人事行政</td><td>2026-10</td><td>安全 · 培训</td><td class="n">860</td><td><span class="tag warn"><span class="dot warn"></span>待补充</span></td><td>10-16 13:08</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+            </tbody>
+          </table>
+
+          <table id="draftTable" style="display:none">
+            <thead><tr><th>草稿标题</th><th>期间</th><th>重点进展</th><th>问题风险</th><th>下期计划</th><th>状态</th><th>更新时间</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody>
+              <tr><td>2026 年 10 月管理会汇报 · 初稿</td><td>2026-10</td><td>3 条</td><td>2 条</td><td>2 条</td><td><span class="tag warn"><span class="dot warn"></span>待校验</span></td><td>10-28 16:40</td><td class="ops"><button class="btn tiny">续编</button><button class="btn tiny">导出</button></td></tr>
+              <tr><td>2026 年 9 月管理会汇报 · 终稿</td><td>2026-09</td><td>4 条</td><td>2 条</td><td>3 条</td><td><span class="tag up"><span class="dot up"></span>已确认</span></td><td>09-30 18:02</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">导出</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 空状态：给出口 -->
+      <section data-state="empty">
+        <div class="panel"><div class="empty">
+          <svg class="svg-empty" viewBox="0 0 256 256" fill="currentColor"><path d="M245,110.64A16,16,0,0,0,232,104H216V88a16,16,0,0,0-16-16H130.67L102.94,51.2a16.14,16.14,0,0,0-9.6-3.2H40A16,16,0,0,0,24,64V208h0a8,8,0,0,0,8,8H211.1a8,8,0,0,0,7.59-5.47l28.49-85.47A16.05,16.05,0,0,0,245,110.64ZM93.34,64,123.2,86.4A8,8,0,0,0,128,88h72v16H69.77a16,16,0,0,0-15.18,10.94L40,158.7V64Zm112,136H43.1l26.67-80H232Z"/></svg>
+          <b>还没有符合条件的材料</b>
+          <p>当前筛选条件下没有结果。可先清空筛选条件，或把本月会议纪要、项目周报粘贴进材料库，再回到这里生成初稿。</p>
+          <button class="btn primary" data-go="data" id="emptyGo">清空筛选并查看全部</button>
+        </div></div>
+      </section>
+
+      <!-- 加载态：骨架屏 -->
+      <section data-state="loading">
+        <div class="panel">
+          <header>材料库 · 正在加载</header>
+          <div style="padding:10px 0 14px">
+            <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+            <div class="skel" style="width:72%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 异常态：说清原因 + 重试 -->
+      <section data-state="error">
+        <div class="panel"><div class="error">
+          <svg class="svg-empty" viewBox="0 0 256 256" fill="currentColor"><path d="M236.8,188.09,149.35,36.22a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z"/></svg>
+          <b>材料列表加载失败</b>
+          <p>可能是网络或模型服务暂时不可用。材料已保存在本地账号空间，不会丢失；可点重试，或先切换到最近草稿继续编辑。</p>
+          <div style="display:flex;gap:8px">
+            <button class="btn primary" data-go="data">重试加载</button>
+            <button class="btn" data-go="data">查看最近草稿</button>
+          </div>
+        </div></div>
+      </section>
+      </div><!-- /view home -->
+
+      <!-- ══ 视图：材料库（独立管理页） ══ -->
+      <div class="view" data-view="mat">
+        <div class="view-head"><h2>材料库</h2><span class="meta">类型 + 标签 + 期间组合筛选；正文只读保留，不改写原文</span></div>
+        <section class="kpis mat-stats">
+          <div class="kpi"><div class="k">本月入库材料</div><div class="v num">14<em>份</em></div><div class="foot">较上月 +3</div></div>
+          <div class="kpi"><div class="k">待校验条目</div><div class="v num">5</div><div class="foot warn">2 条缺原文出处</div></div>
+          <div class="kpi"><div class="k">缺月份标签</div><div class="v num">3</div><div class="foot warn">补齐后才能按月归集</div></div>
+          <div class="kpi"><div class="k">本周新增</div><div class="v num">6</div><div class="foot up">已校验 4 份</div></div>
+        </section>
+        <div class="panel">
+          <header>
+            <div class="tabs"><button class="on">全部材料</button><button>最近引用</button><button>回收站</button></div>
+            <span class="meta" id="mat2Count">共 86 份材料 · 示例数据</span>
+            <div class="state-tools">
+              <button class="btn tiny" id="matImport">粘贴 / 导入 TXT·MD</button>
+            </div>
+          </header>
+          <div class="filters">
+            <button class="chip on fchip">全部类型</button>
+            <button class="chip fchip">项目进展</button>
+            <button class="chip fchip">会议纪要</button>
+            <button class="chip fchip">客户往来</button>
+            <button class="chip fchip">合同商务</button>
+            <button class="chip fchip">人事行政</button>
+            <select class="field" style="min-width:140px"><option>全部月份</option><option>2026-10</option><option>2026-09</option><option>未标记月份</option></select>
+            <input class="field" placeholder="搜标题 / 正文关键词" style="flex:1;min-width:180px">
+          </div>
+          <table id="mat2Table">
+            <thead><tr><th>材料标题</th><th>类型</th><th>期间</th><th>标签</th><th class="n">字数</th><th>校验状态</th><th>引用次数</th><th>更新时间</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody>
+              <tr><td>三季度生产运行分析会纪要</td><td>会议纪要</td><td>2026-09</td><td>生产 · 质量</td><td class="n">1,480</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td class="n">6</td><td>10-28 16:20</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>10 月销售合同执行清单（前 5 项）</td><td>合同商务</td><td>2026-10</td><td>客户 · 合同</td><td class="n">2,260</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td class="n">4</td><td>10-27 11:05</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>重点设备维保月报</td><td>项目进展</td><td>2026-10</td><td>设备 · 维保</td><td class="n">980</td><td><span class="tag warn"><span class="dot warn"></span>待补充</span></td><td class="n">2</td><td>10-26 09:42</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>客户 A 三季度回款沟通记录</td><td>客户往来</td><td>未标记月份</td><td>客户</td><td class="n">640</td><td><span class="tag warn"><span class="dot warn"></span>缺月份</span></td><td class="n">1</td><td>10-25 15:18</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>新厂房搬迁进度周报（第 4 期）</td><td>项目进展</td><td>2026-10</td><td>基建 · 搬迁</td><td class="n">1,130</td><td><span class="tag bad"><span class="dot bad"></span>来源待核</span></td><td class="n">0</td><td>10-21 10:12</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>安全培训签到与整改台账</td><td>人事行政</td><td>2026-10</td><td>安全 · 培训</td><td class="n">860</td><td><span class="tag warn"><span class="dot warn"></span>待补充</span></td><td class="n">1</td><td>10-16 13:08</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>供应商季度比价汇总</td><td>合同商务</td><td>2026-09</td><td>采购 · 供应商</td><td class="n">2,040</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td class="n">3</td><td>10-18 14:55</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+              <tr><td>9 月职能部门绩效完成通报</td><td>人事行政</td><td>2026-09</td><td>人事</td><td class="n">1,720</td><td><span class="tag up"><span class="dot up"></span>已校验</span></td><td class="n">2</td><td>10-22 17:30</td><td class="ops"><button class="btn tiny">查看</button><button class="btn tiny">引用</button></td></tr>
+            </tbody>
+          </table>
+          <div class="pager">
+            <span class="info">第 1–8 条 / 共 86 份</span>
+            <button class="btn tiny">上一页</button><button class="btn tiny cur">1</button><button class="btn tiny">2</button><button class="btn tiny">3</button><button class="btn tiny">…</button><button class="btn tiny">11</button><button class="btn tiny">下一页</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 视图：草稿编辑（三栏编辑器） ══ -->
+      <div class="view" data-view="editor">
+        <div class="steps">
+          <span class="step" data-step="1"><span class="no">1</span>准备材料</span><i>→</i>
+          <span class="step" data-step="2"><span class="no">2</span>大纲确认</span><i>→</i>
+          <span class="step" data-step="3"><span class="no">3</span>逐页核对</span><i>→</i>
+          <span class="step" data-step="4"><span class="no">4</span>模板匹配</span><i>→</i>
+          <span class="step" data-step="5"><span class="no">5</span>导出 PPTX</span>
+        </div>
+        <!-- 步骤① 准备材料：选范围 + 圈选 -->
+        <div class="ep-panel" data-panel="1">
+          <div class="ep-grid">
+            <section class="ep-section">
+              <header>整理范围<span class="meta">决定喂给初稿的材料集合</span></header>
+              <div class="ep-body">
+                <div class="filter-row"><span class="lab">期间</span><span class="chip on">2026 · 10 月</span><span class="chip">三季度</span><span class="chip">全年</span></div>
+                <div class="filter-row"><span class="lab">类型</span><span class="chip on">全部类型</span><span class="chip">项目进展</span><span class="chip">会议纪要</span><span class="chip">客户往来</span><span class="chip">合同商务</span></div>
+                <div class="filter-row"><span class="lab">场合</span><span class="chip on">月度管理会</span><span class="chip">专项汇报</span></div>
+                <div class="ep-note">范围只做筛选与圈选，不修改原文；未圈选任何材料时不能进入下一步。</div>
+              </div>
+            </section>
+            <section class="ep-section">
+              <header>候选材料<span class="meta">已圈选 4 份</span></header>
+              <div class="ep-body">
+                <label class="ck-item on"><input type="checkbox" checked><div><b>三季度生产运行分析会纪要</b><p>项目进展 · 2026-10-18 · 冷却工艺良品率提升至 98.1%</p></div></label>
+                <label class="ck-item on"><input type="checkbox" checked><div><b>重点设备维保月报</b><p>设备保障 · 2026-10-20 · 3 号注塑机按期维保，无非计划停机</p></div></label>
+                <label class="ck-item on"><input type="checkbox" checked><div><b>客户 A 三季度回款沟通记录</b><p>客户往来 · 2026-10-16 · 三季度回款 82%，尾款 11 月对账结清</p></div></label>
+                <label class="ck-item on"><input type="checkbox" checked><div><b>新厂房搬迁进度周报（第 4 期）</b><p>项目进展 · 2026-10-22 · 主体装修 70%，供电未到位存延期风险</p></div></label>
+                <label class="ck-item"><input type="checkbox"><div><b>上月质量问题闭环台账</b><p>质量管控 · 2026-09-28 · 可选补充，当前未纳入本次初稿</p></div></label>
+                <label class="ck-item"><input type="checkbox"><div><b>9 月生产例会纪要</b><p>会议纪要 · 2026-09-25 · 跨月材料，默认不纳入本月初稿</p></div></label>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- 步骤② 大纲确认 -->
+        <div class="ep-panel" data-panel="2">
+          <div class="ep-grid-3">
+            <section class="ep-section">
+              <header>初稿大纲<span class="meta">规则整理 · 可增删排序</span></header>
+              <div class="ep-body">
+                <div class="ol-node"><div class="h">一、重点进展<span class="cnt">3 点 · 来源 ×4</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div><div class="sub">生产质量、设备保障、基建搬迁，覆盖本月主要产出。</div></div>
+                <div class="ol-node"><div class="h">二、问题风险<span class="cnt">2 点 · 来源 ×2</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div><div class="sub">回款尾款风险、搬迁供电不确定，均带来源角标。</div></div>
+                <div class="ol-node"><div class="h">三、下期计划<span class="cnt">2 点 · 待人工确认</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div><div class="sub">由上月计划延续生成，需人工确认后转为正式条目。</div></div>
+                <button class="btn outline-accent tiny">+ 新增章节</button>
+              </div>
+            </section>
+            <section class="ep-section">
+              <header>大纲页结构<span class="meta">P1–P5</span></header>
+              <ul class="outline">
+                <li><span class="n">P1</span>封面 · 要点 0</li>
+                <li class="on"><span class="n">P2</span>重点进展 · 3 点 · 已匹配材料</li>
+                <li><span class="n">P3</span>问题风险 · 2 点 · 1 条待补</li>
+                <li><span class="n">P4</span>下期计划 · 2 点 · 待确认</li>
+                <li><span class="n">P5</span>结束页 · 要点 0</li>
+              </ul>
+            </section>
+          </div>
+          <div class="ep-note">确认大纲后进入逐页核对；章节增删会同步更新右侧大纲页要点数，不改动已圈选材料原文。</div>
+        </div>
+
+        <!-- 步骤③ 逐页核对（现有三栏） -->
+        <div class="ep-panel on" data-panel="3">
+        <div class="ed-wrap">
+          <div class="ed-col">
+            <header>依据材料<span class="meta">4 份已圈选</span></header>
+            <div class="src-item"><b>三季度生产运行分析会纪要</b><p>「冷却工艺改进后，单班良品率由 96.2% 提升至 98.1%，设备停机时长下降……」</p><button class="btn tiny" data-open-drawer="1">跳转原文</button></div>
+            <div class="src-item"><b>重点设备维保月报</b><p>「注塑机 3 号月度维保完成，易损件按周期更换，未发生非计划停机。」</p><button class="btn tiny" data-open-drawer="1">跳转原文</button></div>
+            <div class="src-item"><b>客户 A 三季度回款沟通记录</b><p>「三季度回款 82%，尾款约定 11 月上旬对账后结清。」</p><button class="btn tiny" data-open-drawer="1">跳转原文</button></div>
+            <div class="src-item"><b>新厂房搬迁进度周报（第 4 期）</b><p>「主体装修完成 70%，设备进场排期待供电确认，存在延期风险。」</p><button class="btn tiny" data-open-drawer="1">跳转原文</button></div>
+          </div>
+
+          <div class="ed-col">
+            <header>章节条目<span class="meta">AI 初稿 · 可逐条修改排序</span></header>
+            <div class="chap">
+              <div class="chap-title">一、重点进展<span class="cnt">3 条 · 来源 ×4</span></div>
+              <div class="entry"><div class="txt">生产质量：冷却工艺优化后单班良品率提升至 98.1%，月度质量事故零发生。</div><div class="meta"><span class="tag up"><span class="dot up"></span>来源已校验</span><span>引用角标 [1][2]</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div></div>
+              <div class="entry"><div class="txt">设备保障：3 号注塑机按期完成月度维保，全月无非计划停机，维保备件库存达标。</div><div class="meta"><span class="tag up"><span class="dot up"></span>来源已校验</span><span>引用角标 [3]</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div></div>
+              <div class="entry warn"><div class="txt">基建搬迁：新厂房主体装修完成约 70%，设备进场节奏取决于供电到位时间。</div><div class="meta"><span class="tag warn"><span class="dot warn"></span>待补充时间点</span><span>引用角标 [4]</span><span class="ops"><button class="btn tiny">补来源</button><button class="btn tiny">删除</button></span></div></div>
+
+              <div class="chap-title">二、问题风险<span class="cnt">2 条 · 来源 ×2</span></div>
+              <div class="entry"><div class="txt">回款风险：客户 A 尾款尚未结清，需在 11 月对账节点前跟进，避免跨年挂账。</div><div class="meta"><span class="tag up"><span class="dot up"></span>来源已校验</span><span>引用角标 [3]</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div></div>
+              <div class="entry warn"><div class="txt">搬迁供电：正式用电批复时间未定，若延期将影响设备进场与投产排期。</div><div class="meta"><span class="tag warn"><span class="dot warn"></span>待补确认结论</span><span>引用角标 [4]</span><span class="ops"><button class="btn tiny">补来源</button><button class="btn tiny">删除</button></span></div></div>
+
+              <div class="chap-title">三、下期计划<span class="cnt">2 条 · 待人工确认</span></div>
+              <div class="entry"><div class="txt">完成搬迁供电对接与设备进场排期表，形成可执行节点清单。</div><div class="meta"><span class="tag warn"><span class="dot warn"></span>草稿生成 · 待确认</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div></div>
+              <div class="entry"><div class="txt">11 月质量例会前补齐设备维保台账，形成月度趋势对比。</div><div class="meta"><span class="tag warn"><span class="dot warn"></span>草稿生成 · 待确认</span><span class="ops"><button class="btn tiny">上移</button><button class="btn tiny">删除</button></span></div></div>
+            </div>
+          </div>
+
+          <div class="ed-col">
+            <header>大纲页<span class="meta">匹配：三章节标准版</span></header>
+            <ul class="outline">
+              <li><span class="n">P1</span>封面 · 要点 0</li>
+              <li class="on"><span class="n">P2</span>重点进展 · 3 点 · 已匹配材料</li>
+              <li><span class="n">P3</span>问题风险 · 2 点 · 1 条待补</li>
+              <li><span class="n">P4</span>下期计划 · 2 点 · 待确认</li>
+              <li><span class="n">P5</span>结束页 · 要点 0</li>
+            </ul>
+          </div>
+        </div>
+        </div>
+
+        <!-- 步骤④ 模板匹配（规则打分 A 层） -->
+        <div class="ep-panel" data-panel="4">
+          <div class="match-banner">按当前大纲页需求规则打分，推荐 Top1「月度管理会标准版」，另有 2 个备选可替换；本期为<span>卡片 + 规则匹配（A 层）</span>，不做真实母版无损填充。</div>
+          <div class="tpl-cards" style="margin-top:14px">
+            <div class="tpl-card rec">
+              <div class="tt">月度管理会标准版 <span class="tag up">Top1 · 推荐</span></div>
+              <div class="desc">封面 + 重点进展三要点 + 问题风险 + 下期计划，适配常规月度汇报。</div>
+              <div class="outline-mini"><span>P1 封面</span><span>P2 重点进展 · 3 点</span><span>P3 问题风险 · 2 点</span><span>P4 下期计划 · 2 点</span><span>P5 结束页</span></div>
+              <div class="foot"><button class="btn primary tiny">用于本稿</button><span class="score">匹配 92%</span></div>
+            </div>
+            <div class="tpl-card">
+              <div class="tt">生产运营汇报版</div>
+              <div class="desc">含产能/良品率趋势占位，偏生产数据汇报，要点位更多。</div>
+              <div class="outline-mini"><span>P1 封面</span><span>P2 核心指标看板</span><span>P3 重点进展 · 4 点</span><span>P4 问题与改进</span></div>
+              <div class="foot"><button class="btn outline-accent tiny">替换为备选</button><span class="score">匹配 78%</span></div>
+            </div>
+            <div class="tpl-card">
+              <div class="tt">项目周报简报版</div>
+              <div class="desc">单页高密度要点式，适合短平快周报，章节较少。</div>
+              <div class="outline-mini"><span>P1 封面</span><span>P2 本周进展</span><span>P3 风险与下周计划</span></div>
+              <div class="foot"><button class="btn outline-accent tiny">替换为备选</button><span class="score">匹配 64%</span></div>
+            </div>
+          </div>
+          <div class="ep-note">无适配卡片时，可把当前大纲保存为新模板元数据卡（仅标题、标签、大纲结构），不存储真实母版文件。</div>
+        </div>
+
+        <!-- 步骤⑤ 导出 PPTX -->
+        <div class="ep-panel" data-panel="5">
+          <div class="ep-grid-3">
+            <section class="ep-section">
+              <header>导出设置<span class="meta">PPTX · 服务端 pptxgenjs 生成</span></header>
+              <div class="ep-body">
+                <div class="filter-row"><span class="lab">导出范围</span><span class="chip on">整本 5 页</span><span class="chip">仅重点进展章节</span></div>
+                <div class="filter-row"><span class="lab">使用模板</span><span class="chip on">月度管理会标准版 · 92%</span></div>
+                <div class="filter-row"><span class="lab">文件名</span><span class="chip on">2026-10 月度管理会汇报 · 初稿.pptx</span></div>
+                <div class="exp-row"><span class="n">P1</span>封面 · 标题与汇报期间<span class="pts">要点 0</span></div>
+                <div class="exp-row"><span class="n">P2</span>重点进展 · 3 条（含来源角标）<span class="pts">3 点</span></div>
+                <div class="exp-row"><span class="n">P3</span>问题风险 · 2 条（1 条待补）<span class="pts">2 点</span></div>
+                <div class="exp-row"><span class="n">P4</span>下期计划 · 2 条（待确认）<span class="pts">2 点</span></div>
+                <div class="exp-row"><span class="n">P5</span>结束页 · 致谢<span class="pts">要点 0</span></div>
+                <div class="ep-note">本期不做付费水印与会员限制，仅预留 plan/水印位；导出文件可在 PowerPoint / WPS 二次编辑，不锁死版式。</div>
+              </div>
+            </section>
+            <section class="ep-section">
+              <header>导出前检查<span class="meta">未满足则正式导出禁用</span></header>
+              <div class="ep-body">
+                <div class="ep-check"><span class="dot up"></span>来源已校验 6 / 8<span class="meta">通过</span></div>
+                <div class="ep-check"><span class="dot warn"></span>待补充内容 2 条未补齐<span class="meta">阻塞</span></div>
+                <div class="ep-check"><span class="dot up"></span>引用角标完整、无越界引用<span class="meta">通过</span></div>
+                <div class="ep-check"><span class="dot up"></span>草稿已保存、版本号已记录<span class="meta">通过</span></div>
+                <div class="ep-check"><span class="dot warn"></span>若使用 AI 生成，外发材料范围需单独确认<span class="meta">待确认</span></div>
+                <div class="ep-note">失败不丢稿：生成异常时保留当前草稿与版本，提示重试或切回本地规则整理，不重复发起收费调用。</div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="ed-bar">
+          <span class="tip" id="edTip"></span>
+          <button class="btn" id="edSave">保存草稿</button>
+          <button class="btn" id="edPrev">上一步</button>
+          <button class="btn primary" id="edNext">确认并进入模板匹配</button>
+        </div>
+      </div>
+
+      <!-- ══ 视图：模板库（规则匹配 A 层） ══ -->
+      <div class="view" data-view="tpl">
+        <div class="panel">
+          <header>
+            <div class="tabs"><button class="on">内置模板卡</button><button>我的模板（私有）</button></div>
+            <span class="meta">仅做大纲标签与结构匹配，不做母版无损套版</span>
+            <div class="state-tools"><button class="btn tiny" id="tplNew">+ 新建模板卡</button></div>
+          </header>
+          <div class="match-banner">
+            <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M224,128a96,96,0,1,1-96-96A96.11,96.11,0,0,1,224,128Zm-88-40a8,8,0,0,0,16,0V136a8,8,0,0,0,16,0V88a8,8,0,0,0-16,0Zm0,72a8,8,0,1,0,8,8A8,8,0,0,0,136,160Z"/></svg>
+            <span>当前 10 月稿大纲匹配：Top1 推荐 <b>「月度例会 · 三章节标准版」</b>，另有 2 个备选可一键替换。</span>
+          </div>
+          <div class="filters">
+            <button class="chip on fchip">月度管理会</button>
+            <button class="chip fchip">年度总结</button>
+            <button class="chip fchip">项目复盘</button>
+            <button class="chip fchip">述职汇报</button>
+          </div>
+        </div>
+        <div class="tpl-cards">
+          <div class="tpl-card rec">
+            <div class="tt">月度例会 · 三章节标准版<span class="tag up" style="margin-left:auto">Top1 推荐</span></div>
+            <div class="desc">固定「重点进展 / 问题风险 / 下期计划」三段，适配常规月度管理会。</div>
+            <div class="outline-mini"><span>· P2 重点进展（3–4 点）</span><span>· P3 问题风险（2–3 点）</span><span>· P4 下期计划（2–3 点）</span></div>
+            <div class="foot"><span class="tag">月度管理会</span><span class="score">匹配度 92%</span><button class="btn tiny outline-accent" data-open-draft="1">用于本稿</button></div>
+          </div>
+          <div class="tpl-card">
+            <div class="tt">生产月度简报</div>
+            <div class="desc">产量 / 质量 / 设备三条线并列，适合生产口单独汇报。</div>
+            <div class="outline-mini"><span>· 产量完成与环比</span><span>· 质量指标与异常</span><span>· 设备运行与维保</span></div>
+            <div class="foot"><span class="tag">生产专项</span><span class="score">匹配度 74%</span><button class="btn tiny">查看大纲</button></div>
+          </div>
+          <div class="tpl-card">
+            <div class="tt">综合部汇总稿</div>
+            <div class="desc">多部门口径合并，按职能分块，适合综合部牵头汇总。</div>
+            <div class="outline-mini"><span>· 行政 / 人事 / 后勤</span><span>· 采购 / 财务协同</span><span>· 跨部门待办清单</span></div>
+            <div class="foot"><span class="tag">综合汇总</span><span class="score">匹配度 68%</span><button class="btn tiny">查看大纲</button></div>
+          </div>
+          <div class="tpl-card">
+            <div class="tt">年度总结 · 成果盘点</div>
+            <div class="desc">全年成果 + 关键数据 + 下年方向，P1 子集本期仅出清单。</div>
+            <div class="outline-mini"><span>· 全年关键指标回顾</span><span>· 重点项目里程碑</span><span>· 下年度方向</span></div>
+            <div class="foot"><span class="tag">年度总结</span><span class="score">匹配度 55%</span><button class="btn tiny">查看大纲</button></div>
+          </div>
+          <div class="tpl-card">
+            <div class="tt">项目复盘 · 经验教训</div>
+            <div class="desc">目标 / 过程 / 偏差 / 改进四段式，适合专项结项复盘。</div>
+            <div class="outline-mini"><span>· 目标与结果对比</span><span>· 偏差原因分析</span><span>· 可复用经验</span></div>
+            <div class="foot"><span class="tag">项目复盘</span><span class="score">匹配度 49%</span><button class="btn tiny">查看大纲</button></div>
+          </div>
+          <div class="tpl-card">
+            <div class="tt">述职汇报 · 个人版</div>
+            <div class="desc">岗位职责 / 产出 / 不足 / 规划，单人述职结构。</div>
+            <div class="outline-mini"><span>· 岗位职责回顾</span><span>· 主要产出数据</span><span>· 下阶段规划</span></div>
+            <div class="foot"><span class="tag">述职</span><span class="score">匹配度 41%</span><button class="btn tiny">查看大纲</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ 视图：年度回顾 + 实体表 ══ -->
+      <div class="view" data-view="year">
+        <div class="year-head">
+          <div class="panel">
+            <header>2026 年材料覆盖情况<span class="meta">颜色越深 = 当月入库材料越多 · 示例数据</span></header>
+            <div class="heat">
+              <div class="hm l1">1月<br>2</div><div class="hm l0">2月<br>1</div><div class="hm l2">3月<br>4</div>
+              <div class="hm l1">4月<br>3</div><div class="hm l2">5月<br>5</div><div class="hm l1">6月<br>4</div>
+              <div class="hm l2">7月<br>6</div><div class="hm l2">8月<br>5</div><div class="hm l3">9月<br>8</div>
+              <div class="hm l3">10月<br>9</div><div class="hm">11月<br>—</div><div class="hm">12月<br>—</div>
+            </div>
+            <div class="legend"><span><i style="background:var(--panel-2)"></i>无材料</span><span><i style="background:rgba(108,92,231,.16)"></i>1–3 份</span><span><i style="background:rgba(108,92,231,.34)"></i>4–6 份</span><span><i style="background:var(--accent)"></i>7 份以上</span></div>
+          </div>
+          <div class="panel">
+            <header>年度统计</header>
+            <div class="todo-list">
+              <div class="todo"><span class="dot up"></span>全年成稿<span class="num" style="margin-left:auto">11 份</span></div>
+              <div class="todo"><span class="dot up"></span>累计入库材料<span class="num" style="margin-left:auto">142 份</span></div>
+              <div class="todo"><span class="dot warn"></span>已覆盖月份<span class="num" style="margin-left:auto">10 / 12</span></div>
+              <div class="todo"><span class="dot bad"></span>缺口月份<span class="num" style="margin-left:auto">11、12 月</span></div>
+              <div class="todo"><span class="dot up"></span>已确认实体<span class="num" style="margin-left:auto">人员 12 · 客户 8 · 合同 6</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <header>实体表（AI 仅给候选，人工确认后入库）<span class="meta">来源可逐条回溯</span>
+            <div class="state-tools">
+              <button class="chip on fchip">人员</button><button class="chip fchip">客户</button><button class="chip fchip">合同 / 项目</button>
+              <button class="btn tiny" id="entAdd">+ 手工新增</button>
+            </div>
+          </header>
+          <div class="ent-row"><span class="dot up"></span><div>刘国涛 · 行政综合岗 · 在职<div class="sub">变动记录 2026-03 · 来源 ×3 · 已确认</div></div><div class="ops"><button class="btn tiny">查看来源</button></div></div>
+          <div class="ent-row"><span class="dot up"></span><div>某客户公司 · 合作中<div class="sub">最近接触 2026-10 · 来源 ×2 · 已确认</div></div><div class="ops"><button class="btn tiny">查看来源</button></div></div>
+          <div class="ent-row"><span class="dot warn"></span><div>「新厂房搬迁项目」（AI 候选）<div class="sub">来源 ×1 · 待人工确认；确认前不进入正式实体清单</div></div><div class="ops"><button class="btn tiny" id="entConfirm">确认入库</button><button class="btn tiny">忽略</button></div></div>
+        </div>
+      </div>
+
+      <!-- ══ 视图：设置与 Key ══ -->
+      <div class="view" data-view="settings">
+        <div class="set-grid">
+          <div class="set-group">
+            <header>模型与生成</header>
+            <div class="set-row">
+              <div class="lab">主模型 · DeepSeek <span class="status-pill ok"><span class="dot up"></span>已配置</span></div>
+              <div class="desc">Key 掩码显示、不明文回显，不写入日志与备份；外发前弹窗确认材料范围。</div>
+              <div class="ctl"><span class="key-mask">sk-••••••••••••3f2a</span><button class="btn" id="keyTest">连通测试</button><button class="btn">重新配置</button></div>
+            </div>
+            <div class="set-row">
+              <div class="lab">第二模型（可选，本期预留）<span class="status-pill warn"><span class="dot warn"></span>未配置</span></div>
+              <div class="desc">预留切换位，本期不做多模型调用与自动路由。</div>
+              <div class="ctl"><button class="btn" id="keySecond">预留配置</button></div>
+            </div>
+            <div class="set-row">
+              <div class="lab">本地规则模式</div>
+              <div class="desc">移除 Key 后退回本地模式：仅做大纲建议与材料归集，不向外部模型发送任何原文。</div>
+              <div class="ctl"><button class="btn" id="keyRemove">移除 Key，退回本地模式</button></div>
+            </div>
+          </div>
+
+          <div class="set-group">
+            <header>数据与备份</header>
+            <div class="set-row">
+              <div class="lab">存储用量</div>
+              <div class="desc">材料原文、草稿版本与备份均存于账号空间；备份文件不含密钥字段。</div>
+              <div class="usage"><i></i></div>
+              <div class="desc" style="margin-top:6px">已用约 38% · 含材料 142 份、草稿版本 23 个</div>
+            </div>
+            <div class="set-row">
+              <div class="lab">备份与恢复</div>
+              <div class="desc">导出个人数据 JSON 用于本地留档；导入备份可恢复材料与草稿结构。</div>
+              <div class="ctl"><button class="btn" id="backupExport">导出备份 JSON</button><button class="btn" id="backupImport">导入备份恢复</button></div>
+            </div>
+          </div>
+
+          <div class="set-group">
+            <header>账号与偏好</header>
+            <div class="set-row">
+              <div class="lab">账号邮箱</div>
+              <div class="desc">示例：liugt@company.com · 角色：综合部管理员（演示数据）</div>
+              <div class="ctl"><button class="btn">修改资料</button><button class="btn">修改密码</button></div>
+            </div>
+            <div class="set-row">
+              <div class="lab">编辑偏好</div>
+              <div class="desc">自动保存草稿（每 90 秒）、条目无来源时高亮「待补充」、导出前强制一致性校验。</div>
+            </div>
+          </div>
+
+          <div class="set-group">
+            <header>隐私与付费预留</header>
+            <div class="set-row">
+              <div class="lab">外发范围确认</div>
+              <div class="desc">调用外部模型前，单独弹窗确认本次发送的材料范围；未确认不发送。本地规则模式不外发任何原文。</div>
+            </div>
+            <div class="set-row">
+              <div class="lab">会员 / 套餐位 <span class="tag warn" style="margin-left:auto">本期不接支付</span></div>
+              <div class="desc">仅预留水印位与 plan 字段，不做会员购买与支付流程；后续如需升级再单独接入。</div>
+              <div class="ctl"><button class="btn disabled" disabled>套餐升级（预留）</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ══ 新建月度汇报弹窗 ══ -->
+<div class="scrim" id="scrim"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <h3>新建月度汇报稿</h3>
+  <div class="hint">三步：选期间 → 选材料范围 → 选推荐模板卡；生成后进入三栏编辑器逐字校验。</div>
+  <div class="fld">
+    <label>汇报期间</label>
+    <select><option>2026 年 10 月</option><option>2026 年 9 月</option><option>2026 年 Q3 汇总</option></select>
+  </div>
+  <div class="fld">
+    <label>材料范围</label>
+    <div class="chips" style="margin-top:0">
+      <button class="chip on">已入库全部材料</button><button class="chip">近 30 天材料</button><button class="chip">手动挑选</button>
+    </div>
+  </div>
+  <div class="fld">
+    <label>推荐模板卡 Top3（按大纲标签匹配）</label>
+    <div class="tpl-grid">
+      <div class="tpl on">月度例会 · 三章节<small>重点进展 / 风险 / 计划</small></div>
+      <div class="tpl">生产月度简报<small>产量 / 质量 / 设备</small></div>
+      <div class="tpl">综合部汇总稿<small>多部门口径合并</small></div>
+    </div>
+  </div>
+  <div class="acts">
+    <button class="btn" data-close>取消</button>
+    <button class="btn primary" id="confirmNew">开始整理初稿</button>
+  </div>
+</div>
+
+<!-- ══ AI 助手抽屉 ══ -->
+<div class="drawer-scrim" id="drawerScrim"></div>
+<aside class="drawer" id="drawer">
+  <div class="dh"><b>AI 助手</b><span style="color:var(--ink-3);font-size:12px">仅调用白名单动作，不外发原文</span>
+    <span class="sp"></span>
+    <button class="btn tiny" data-close-drawer>
+      <svg class="ic" viewBox="0 0 256 256" fill="currentColor"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg>
+    </button>
+  </div>
+  <div class="msgs">
+    <div class="msg bot">你好，我是汇报助手。先告诉我这次汇报的月份和侧重点，我会在材料库里圈选可用条目，再追问你至少 3 个需要确认的槽位。
+      <div class="meta">10 月例会 · 助手</div></div>
+    <div class="msg me">整理 10 月管理会，风险部分突出设备维保。</div>
+    <div class="msg bot">已圈出 14 份候选材料。请确认：①章节口径是否沿用「重点进展 / 问题风险 / 下期计划」；②风险部分是否只保留设备类；③导出格式是否 PPTX。
+      <div class="meta">3 个待确认选项见下方快捷 chips</div></div>
+  </div>
+  <div class="chips">
+    <button class="chip">沿用三章节口径</button>
+    <button class="chip">风险只看设备类</button>
+    <button class="chip">先出初稿再改</button>
+  </div>
+  <div class="input">
+    <input placeholder="输入补充说明，回车发送">
+    <button class="btn primary" id="drawerSend">发送</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var scrim=document.getElementById('scrim'), modal=document.getElementById('modal');
+  var dScrim=document.getElementById('drawerScrim'), drawer=document.getElementById('drawer');
+  var toastEl=document.getElementById('toast'), toastTimer=null;
+
+  function toast(msg){
+    toastEl.textContent=msg; toastEl.classList.add('on');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){toastEl.classList.remove('on');},1800);
+  }
+  function openModal(on){ scrim.classList.toggle('on',on); modal.classList.toggle('on',on); }
+  function openDrawer(on){ dScrim.classList.toggle('on',on); drawer.classList.toggle('on',on); }
+
+  scrim.onclick=function(){openModal(false);};
+  dScrim.onclick=function(){openDrawer(false);};
+  document.querySelectorAll('[data-close]').forEach(function(b){b.onclick=function(){openModal(false);};});
+  document.querySelectorAll('[data-close-drawer]').forEach(function(b){b.onclick=function(){openDrawer(false);};});
+  ['homePrimary','newDraft2'].forEach(function(id){var e=document.getElementById(id);if(e)e.onclick=function(){openModal(true);};});
+  document.getElementById('openDrawer').onclick=function(){openDrawer(true);};
+  document.querySelectorAll('[data-open-drawer]').forEach(function(a){a.onclick=function(e){e.preventDefault();openDrawer(true);};});
+
+  document.getElementById('confirmNew').onclick=function(){openModal(false);goView('editor');toast('已创建 10 月稿，进入三栏编辑器逐字校验');};
+  document.getElementById('importBtn').onclick=function(){toast('本期支持粘贴与 TXT/MD 导入；Word/PDF 解析后置');};
+  document.getElementById('askGo').onclick=function(){openDrawer(true);toast('已带入指令，请在抽屉里确认槽位选项');};
+  document.getElementById('drawerSend').onclick=function(){toast('选项已记录，待初稿生成后同步到编辑器');};
+
+  /* 新视图：筛选 chip 单选（视觉态，不影响主表筛选逻辑） */
+  document.querySelectorAll('.fchip').forEach(function(c){
+    c.onclick=function(){
+      var sib=c.parentElement.querySelectorAll('.fchip');
+      sib.forEach(function(x){x.classList.remove('on');}); c.classList.add('on');
+    };
+  });
+  /* 新视图按钮反馈 */
+  ['matImport','tplNew','edSave','entAdd','keySecond','backupExport','backupImport'].forEach(function(id){
+    var e=document.getElementById(id);
+    if(e)e.onclick=function(){toast({
+      matImport:'本期支持粘贴与 TXT/MD 导入；Word/PDF 解析后置',
+      tplNew:'仅支持元数据级新建模板卡，不做自由排版',
+      edSave:'草稿已自动保存到账号空间',
+      entAdd:'手工新增实体（演示态，保存后进入待确认区）',
+      keySecond:'第二模型本期仅预留，不启用多模型路由',
+      backupExport:'备份 JSON 导出中（演示态，不含密钥字段）',
+      backupImport:'选择备份文件后恢复结构（演示态）'
+    }[id]);};
+  });
+  /* ── 编辑器五步工作流（准备材料 → 大纲确认 → 逐页核对 → 模板匹配 → 导出） ── */
+  var edStep=3;
+  var edTips={1:'先选期间与类型，勾选纳入初稿的材料；至少 1 份才可下一步。',2:'确认三章节结构与要点数，确认后进入逐页核对。',3:'条目人工修改后「已确认」失效；导出前须补齐 2 条待补充内容。',4:'选用模板后进入导出；无适配卡时可仅保存为新模板元数据卡。',5:'存在 2 条待补充内容，正式导出前建议补齐；当前为下载占位演示。'};
+  var edLabels={1:'生成初稿大纲',2:'确认大纲，进入核对',3:'确认并进入模板匹配',4:'确认选用，进入导出',5:'导出 PPTX（演示占位）'};
+  function renderStep(n){
+    edStep=n;
+    document.querySelectorAll('.view[data-view="editor"] .step').forEach(function(s){
+      var idx=parseInt(s.dataset.step,10);
+      s.classList.toggle('done', idx<n);
+      s.classList.toggle('cur', idx===n);
+      s.querySelector('.no').textContent = idx<n?'✓':idx;
+    });
+    document.querySelectorAll('.ep-panel').forEach(function(p){ p.classList.toggle('on', p.dataset.panel===String(n)); });
+    var prev=document.getElementById('edPrev');
+    if(prev){ prev.disabled=(n===1); prev.classList.toggle('disabled',n===1); }
+    var next=document.getElementById('edNext');
+    if(next){ next.textContent=edLabels[n]; }
+    var tip=document.getElementById('edTip');
+    if(tip){ tip.textContent=edTips[n]; }
+  }
+  document.querySelectorAll('.view[data-view="editor"] .step').forEach(function(s){
+    s.onclick=function(){ renderStep(parseInt(s.dataset.step,10)); };
+  });
+  var edPrev=document.getElementById('edPrev');
+  if(edPrev)edPrev.onclick=function(){ if(edStep>1)renderStep(edStep-1); };
+  var edNext=document.getElementById('edNext');
+  if(edNext)edNext.onclick=function(){
+    if(edStep<5){ renderStep(edStep+1); }
+    else{ toast('PPTX 导出为演示占位：正式由服务端 pptxgenjs 生成（W3 落地）'); }
+  };
+  renderStep(3);
+  var keyTest=document.getElementById('keyTest');
+  if(keyTest)keyTest.onclick=function(){toast('连通测试通过（示例），Key 已掩码保存');};
+  var keyRemove=document.getElementById('keyRemove');
+  if(keyRemove)keyRemove.onclick=function(){toast('已移除 Key，界面切换为本地规则模式（示例）');};
+  var entConfirm=document.getElementById('entConfirm');
+  if(entConfirm)entConfirm.onclick=function(){entConfirm.closest('.ent-row').querySelector('.dot').className='dot up';toast('候选实体已确认入库');};
+
+  /* ── 登录 / 注册屏（P1） ── */
+  var authMode='login';
+  var auErr=document.getElementById('authErr');
+  function setAuthErr(msg){ if(!auErr)return; if(msg){auErr.textContent=msg;auErr.classList.add('on');} else {auErr.classList.remove('on');} }
+  function markField(wrapId, tipId, msg){
+    var w=document.getElementById(wrapId), tip=document.getElementById(tipId);
+    if(!w)return;
+    if(msg){ w.classList.add('err'); if(tip){tip.textContent=msg;} }
+    else { w.classList.remove('err'); if(tip){tip.textContent='';} }
+  }
+  function clearAllFieldErr(){
+    markField('auEmailWrap','auEmailTip',''); markField('auPwdWrap','auPwdTip',''); markField('auPwd2Wrap','auPwd2Tip','');
+  }
+  function switchAuth(mode){
+    authMode=mode;
+    document.getElementById('tabLogin').classList.toggle('on',mode==='login');
+    document.getElementById('tabReg').classList.toggle('on',mode==='reg');
+    document.getElementById('auPwd2Wrap').style.display = mode==='reg'?'':'none';
+    document.getElementById('auSubmit').textContent = mode==='reg'?'注册并进入工作台':'登 录';
+    var w=document.getElementById('auWelcome'), ws=document.getElementById('auWelcomeSub');
+    if(w){w.textContent = mode==='reg'?'创建账号':'欢迎回来';}
+    if(ws){ws.textContent = mode==='reg'?'注册后自动初始化空的材料与草稿空间':'登录后继续整理本月管理会材料';}
+    setAuthErr(null); clearAllFieldErr();
+  }
+  var tabLogin=document.getElementById('tabLogin'); if(tabLogin)tabLogin.onclick=function(){switchAuth('login');};
+  var tabReg=document.getElementById('tabReg'); if(tabReg)tabReg.onclick=function(){switchAuth('reg');};
+  var goReg=document.getElementById('goReg'); if(goReg)goReg.onclick=function(){switchAuth('reg');};
+  var auForget=document.getElementById('auForget'); if(auForget)auForget.onclick=function(){toast('本期不做邮件自助找回，请联系管理员在后台重置密码（演示）');};
+  function bindClear(inputId, wrapId, tipId){
+    var el=document.getElementById(inputId); if(!el)return;
+    el.addEventListener('input',function(){ markField(wrapId,tipId,''); });
+  }
+  bindClear('auEmail','auEmailWrap','auEmailTip');
+  bindClear('auPwd','auPwdWrap','auPwdTip');
+  var auPwd2=document.getElementById('auPwd2');
+  if(auPwd2)auPwd2.addEventListener('input',function(){
+    if(authMode!=='reg')return;
+    var pwd=document.getElementById('auPwd').value;
+    if(this.value && this.value!==pwd){ markField('auPwd2Wrap','auPwd2Tip','两次输入的密码不一致，请重新确认。'); }
+    else { markField('auPwd2Wrap','auPwd2Tip',''); }
+  });
+  var auSubmit=document.getElementById('auSubmit');
+  if(auSubmit)auSubmit.onclick=function(){
+    var email=document.getElementById('auEmail').value.trim();
+    var pwd=document.getElementById('auPwd').value;
+    clearAllFieldErr();
+    if(!email){ markField('auEmailWrap','auEmailTip','请输入工作邮箱。'); setAuthErr('请先填写工作邮箱。'); return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ markField('auEmailWrap','auEmailTip','邮箱格式不正确，例如 name@company.com。'); setAuthErr('请输入正确格式的工作邮箱，例如 name@company.com。'); return; }
+    if(!pwd){ markField('auPwdWrap','auPwdTip','请输入密码。'); setAuthErr('请先填写密码。'); return; }
+    if(pwd.length<6){ markField('auPwdWrap','auPwdTip','密码至少 6 位。'); setAuthErr('密码至少 6 位，请重新输入。'); return; }
+    if(authMode==='reg'){
+      var p2=document.getElementById('auPwd2').value;
+      if(!p2){ markField('auPwd2Wrap','auPwd2Tip','请再次输入密码。'); setAuthErr('请确认密码。'); return; }
+      if(p2!==pwd){ markField('auPwd2Wrap','auPwd2Tip','两次输入的密码不一致。'); setAuthErr('两次输入的密码不一致，请重新确认。'); return; }
+    }
+    setAuthErr(null);
+    var btn=this; btn.disabled=true; btn.textContent='校验中…';
+    setTimeout(function(){
+      btn.disabled=false; btn.textContent = authMode==='reg'?'注册并进入工作台':'登 录';
+      document.body.classList.add('authed');
+      goView('home');
+      toast(authMode==='reg'?'账号已创建（演示），空数据空间已初始化':'登录成功，欢迎回来');
+    },800);
+  };
+  var auLogout=document.getElementById('auLogout');
+  if(auLogout)auLogout.onclick=function(e){
+    e.preventDefault();
+    document.body.classList.remove('authed');
+    document.getElementById('auEmail').value='';
+    document.getElementById('auPwd').value='';
+    var p2=document.getElementById('auPwd2'); if(p2)p2.value='';
+    switchAuth('login');
+  };
+
+  /* 四态切换 */
+  function show(name){
+    document.querySelectorAll('[data-state]').forEach(function(s){
+      s.classList.toggle('on', s.dataset.state===name);
+    });
+  }
+  /* 回到数据态时，tab 与类型筛选一并复位，保证计数和可见行一致 */
+  function resetTabToMat(){
+    document.querySelectorAll('.tabs button').forEach(function(b){b.classList.toggle('on', b.dataset.tab==='mat');});
+    document.getElementById('matTable').style.display='';
+    document.getElementById('draftTable').style.display='none';
+    document.querySelector('.filters').style.display='';
+    document.querySelectorAll('.filters .chip[data-type]').forEach(function(x){x.classList.toggle('on', x.dataset.type==='all');});
+    document.querySelectorAll('#matTable tbody tr').forEach(function(tr){tr.style.display='';});
+    document.getElementById('rowCount').textContent='共 8 条材料 · 示例数据';
+  }
+  document.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){
+    show(b.dataset.go);
+    if(b.dataset.go==='data')resetTabToMat();
+  };});
+
+  /* 类型筛选真过滤 */
+  document.querySelectorAll('.filters .chip[data-type]').forEach(function(c){
+    c.onclick=function(){
+      document.querySelectorAll('.filters .chip[data-type]').forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on');
+      var t=c.dataset.type, shown=0;
+      document.querySelectorAll('#matTable tbody tr').forEach(function(tr){
+        var ok = t==='all' || tr.dataset.type===t;
+        tr.style.display = ok?'':'none'; if(ok)shown++;
+      });
+      document.getElementById('rowCount').textContent = t==='all'
+        ? '共 8 条材料 · 示例数据' : '筛选出 '+shown+' 条材料 · 示例数据';
+    };
+  });
+
+  /* tab 切换 */
+  document.querySelectorAll('.tabs button').forEach(function(btn){
+    btn.onclick=function(){
+      document.querySelectorAll('.tabs button').forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');
+      var mat=btn.dataset.tab==='mat';
+      document.getElementById('matTable').style.display=mat?'':'none';
+      document.getElementById('draftTable').style.display=mat?'none':'';
+      document.querySelector('.filters').style.display=mat?'':'none';
+      if(mat)resetTabToMat();
+      else document.getElementById('rowCount').textContent='共 2 份草稿 · 示例数据';
+    };
+  });
+
+  /* ── 多视图路由 ── */
+  var crumbEl=document.getElementById('crumb'), titleEl=document.getElementById('pageTitle');
+  var segEl=document.getElementById('homeSeg'), primaryEl=document.getElementById('homePrimary');
+  var navMap={'工作台':'home','材料库':'mat','草稿编辑':'editor','模板库':'tpl','年度回顾':'year','设置':'settings'};
+  var viewMeta={
+    home:{crumb:'工作台 / 本月概览',title:'月度汇报工作台',seg:1,primary:1},
+    mat:{crumb:'资料库 / 材料库',title:'材料库',seg:0,primary:0},
+    editor:{crumb:'草稿 / 2026年10月稿',title:'三栏编辑器 · 重点进展 / 问题风险 / 下期计划',seg:0,primary:1},
+    tpl:{crumb:'资料库 / 模板库',title:'模板卡片库（规则匹配 A 层）',seg:0,primary:0},
+    year:{crumb:'资料库 / 年度回顾',title:'年度回顾与实体表',seg:0,primary:0},
+    settings:{crumb:'系统 / 设置',title:'设置与模型 Key',seg:0,primary:0}
+  };
+  function goView(name){
+    document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('on',v.dataset.view===name);});
+    document.querySelectorAll('.side a[data-nav]').forEach(function(a){
+      a.classList.toggle('on', navMap[a.dataset.nav]===name);
+    });
+    var m=viewMeta[name]||viewMeta.home;
+    crumbEl.textContent=m.crumb; titleEl.textContent=m.title;
+    segEl.style.display=m.seg?'':'none';
+    primaryEl.style.display=m.primary?'':'none';
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('.side a[data-nav]').forEach(function(a){
+    a.onclick=function(e){
+      if(a.hasAttribute('data-open-drawer'))return;
+      e.preventDefault();
+      var key=navMap[a.dataset.nav]; if(key)goView(key);
+    };
+  });
+
+  /* 关键屏声明：截图器只枚举这些真实界面状态 */
+  window.__UI_CAPTURE__={
+    reset:function(){ openModal(false); openDrawer(false); document.body.classList.add('authed'); goView('home'); show('data'); },
+    states:[
+      {id:'login',   label:'登录屏·默认', go:function(){
+          document.body.classList.remove('authed'); switchAuth('login'); }},
+      {id:'login-error', label:'登录错误态', go:function(){
+          document.body.classList.remove('authed'); switchAuth('login');
+          var e=document.getElementById('authErr');
+          e.textContent='请输入正确格式的工作邮箱，例如 name@company.com。'; e.classList.add('on');
+          markField('auEmailWrap','auEmailTip','邮箱格式不正确，例如 name@company.com。'); }},
+      {id:'reg-mismatch', label:'注册·两次密码不一致', go:function(){
+          document.body.classList.remove('authed'); switchAuth('reg');
+          document.getElementById('auEmail').value='zhang@factory.com';
+          document.getElementById('auPwd').value='abcdef1';
+          document.getElementById('auPwd2').value='abcdef2';
+          markField('auPwd2Wrap','auPwd2Tip','两次输入的密码不一致，请重新确认。'); }},
+      {id:'data',    label:'工作台·有数据'},
+      {id:'filter',  label:'类型筛选中', go:function(){
+          var c=document.querySelector('.filters .chip[data-type="项目进展"]'); if(c)c.click(); }},
+      {id:'mat',     label:'材料库视图', go:function(){ goView('mat'); }},
+      {id:'editor',  label:'编辑器·③逐页核对', go:function(){ goView('editor'); renderStep(3); }},
+      {id:'ed-step1',label:'编辑器·①准备材料', go:function(){ goView('editor'); renderStep(1); }},
+      {id:'ed-step2',label:'编辑器·②大纲确认', go:function(){ goView('editor'); renderStep(2); }},
+      {id:'ed-step4',label:'编辑器·④模板匹配', go:function(){ goView('editor'); renderStep(4); }},
+      {id:'ed-step5',label:'编辑器·⑤导出PPTX', go:function(){ goView('editor'); renderStep(5); }},
+      {id:'tpl',     label:'模板库视图', go:function(){ goView('tpl'); }},
+      {id:'year',    label:'年度回顾视图', go:function(){ goView('year'); }},
+      {id:'settings',label:'设置与Key视图', go:function(){ goView('settings'); }},
+      {id:'modal',   label:'新建稿弹窗', go:function(){ goView('home'); openModal(true); }},
+      {id:'drawer',  label:'AI助手抽屉', go:function(){ openDrawer(true); }},
+      {id:'empty',   label:'空状态',    go:function(){ show('empty'); }},
+      {id:'loading', label:'加载骨架屏', go:function(){ show('loading'); }},
+      {id:'error',   label:'异常状态',  go:function(){ show('error'); }}
+    ]
+  };
+})();
+</script>
+</body>
+</html>

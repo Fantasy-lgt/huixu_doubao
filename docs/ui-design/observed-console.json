@@ -1,0 +1,70 @@
+[
+  {
+    "where": "顶栏右侧操作区（≤1180px 视口）",
+    "selector": ".top",
+    "what": "窄视口下主按钮与期间分段控件文字被挤成竖排多行，顶栏高度失控",
+    "measure": {"width": 829},
+    "fix": "顶栏 flex-wrap 换行；.btn 与 .seg button 加 white-space:nowrap；窄屏隐藏面包屑、收小标题字号",
+    "resolved": true
+  },
+  {
+    "where": "页面 head 资源请求",
+    "selector": "link[rel=icon]",
+    "what": "浏览器默认请求 /favicon.ico 返回 404，console 出现一条 error",
+    "measure": {"count": 1},
+    "fix": "加 <link rel=\"icon\" href=\"data:,\"> 消除默认请求；复测 console_messages 为空",
+    "resolved": true
+  },
+  {
+    "where": "材料库 tab 与类型筛选联动",
+    "selector": ".tabs button + .filters .chip[data-type]",
+    "what": "切到「最近草稿」再切回材料库时，先前的类型筛选残留隐藏行，计数却重置为 8，计数与可见行不一致",
+    "measure": {"count": 8},
+    "fix": "新增 resetTabToMat()：回数据态时复位 tab、chip、行显示与计数；浏览器实测草稿→回数据可见 8 行、项目进展筛选可见 2 行",
+    "resolved": true
+  },
+  {
+    "where": "右侧待办提示 header",
+    "selector": ".todo-list",
+    "what": "计数写「共 3 项」，实际列出 4 条待办，文案数字与版面对不上",
+    "measure": {"count": 4},
+    "fix": "改为「共 4 项」，与 4 条 todo 一一对应",
+    "resolved": true
+  },
+  {
+    "where": "指令输入框右侧按钮",
+    "selector": "#askGo",
+    "what": "首屏实心主按钮出现 3 处（顶栏、月度任务卡、指令框），违背「每处一个最强主操作」，视觉层级打架",
+    "measure": {"hex": "#6C5CE7"},
+    "fix": "指令框「生成初稿建议」降为 outline-accent（紫边白底紫字），实心主操作只保留新建月度汇报主入口",
+    "resolved": true
+  },
+  {
+    "where": "材料库表格 #matTable tbody",
+    "selector": "#matTable tbody tr",
+    "what": "8 行示例材料；类型 chip 真过滤并更新计数；状态 tag 为已校验/待补充/缺月份/来源待核四种浅底深字",
+    "measure": {"count": 8},
+    "fix": "保持；筛选计数同步写入 #rowCount"
+  },
+  {
+    "where": "主面板状态区",
+    "selector": "[data-state]",
+    "what": "data/empty/loading/error 四态齐全：空态带出口按钮，加载为骨架条，异常态给重试与查看草稿两条出路",
+    "measure": {"count": 4},
+    "fix": "保持"
+  },
+  {
+    "where": "新建稿弹窗与助手抽屉",
+    "selector": "#modal, #drawer",
+    "what": "弹窗含汇报期间/材料范围/Top3 模板卡；抽屉含助手-用户气泡与 3 个槽位追问 chips；所有副作用走 toast",
+    "measure": {"count": 2},
+    "fix": "保持"
+  },
+  {
+    "where": "配色 token :root",
+    "selector": ":root",
+    "what": "主底 #F4F3FB 淡紫亮场；主紫 #6C5CE7 唯一实心主色；up/down/warn 与主紫错开；无荧光紫与框架默认色",
+    "measure": {"hex": "#6C5CE7"},
+    "fix": "保持"
+  }
+]
