@@ -9,6 +9,7 @@
     "start": "node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
+    "test": "tsx --test test/*.test.ts",
     "spike:s2": "node ../spikes/s2-pptx-gen.cjs"
   },
   "dependencies": {
