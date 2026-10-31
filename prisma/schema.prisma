@@ -26,6 +26,7 @@ model User {
   entities      Entity[]
   modelKeys     ModelKey[]
   exportRecords ExportRecord[]
+  sessions      Session[]
 }
 
 model Material {
@@ -127,4 +128,16 @@ model ExportRecord {
   createdAt     DateTime @default(now())
 
   @@index([userId, draftId])
+}
+
+// 会话（PRD-01 方案甲）：Cookie 存 sid，服务端按 sid 查用户；过期/登出即删
+model Session {
+  sid       String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
 }
