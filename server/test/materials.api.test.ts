@@ -77,6 +77,22 @@ test('M-OK1 合法新建 201：字段落库正确、标签去重、来源名缺�
   assert.equal(d.version, 1);
 });
 
+test('列表项携带 body 字段（前端卡片预览依赖正文），且为字符串', async () => {
+  const { sid } = await registerUser();
+  await app.inject({
+    method: 'POST',
+    url: '/api/materials',
+    headers: { cookie: `sid=${sid}` },
+    payload: basePayload,
+  });
+  const list = await app.inject({ method: 'GET', url: '/api/materials', headers: { cookie: `sid=${sid}` } });
+  assert.equal(list.statusCode, 200);
+  const rows = list.json().data as Array<Record<string, unknown>>;
+  assert.ok(rows.length >= 1);
+  assert.equal(typeof rows[0].body, 'string');
+  assert.ok((rows[0].body as string).includes('完成本月18份演示资料归档'));
+});
+
 test('A-F5 两用户隔离：B 列表不见 A 的材料；直取 A 的 id 读改写删全 404', async () => {
   const a = await registerUser();
   const b = await registerUser();

@@ -75,6 +75,7 @@ export async function listMaterials(
       tags: true,
       period: true,
       occasion: true,
+      body: true,
       sourceName: true,
       version: true,
       createdAt: true,
