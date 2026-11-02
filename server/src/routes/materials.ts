@@ -1,27 +1,50 @@
 import type { FastifyPluginAsync } from 'fastify';
+import {
+  createMaterial,
+  deleteMaterial,
+  getMaterial,
+  listMaterials,
+  updateMaterial,
+} from '../services/material.service.js';
 
-// 材料库路由占位（W2 实现）。契约来源：PRD-02-材料库、IA 对照表第 2.2 节、任务流 F1-2
+// 材料库路由（PRD-02 §5）：整组 requireAuth；服务端强制 userId 作用域；
+// 资源不存在或不归属统一 404 NOT_FOUND，不暴露存在性。
 const materials: FastifyPluginAsync = async (app) => {
-  // GET /materials?type=&tag=&period=&keyword= 强制作用域 userId
-  app.get('/', async (_req, reply) =>
-    reply.code(501).send({ error: { code: 'NOT_IMPLEMENTED', message: 'W2：材料列表+组合筛选' } })
-  );
-  // GET /materials/:id 归属校验，不归属 → 404
-  app.get('/:id', async (_req, reply) =>
-    reply.code(501).send({ error: { code: 'NOT_IMPLEMENTED', message: 'W2：材料详情' } })
-  );
-  // POST /materials 期间+正文指纹去重；重复返回 409 MATERIAL_DUPLICATE
-  app.post('/', async (_req, reply) =>
-    reply.code(501).send({ error: { code: 'NOT_IMPLEMENTED', message: 'W2：新建材料（粘贴/TXT/MD）' } })
-  );
-  // PUT /materials/:id 原文只读，元信息可改；版本号自增
-  app.put('/:id', async (_req, reply) =>
-    reply.code(501).send({ error: { code: 'NOT_IMPLEMENTED', message: 'W2：更新材料元信息' } })
-  );
-  // DELETE /materials/:id 二次确认；引用草稿联动标待重核
-  app.delete('/:id', async (_req, reply) =>
-    reply.code(501).send({ error: { code: 'NOT_IMPLEMENTED', message: 'W2：删除材料并联动失效提示' } })
-  );
+  app.addHook('preHandler', app.requireAuth);
+
+  app.get('/', async (request, reply) => {
+    const query = request.query as {
+      materialType?: string;
+      period?: string;
+      tag?: string;
+      keyword?: string;
+    };
+    const rows = await listMaterials(app.prisma, request.currentUserId as string, query);
+    reply.send({ data: rows });
+  });
+
+  app.post('/', async (request, reply) => {
+    const row = await createMaterial(app.prisma, request.currentUserId as string, request.body);
+    reply.code(201).send({ data: row });
+  });
+
+  app.get('/:id', async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const row = await getMaterial(app.prisma, request.currentUserId as string, id);
+    reply.send({ data: row });
+  });
+
+  app.put('/:id', async (request, reply) => {
+    const { id } = request.params as { id: string };
+    const row = await updateMaterial(app.prisma, request.currentUserId as string, id, request.body);
+    reply.send({ data: row });
+  });
+
+  app.delete('/:id', async (request, reply) => {
+    const { id } = request.params as { id: string };
+    await deleteMaterial(app.prisma, request.currentUserId as string, id);
+    reply.send({ data: { id } });
+  });
 };
 
 export default materials;
