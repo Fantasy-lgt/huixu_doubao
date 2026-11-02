@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 // 路由表对照《IA站点地图-路由与数据对照表.md》第 2 节；编辑器五步为内部 step 状态机，不拆 URL
 const routes: RouteRecordRaw[] = [
@@ -29,13 +30,21 @@ const router = createRouter({
   routes,
 });
 
-// 守卫占位（W2 接真实会话）：
-// 1. requiresAuth 路由先 GET /me；401 → 跳 /login?redirect=原path
-// 2. 已登录访问 /login → 跳 /
-// 当前无后端阶段不强制拦截，保证骨架可直接预览各视图。
-router.beforeEach((to) => {
+// 守卫：requiresAuth 路由首次进入先 GET /me；未登录带 redirect 跳 /login；
+// 已登录访问 /login 直接回工作台；document.title 逻辑保留。
+router.beforeEach(async (to) => {
   document.title = `${(to.meta.title as string) ?? ''} · 汇序 Pro`;
-  // TODO(W2): const me = await api.getMe(); if (to.meta.requiresAuth && !me) return { path:'/login', query:{redirect:to.fullPath} }
+  const auth = useAuthStore();
+  if (to.meta.requiresAuth) {
+    if (!auth.initialized) await auth.fetchMe();
+    if (!auth.isLoggedIn) {
+      return {
+        path: '/login',
+        query: to.fullPath && to.fullPath !== '/' ? { redirect: to.fullPath } : {},
+      };
+    }
+  }
+  if (to.path === '/login' && auth.isLoggedIn) return { path: '/' };
   return true;
 });
 

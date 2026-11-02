@@ -15,7 +15,11 @@
     <section class="main">
       <header class="topbar">
         <h2 class="page-title">{{ currentTitle }}</h2>
-        <button class="ghost-btn" type="button">问助手（抽屉，W5 接入）</button>
+        <div class="top-right">
+          <button class="ghost-btn" type="button" disabled title="W5 接入">问助手（抽屉，W5 接入）</button>
+          <span class="user-pill" v-if="auth.currentUser">{{ auth.currentUser.emailPrefix }}</span>
+          <button class="ghost-btn" type="button" @click="onLogout">退出</button>
+        </div>
       </header>
       <div class="content">
         <RouterView />
@@ -26,9 +30,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
-// 导航与 IA 对照表一致；AI 助手为全局抽屉，不占路由
+// 导航与 IA 对照表一致；AI 助手为全局抽屉，不占路由（W5 接入，本轮置灰）
 const navItems = [
   { label: '工作台', path: '/' },
   { label: '材料库', path: '/materials' },
@@ -39,7 +44,15 @@ const navItems = [
 ];
 
 const route = useRoute();
+const router = useRouter();
+const auth = useAuthStore();
+
 const currentTitle = computed(() => (route.meta.title as string) ?? '工作台');
+
+async function onLogout() {
+  await auth.logout();
+  await router.replace('/login');
+}
 </script>
 
 <style scoped>
@@ -112,6 +125,18 @@ const currentTitle = computed(() => (route.meta.title as string) ?? '工作台')
   font-size: 18px;
   font-weight: 700;
 }
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-pill {
+  font-size: 12.5px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: var(--r-pill);
+  padding: 5px 12px;
+}
 .ghost-btn {
   border: 1px solid var(--border-strong);
   background: var(--bg);
@@ -119,6 +144,10 @@ const currentTitle = computed(() => (route.meta.title as string) ?? '工作台')
   border-radius: var(--r-pill);
   padding: 7px 14px;
   cursor: pointer;
+}
+.ghost-btn:disabled {
+  color: var(--ink-3);
+  cursor: not-allowed;
 }
 .content {
   margin-top: 16px;

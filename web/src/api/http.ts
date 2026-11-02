@@ -1,5 +1,5 @@
-// 统一请求封装：带 Cookie；统一解包 {data} / {error:{code,message}}；401 统一跳登录占位
-// W2 接入真实会话后补充 token 刷新与错误码映射（对照任务流异常矩阵）
+// 统一请求封装：携带 Cookie（credentials:'include'）；统一解包 {data} / {error:{code,message}}。
+// 401 不直接 import router/store（避免循环依赖）：由 main.ts 通过 setUnauthorizedHandler 注入清态与跳转。
 
 export interface ApiError {
   code: string;
@@ -11,33 +11,54 @@ export class RequestError extends Error {
   status: number;
   constructor(code: string, message: string, status: number) {
     super(message);
+    this.name = 'RequestError';
     this.code = code;
     this.status = status;
   }
 }
 
-export async function request<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(path, {
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json', ...(options.headers ?? {}) },
-    ...options,
-  });
+type UnauthorizedHandler = () => void;
+let unauthorizedHandler: UnauthorizedHandler | null = null;
 
-  let body: any = null;
+export function setUnauthorizedHandler(handler: UnauthorizedHandler): void {
+  unauthorizedHandler = handler;
+}
+
+const BASE = '/api';
+
+export async function request<T = unknown>(path: string, options: RequestInit = {}): Promise<T> {
+  let res: Response;
+  try {
+    res = await fetch(BASE + path, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...(options.headers ?? {}) },
+      ...options,
+    });
+  } catch {
+    // fetch reject：断网 / 服务未启动 / 代理失败，统一网络错误
+    throw new RequestError('NETWORK_ERROR', '网络异常，请稍后重试', 0);
+  }
+
+  let body: unknown = null;
   try {
     body = await res.json();
   } catch {
-    body = null;
+    body = null; // 服务端返回非 JSON（如 502 文本），交给状态码分支兜底
   }
+  const errBody = (body ?? {}) as { error?: ApiError };
 
   if (res.status === 401) {
-    // TODO(W2): 清前端态并 router.push({ path:'/login', query:{ redirect: location.pathname } })
-    throw new RequestError('UNAUTHENTICATED', body?.error?.message ?? '登录已过期', 401);
+    unauthorizedHandler?.();
+    throw new RequestError('UNAUTHENTICATED', errBody.error?.message ?? '登录已过期，请重新登录', 401);
   }
   if (!res.ok) {
-    throw new RequestError(body?.error?.code ?? 'SERVER_ERR', body?.error?.message ?? '请求失败', res.status);
+    throw new RequestError(
+      errBody.error?.code ?? 'SERVER_ERR',
+      errBody.error?.message ?? '请求失败，请稍后重试',
+      res.status
+    );
   }
-  return (body?.data ?? body) as T;
+  return ((body as { data?: T })?.data ?? (body as T)) as T;
 }
 
 export const api = {
