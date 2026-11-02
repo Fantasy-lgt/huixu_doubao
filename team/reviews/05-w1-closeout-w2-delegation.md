@@ -374,10 +374,25 @@ test('示例：未登录访问材料列表返回 401', async () => {
 | 未登录 / 会话失效 | 401 | `UNAUTHENTICATED` | **口径备注**：PRD-01 §5 文字写作 `UNAUTHORIZED`，`result.ts` 实际常量为 `UNAUTHENTICATED`；按任务 C 指令不另造常量、不改代码，统一以代码常量为准，前端只按 HTTP 401 处理，文案由前端展示层给定 |
 | 资源不存在 / 不归属 | 404 | `NOT_FOUND` | `assertOwner` false 统一出口 |
 | 参数校验失败（字段格式/枚举/长度常规越界） | 400 | `VALIDATION_FAILED` | 路由/service 层对外统一使用；注意 `domain/errors.ts` 的 `fail()` 默认内部码 `INVALID_INPUT` 不直接外漏，由 service 映射为上表对外码 |
-| 正文 / 条目数量超限 | 422（材料正文超长可 413，二选一由任务 E 定并写进接口注释） | `VALIDATION_FAILED` 或对应业务码 | `validateSections` 超 300 条已用 422（`AppError.status=422`）；材料 body >20000 建议 422；不允许静默截断 |
+| 正文 / 条目数量超限 | 材料 JSON 表单统一 400；`validateSections` 章节 >300 条维持 422 | `VALIDATION_FAILED` 或对应业务码 | 〔2026-11-02 裁定，见 B.2.4.1〕材料 body >20000、非法类型/月份/标签超限/C0 控制字符、空标题空正文均统一 400 `VALIDATION_FAILED`，早期 413/422 讨论本期不采用；422 仅保留给 `validateSections` 草稿章节超限（`AppError.status=422`）；不允许静默截断 |
 | 服务端异常 | 500 | `SERVER_ERR` | 统一「服务暂时不可用」；不回堆栈、SQL、连接串 |
 | 模型调用失败（W4，仅登记） | 401/403/429/超时/坏 JSON | `AUTH_FAIL/RATE_LIMIT/TIMEOUT/BAD_JSON` | 现状常量已在 `result.ts` 预留；W4 联调，W2 不实现 |
 | 占位路由 501 | 501 | `NOT_IMPLEMENTED` | **临时码**，任务 E 路由落地后删除占位与该码使用，不得进入生产响应 |
+
+#### B.2.4.1 状态码裁定记录（2026-11-02 组长拍板，用户确认）
+
+**裁定结论：本期单体内部 JSON 表单的全部载荷校验失败，统一 HTTP 400 + `VALIDATION_FAILED`，不拆 413/422；现有测试断言 400 保持不变，不改 server 代码与 schema。**
+
+| 裁定项 | 统一结论 | 理由 | 未来触发条件 / 备注 |
+| --- | --- | --- | --- |
+| 材料正文超长（>20000 字） | 400 `VALIDATION_FAILED` | JSON 表单为混合校验（枚举、月份、标签数、正文空/超长/C0 控制字符），前端统一走表单错误展示；改 422 需动 Fastify 错误映射与测试分支，本期收益低 | 未来实现 txt/md 文件上传、出现文件体积超限（实体过大）场景时，再单独评估 413 |
+| 非法 materialType（不在八枚举） | 400 `VALIDATION_FAILED` | 枚举白名单校验，属常规表单校验 | 不另立状态码 |
+| 非法月份 period（非 YYYY-MM / 年份越界） | 400 `VALIDATION_FAILED` | 同表单校验矩阵；period 空值分支除外 | 不另立状态码 |
+| 标签超限（>8 个 / 单条 >12 字） | 400 `VALIDATION_FAILED` | 数量与长度混合校验，前端汇总提示 | 不另立状态码 |
+| 正文含非法 C0 控制字符 | 400 `VALIDATION_FAILED` | 服务端拒绝并提示，不静默清洗入库 | 不另立状态码 |
+| 空标题 / 空正文 | 400 `VALIDATION_FAILED` | 必填校验，失败时表单内容保留 | 不另立状态码 |
+
+边界保留：`validateSections` 草稿章节 >300 条的 422 属草稿结构校验（domain 纯函数既有行为），不在本裁定范围，维持原状。
 
 #### B.2.5 依赖风险分级表（依据 `server/package.json` + `package-lock.json` 实锁版本；未执行 `npm audit`，不臆造 CVE 结论，分级为暴露面与维护方式评估）
 
@@ -489,7 +504,7 @@ test('示例：未登录访问材料列表返回 401', async () => {
 1. Session 有效期：建议固定 7 天过期、本期不做滑动续期；过期行清理策略（启动时清理 vs 定时任务）。
 2. `CORS_ORIGIN` 生产域名清单；本地开发保持 `http://127.0.0.1:5173`。
 3. 哈希库最终选型：优先 argon2id；若原生二进制在本机/服务器安装失败，按 bcrypt cost≥10 兜底并记录选型理由。
-4. 材料正文超长状态码取 413 还是 422（建议 422，与 `validateSections` 超限一致），定后写入接口注释与测试断言。
+4. 【已裁定 · 2026-11-02】材料正文超长状态码：早期分歧为 400 / 413 / 422（原建议 422，与 `validateSections` 超限一致）；现统一裁定为 **400 `VALIDATION_FAILED`**——含超长正文在内的全部 JSON 表单校验失败不拆 413/422，现有测试断言 400 保持不变；裁定明细见 B.2.4.1，文件上传体积超限场景留待未来再评估 413。
 5. `UNAUTHENTICATED`（代码常量）与 PRD 文案 `UNAUTHORIZED` 不做改名统一；前端只依赖 HTTP 401。
 
 **后续安全建议（按优先级）**
